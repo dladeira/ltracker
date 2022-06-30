@@ -1,0 +1,73 @@
+.loggedInContainer {
+    margin: 20px 50px 0 230px;
+}
+
+.controlContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+
+}
+
+.title {
+    font-size: 3rem;
+    font-weight: bold;
+
+    color: #008BFF;
+}
+
+.weekContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 10px 10px;
+
+    border-radius: 10px;
+
+    background-color: white;
+}
+
+.arrow,
+.arrowRight {
+    border-radius: 500px;
+    overflow: hidden;
+
+    transition: background-color 500ms cubic-bezier(.08,.82,.17,1);
+
+    &:hover {
+        cursor: pointer;
+
+        background-color: rgb(250, 250, 250);
+    }
+}
+
+.arrowRight {
+    transform: scale(-1);
+}
+
+.date {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 140px;
+}
+
+.year {
+    color: #7D7D7D;
+}
+
+.currentWeek {
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+}
+
+.week {
+    @extend .currentWeek;
+
+    color: #7D7D7D;
+}

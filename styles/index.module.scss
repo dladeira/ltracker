@@ -1,0 +1,34 @@
+.cta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 80px;
+    width: fit-content;
+
+    margin: 0 auto;
+
+    border: 4px solid #008BFF;
+    border-radius: 20px;
+
+    color: #008BFF;
+
+    transition: background-color 500ms cubic-bezier(.08,.82,.17,1);
+}
+
+.cta:hover {
+    background-color: #008BFF;
+    color: white;
+
+}
+
+.ctaText {
+    font-size: 3rem;
+    font-weight: bold;
+    font-variant: small-caps;
+
+    margin-bottom: 10px;
+    padding: 0 40px;
+
+    letter-spacing: 2px;
+}

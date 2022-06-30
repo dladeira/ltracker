@@ -1,0 +1,101 @@
+.container {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    height: 100%;
+    width: 180px;
+
+    padding: 10px 0;
+
+    background-color: white;
+}
+
+.pfp {
+    position: relative;
+
+    display: block;
+
+    height: 100px;
+    width: 100px;
+
+    margin-bottom: 5px;
+
+    border-radius: 1000px;
+
+    overflow: hidden;
+}
+
+.username {
+    margin-bottom: 5px;
+
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.email {
+    font-size: 0.75rem;
+}
+
+.divider {
+    height: 2px;
+    width: 80%;
+
+    margin-top: 15px;
+    margin-bottom: 10px;
+
+    background-color: #D9D9D9;
+}
+
+.link {
+    margin: 3px 0;
+
+    width: 70%;
+
+    font-size: 1rem;
+    letter-spacing: 1.5px;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.linkInside {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    height: 30px;
+
+    &Text {
+        margin-left: 13px;
+    }
+}
+
+.image {
+    margin-top: 2px;
+
+    &Active {
+        @extend .image;
+        filter: invert(53%) sepia(74%) saturate(6175%) hue-rotate(192deg) brightness(104%) contrast(103%);
+    }
+}
+
+.bottomLinks {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    width: 100%;
+
+    margin-top: auto;
+    margin-bottom: 35px;
+}

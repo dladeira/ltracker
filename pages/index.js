@@ -13,7 +13,9 @@ function Page() {
     return (
         <div className={styles.container}>
             welcome
-            <a href="/api/login">login</a>
+            <div className={styles.cta}>
+                <a className={styles.ctaText} href="/api/login">get started</a>
+            </div>
         </div>
     )
 }

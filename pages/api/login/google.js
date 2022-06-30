@@ -23,7 +23,7 @@ handler.use(passport.initialize())
             const session = { ...user }
 
             await setLoginSession(res, { email: session._doc.email })
-            res.redirect('/')
+            res.redirect('/overview')
         } catch (error) {
             res.status(401).send(error.message)
         }
