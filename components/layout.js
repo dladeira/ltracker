@@ -20,13 +20,15 @@ function Component({ children }) {
 
     return (user ?
         (
-            <div className={styles.loggedInContainer}>
-                <Userbar />
-                <div className={styles.controlContainer}>
-                    <PageTitle />
-                    <WeekNavigation />
+            <div className={styles.outerLoggedInContainer}>
+                <div className={styles.loggedInContainer}>
+                    <Userbar />
+                    <div className={styles.controlContainer}>
+                        <PageTitle />
+                        <WeekNavigation />
+                    </div>
+                    {children}
                 </div>
-                {children}
             </div>
         ) : (
             <div>

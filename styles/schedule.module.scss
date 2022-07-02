@@ -1,0 +1,38 @@
+.grid {
+    display: grid;
+    grid-template-rows: 790px;
+    grid-template-columns: 60px repeat(7, auto);
+
+    width: 100%;
+
+    background-color: white;
+}
+
+.weekDay {
+    border: 1px solid black;
+}
+
+.clickableArea {
+    position: relative;
+    width: 100%;
+
+    background-color: #CDCDCD;
+}
+
+.quarterDivider {
+    height: 12.5px;
+
+    border-bottom: 1px solid black;
+
+    user-select: none;
+}
+
+.hourHighlighted {
+    background-color: red;
+}
+
+.event {
+    width: 100%;
+    
+    background-color: lightblue;
+}

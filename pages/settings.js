@@ -10,7 +10,12 @@ function Page() {
 
     function getSortedTasks() {
         var tasks = [...user.tasks]
-        return tasks.sort((a, b) =>  a.name.localeCompare(b.name))
+        return tasks.sort((a, b) => a.name.localeCompare(b.name))
+    }
+
+    function getSortedChecklist() {
+        var checklist = [...user.checklist]
+        return checklist.sort((a, b) => a.name.localeCompare(b.name))
     }
 
     async function submitNewTask(e) {
@@ -44,22 +49,51 @@ function Page() {
                         +
                     </div>
                 </div>
-                <div className={styles.tasks}>
-                    <div className={styles.taskHeaders}>
-                        <div className={styles.headerName}>
+                <div className={styles.itemList}>
+                    <div className={styles.listHeader}>
+                        <div style={{ marginRight: "205px" }}>
                             NAME
                         </div>
 
-                        <div className={styles.headerPublic}>
+                        <div>
                             PUBLIC
                         </div>
                     </div>
+                    
                     {getSortedTasks().map(task => {
                         return <Task task={task} key={task.id} />
                     })}
                 </div>
 
             </div>
+            <div className={styles.gridItem}>
+                <div className={styles.itemHeader}>
+                    <div className={styles.itemTitle}>
+                        Checklist
+                    </div>
+                    <div className={styles.addButton} onClick={submitNewTask}>
+                        +
+                    </div>
+                </div>
+                <div className={styles.itemList}>
+                    <div className={styles.listHeader}>
+                        <div>
+                            NAME
+                        </div>
+                    </div>
+                    
+                    {getSortedChecklist().map(checklist => {
+                        return <Checklist checklist={checklist} key={checklist.id} />
+                    })}
+                </div>
+
+            </div>
+            <div className={styles.gridItem} />
+            <div className={styles.gridItem} />
+            <div className={styles.gridItem} />
+            <div className={styles.gridItem} />
+            <div className={styles.gridItem} />
+            <div className={styles.gridItem} />
             <div className={styles.gridItem} />
             <div className={styles.gridItem} />
         </div >) : <div />
@@ -67,6 +101,7 @@ function Page() {
 }
 
 function Task({ task }) {
+
     const [user, setUser] = useUser()
     const [name, setName] = useState(task.name)
     const [pub, setPub] = useState(task.public)
@@ -123,6 +158,64 @@ function Task({ task }) {
                 <Image src={"/public-icon.svg"} height={16} width={16} />
             </div>
             <div className={styles.taskDelete} type="button" onClick={onDeletePress}>
+                <Image src={"/trash-icon.svg"} height={20} width={20} />
+            </div>
+        </div>
+    ) : <div />)
+}
+
+function Checklist({ checklist }) {
+    const [user, setUser] = useUser()
+    const [name, setName] = useState(checklist.name)
+    const [initial, setInitial] = useState(true)
+
+    useEffect(() => {
+        if (!initial)
+            save()
+        else
+            setInitial(false)
+    }, [name])
+
+    function getIndex() {
+        for (var i = 0; i < user.checklist.length; i++) {
+            if (user.checklist[i].id == checklist.id) {
+                return i
+            }
+        }
+    }
+
+    async function save() {
+        var index = getIndex()
+
+        user.checklist[index].name = name
+
+
+        setUser({ ...user })
+        await fetch(window.origin + "/api/user/setChecklist", {
+            body: JSON.stringify({
+                checklist: user.checklist
+            }),
+            method: "POST"
+        })
+    }
+
+    async function onDeletePress() {
+        user.checklist = user.checklist.filter(item => checklist.id != item.id)
+
+        await fetch(window.origin + "/api/user/Checklist", {
+            body: JSON.stringify({
+                checklist: user.checklist
+            }),
+            method: "POST"
+        })
+
+        setUser({ ...user })
+    }
+
+    return (user ? (
+        <div className={styles.checklist}>
+            <input className={styles.checklistName} type="text" name="title" value={name} onChange={e => { setName(e.target.value) }} />
+            <div className={styles.checklistDelete} type="button" onClick={onDeletePress}>
                 <Image src={"/trash-icon.svg"} height={20} width={20} />
             </div>
         </div>

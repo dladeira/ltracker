@@ -1,15 +1,19 @@
 .grid {
     display: grid;
     gap: 20px;
-    grid-template-rows: 250px 250px 250px 250px;
-    grid-template-columns: 310px 310px 310px 310px;
+    grid-template-rows: 250px 250px 250px;
+    grid-template-columns: repeat(4, 370px);
 }
 
 .gridItem {
+    display: flex;
+    flex-direction: column;
+
     height: 100%;
     width: 100%;
 
     padding: 15px;
+    padding-right: 0;
 
     background-color: white;
 
@@ -26,6 +30,8 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+
+    padding-right: 15px;
 }
 
 .addButton {
@@ -52,16 +58,19 @@
     font-weight: 500;
 }
 
-.tasks {
+.itemList {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
 
     margin-top: 10px;
+    padding-right: 10px;
+
+    overflow-y: scroll;
 }
 
-.taskHeaders {
+.listHeader {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -76,10 +85,7 @@
     color: #C4C4C4;
 }
 
-.headerName {
-    margin-left: 5px;
-    margin-right: 150px;
-}
+$taskHeight: 13px;
 
 .task {
     display: flex;
@@ -90,32 +96,65 @@
     height: fit-content;
     width: 100%;
 
-    margin: 3px 0;
+    padding-right: 10px;
 }
 
 .taskName {
-    width: 180px;
+    flex-grow: 1;
 
-    margin-right: 30px;
+    margin-right: 20px;
+    padding: calc($taskHeight / 2 - 0.5px) 0;
 
     font-size: 1rem;
 
     border: none;
+    border-bottom: 1px solid transparent;
+    outline: none;
+
+    &:hover, &:focus {
+        border-bottom: 1px solid #CDCDCD;
+    }
+
 }
 
 .pub {
+    height: 100%;
+
     margin-right: 30px;
+    padding: calc($taskHeight / 2) 5px;
 
     &:hover {
         cursor: pointer;
+        filter: none;
     }
 
     &False {
         @extend .pub;
-        filter: invert(97%) sepia(0%) saturate(0%) hue-rotate(155deg) brightness(82%) contrast(91%)
+        filter: invert(97%) sepia(0%) saturate(0%) hue-rotate(155deg) brightness(82%) contrast(91%);
     }
+}
+
+.taskDelete {
+    margin-left: auto;
+    padding: calc($taskHeight / 2 - 1.5px) 0;
 }
 
 .taskDelete:hover {
     cursor: pointer;
+
+    filter: invert(97%) sepia(0%) saturate(0%) hue-rotate(155deg) brightness(82%) contrast(91%);
+}
+
+.checklist {
+    @extend .task;
+}
+
+.checklistName {
+    @extend .taskName;
+}
+
+.checklistDelete {
+    margin-left: auto;
+
+    @extend .taskDelete;
 }

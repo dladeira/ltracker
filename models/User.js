@@ -8,6 +8,10 @@ const userSchema = new mongoose.Schema({
         type: Array,
         default: []
     },
+    checklist: {
+        type: Array,
+        default: []
+    }
 })
 
 export default mongoose.models.User || mongoose.model("User", userSchema)
