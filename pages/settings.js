@@ -51,15 +51,17 @@ function Page() {
                 </div>
                 <div className={styles.itemList}>
                     <div className={styles.listHeader}>
-                        <div style={{ marginRight: "205px" }}>
+                        <div style={{ marginRight: "114%" }}>
                             NAME
                         </div>
-
+                        <div style={{ marginRight: "5%" }}>
+                            COLOR
+                        </div>
                         <div>
                             PUBLIC
                         </div>
                     </div>
-                    
+
                     {getSortedTasks().map(task => {
                         return <Task task={task} key={task.id} />
                     })}
@@ -81,7 +83,7 @@ function Page() {
                             NAME
                         </div>
                     </div>
-                    
+
                     {getSortedChecklist().map(checklist => {
                         return <Checklist checklist={checklist} key={checklist.id} />
                     })}
@@ -101,9 +103,10 @@ function Page() {
 }
 
 function Task({ task }) {
-
     const [user, setUser] = useUser()
     const [name, setName] = useState(task.name)
+    const [color, setColor] = useState(task.color)
+    const [picker, setPicker] = useState(false) // Whether the color picker is open
     const [pub, setPub] = useState(task.public)
     const [initial, setInitial] = useState(true)
 
@@ -112,7 +115,7 @@ function Task({ task }) {
             save()
         else
             setInitial(false)
-    }, [name, pub])
+    }, [name, color, pub])
 
     function getIndex() {
         for (var i = 0; i < user.tasks.length; i++) {
@@ -127,6 +130,7 @@ function Task({ task }) {
 
         user.tasks[taskIndex].name = name
         user.tasks[taskIndex].public = pub
+        user.tasks[taskIndex].color = color
 
 
         setUser({ ...user })
@@ -153,7 +157,41 @@ function Task({ task }) {
 
     return (user ? (
         <div className={styles.task}>
-            <input className={styles.taskName} type="text" name="title" value={name} onChange={e => { setName(e.target.value) }} />
+            <input className={styles.taskName} type="text" value={name} onChange={e => { setName(e.target.value) }} />
+            <div className={styles.taskColor} style={{ backgroundColor: color }} onClick={e => { setPicker(!picker) }} />
+            {picker ? (
+                <div className={styles.pickerWrapper} onClick={e => { setPicker(false) }}>
+                    <div className={styles.taskPicker}>
+                        <div className={styles.pickerGrid}>
+                            <div className={styles.pickerColor} style={{ backgroundColor: "#99C1F1" }} onClick={e => { setColor("#99C1F1"), setPicker(false) }} />
+                            <div className={styles.pickerColor} style={{ backgroundColor: "#A7D35F" }} onClick={e => { setColor("#A7D35F"), setPicker(false) }} />
+                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
+                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
+                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
+                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
+                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
+                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
+                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
+                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
+                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
+                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
+                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
+                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
+                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
+                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
+                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
+                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
+                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
+                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
+                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
+                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
+                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
+                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
+                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
+                        </div>
+                    </div>
+                </div>
+            ) : <div />}
             <div className={pub ? styles.pub : styles.pubFalse} onClick={() => { setPub(!pub) }}>
                 <Image src={"/public-icon.svg"} height={16} width={16} />
             </div>
