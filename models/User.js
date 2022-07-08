@@ -11,6 +11,19 @@ const userSchema = new mongoose.Schema({
     checklist: {
         type: Array,
         default: []
+    },
+    days: {
+        type: [{
+            day: Number,
+            week: Number,
+            year: Number,
+            events: [{
+                quarterStart: Number,
+                quarterEnd: Number,
+                task: String
+            }]
+        }],
+        default: []
     }
 })
 

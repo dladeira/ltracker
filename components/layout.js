@@ -11,6 +11,7 @@ import styles from '../styles/layout.module.scss'
 
 function Component({ children }) {
     const [user] = useUser()
+    const [context, setContext] = useAppContext()
 
     if (user === undefined) {
         return (
@@ -18,9 +19,14 @@ function Component({ children }) {
         )
     }
 
+    function mouseUpEvent() {
+        context.lastMouseUp = new Date().getTime()
+        setContext({...context})
+    }
+
     return (user ?
         (
-            <div className={styles.outerLoggedInContainer}>
+            <div className={styles.outerLoggedInContainer} onMouseUp={mouseUpEvent}>
                 <div className={styles.loggedInContainer}>
                     <Userbar />
                     <div className={styles.controlContainer}>
@@ -31,7 +37,7 @@ function Component({ children }) {
                 </div>
             </div>
         ) : (
-            <div>
+            <div onMouseUp={mouseUpEvent}>
                 {children}
             </div>
         )

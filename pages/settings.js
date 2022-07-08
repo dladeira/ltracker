@@ -24,7 +24,8 @@ function Page() {
         user.tasks.push({
             name: "---",
             id: generateId(user),
-            public: false
+            public: false,
+            color: "#E9807F"
         })
 
         setUser({ ...user })

@@ -1,28 +1,106 @@
+.wrapper {
+    height: 790px;
+
+    background-color: white;
+
+    border-radius: 10px;
+}
+
 .grid {
     display: grid;
-    grid-template-rows: 790px;
-    grid-template-columns: 60px repeat(7, auto);
+    grid-template-rows: 770px;
+    grid-template-columns: 60px repeat(7, auto) 20px;
 
     width: 100%;
 
-    background-color: white;
+    overflow-y: scroll;
+
+    /* Internet Explorer 10+ */
+    -ms-overflow-style: none;
+
+    /* Firefox */
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+        /* Safari and Chrome */
+    }
+}
+
+$quarterHeight: 19.75px;
+
+.displayHours {
+    margin-top: 88px;
+}
+
+.displayHour {
+    height: 79px;
+    width: fit-content;
+
+    margin-left: auto;
+    margin-right: 10px;
+
+    font-size: 0.7rem;
+    color: #7D7D7D;
 }
 
 .weekDay {
-    border: 1px solid black;
+    height: 100%;
+}
+
+.dayHeader {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+
+    height: 80px;
+}
+
+.dayDate {
+    font-size: 0.9rem;
+    font-weight: 100;
+
+    margin-bottom: 5px;
+}
+
+.dayName {
+    font-size: 1.5rem;
+    font-weight: 300;
 }
 
 .clickableArea {
     position: relative;
+    height: calc($quarterHeight * 24 * 4);
     width: 100%;
 
-    background-color: #CDCDCD;
+
+    border-top: 1px solid #D9D9D9;
+    border-right: 1px solid #D9D9D9;
+
+    &Top {
+        height: 16px;
+        border-right: 1px solid #D9D9D9;
+    }
+}
+
+.clickableAreaFirst {
+    @extend .clickableArea;
+    border-left: 1px solid #D9D9D9;
+
+    &Top {
+        height: 16px;
+        border-left: 1px solid #D9D9D9;
+        border-right: 1px solid #D9D9D9;
+    }
+}
+
+.hour {
+    border-bottom: 1px solid #D9D9D9;
 }
 
 .quarterDivider {
-    height: 12.5px;
-
-    border-bottom: 1px solid black;
+    height: $quarterHeight;
 
     user-select: none;
 }
@@ -31,8 +109,23 @@
     background-color: red;
 }
 
-.event {
+.eventWrapper {
     width: 100%;
-    
-    background-color: lightblue;
+
+    padding: 3px;
+}
+
+.event {
+    height: 100%;
+    width: 100%;
+
+    border-radius: 5px;
+
+}
+
+.eventPlaceholder {
+    @extend .event;
+
+    background-color: #99C1F1;
+    opacity: 0.5;
 }
