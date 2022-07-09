@@ -20,7 +20,8 @@ const userSchema = new mongoose.Schema({
             events: [{
                 quarterStart: Number,
                 quarterEnd: Number,
-                task: String
+                task: String,
+                plan: Boolean
             }]
         }],
         default: []

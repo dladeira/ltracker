@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { getDateText, getDay, getDayIndex, getTask } from '../lib/util'
+import Image from 'next/image'
+import { getDateText, getDay, getTask } from '../lib/util'
 import { useAppContext } from '../lib/context'
 
 import styles from '../styles/schedule.module.scss'
@@ -42,6 +43,7 @@ function Day({ index, name, first }) {
 
     const [dragging, setDragging] = useState(false)
     const [yOnMouseDown, setYOnMouseDown] = useState(0)
+    const [clickTime, setClickTime] = useState(0)
     const [lastMouseUp, setLastMouseUp] = useState(0)
 
     const placeHolderEvent = useState({
@@ -63,10 +65,20 @@ function Day({ index, name, first }) {
 
     useEffect(() => {
         if (context.lastMouseUp != lastMouseUp && dragging) {
-            setLastMouseUp(context.lastMouseUp)
-            mouseUpHandler()
+            if (new Date().getTime() - clickTime > 100) {
+                setLastMouseUp(context.lastMouseUp)
+                mouseUpHandler()
+            } else {
+                resetMouse()
+            }
         }
     }, [context])
+
+    useEffect(() => {
+        if (!dragging) {
+            document.getElementById(`${index}-placeholder`).style.display = "none"
+        }
+    })
 
     function getEvents() {
         const day = getDay(user, index, context.week, context.year)
@@ -107,6 +119,10 @@ function Day({ index, name, first }) {
         }
     }
 
+    function resetMouse() {
+        setDragging(false)
+    }
+
     async function mouseUpHandler() {
         if (dragging && quarterData.first != 0 && quarterData.last != 0) {
             const res = await fetch("/api/user/events/addEvent", {
@@ -122,16 +138,16 @@ function Day({ index, name, first }) {
             })
             const newUser = await res.json()
             setUser({ ...newUser })
-            setDragging(false)
-            document.getElementById(`${index}-placeholder`).style.display = "none"
+            resetMouse()
         }
     }
 
     function mouseDownHandler(e, quarter) {
-        setDragging(true)
         setYOnMouseDown(e.clientY)
+        setDragging(true)
         quarterData.first = quarter
         setQuarterData(quarterData)
+        setClickTime(new Date().getTime())
     }
 
     return (
@@ -160,7 +176,9 @@ function Day({ index, name, first }) {
                     </div>
                 })}
 
-                {getEvents().map(event => <Event key={`event-${event.quarterStart}-${event.quarterEnd}`} event={event} quarterHeight={quarterHeight} />)}
+                {getEvents().map(event =>
+                    <Event key={`event-${event._id}`} event={event} quarterHeight={quarterHeight} index={index} />
+                )}
 
                 <div id={`${index}-placeholder`} className={styles.eventWrapper} style={{
                     position: "absolute",
@@ -177,22 +195,185 @@ function Day({ index, name, first }) {
     )
 }
 
-function Event({ event, quarterHeight }) {
-    const [user] = useUser({ userOnly: true })
-    const { quarterStart, quarterEnd, task } = event
+function Event({ event, quarterHeight, index }) {
+    const [context] = useAppContext()
+    const [user, setUser] = useUser({ userOnly: true })
+    const { quarterStart, quarterEnd, task, plan } = event
     const { name, color } = getTask(user, task)
+    const [panel, setPanel] = useState(false)
+    const [initial, setInitial] = useState(true)
+    const [lastMouseUp, setLastMouseUp] = useState(0)
+
+    const [panelData, setPanelData] = useState({
+        task: task,
+        from: quarterStart,
+        to: quarterEnd,
+        plan: plan
+    })
+    const [tempTime, setTempTime] = useState({
+        from: quarterToTime(quarterStart),
+        to: quarterToTime(quarterEnd)
+    })
+
+    useEffect(() => {
+        if (Math.abs(context.lastMouseUp - lastMouseUp) > 200 && panel) {
+            setLastMouseUp(context.lastMouseUp)
+            setPanel(false)
+        }
+    }, [context])
+
+    useEffect(() => {
+        if (initial)
+            return setInitial(false)
+
+        fetch("/api/user/events/updateEvent", {
+            method: "POST",
+            body: JSON.stringify({
+                day: index,
+                week: context.week,
+                year: context.year,
+                firstQuarter: quarterStart,
+                lastQuarter: quarterEnd,
+                task: panelData.task,
+                quarterStart: panelData.from,
+                quarterEnd: panelData.to,
+                plan: panelData.plan
+            })
+        }).then(res => res.json().then(newUser => setUser({ ...newUser })))
+
+        console.log("updating")
+    }, [panelData])
+
+    const wrapperStyle = {
+        position: "absolute",
+        top: ((quarterStart - 1) * quarterHeight) + "px",
+        height: ((quarterEnd - quarterStart + 1) * quarterHeight - 1) + "px"
+    }
+
+    function onSelect(e) {
+        panelData.task = e.target.value
+        setPanelData({ ...panelData })
+    }
+
+    async function onDeletePress() {
+        const res = await fetch("/api/user/events/deleteEvent", {
+            method: "POST",
+            body: JSON.stringify({
+                day: index,
+                week: context.week,
+                year: context.year,
+                firstQuarter: quarterStart,
+                lastQuarter: quarterEnd
+            })
+        })
+        const newUser = await res.json()
+        setUser({ ...newUser })
+    }
+
+    function onTimeChange(e, from) {
+        const newTime = timeToQuarter(e.target.value)
+        if (newTime != null) {
+            if (from && quarterEnd > newTime) {
+                panelData.from = newTime
+                setPanelData({ ...panelData })
+
+            } else if (!from && quarterStart < newTime) {
+                panelData.to = newTime
+                setPanelData({ ...panelData })
+            } else {
+                setTempTime({
+                    from: quarterToTime(panelData.from),
+                    to: quarterToTime(panelData.to)
+                })
+            }
+        } else {
+            setTempTime({
+                from: quarterToTime(panelData.from),
+                to: quarterToTime(panelData.to)
+            })
+        }
+    }
+
+    function onTempChange(e, from) {
+        if (from) {
+            tempTime.from = e.target.value;
+        } else {
+            tempTime.to = e.target.value;
+        }
+
+        setTempTime({ ...tempTime })
+    }
+
+    function quarterToTime(quarter) {
+        var hours = Math.floor(quarter / 4) + 1
+        hours = hours < 12 ? hours : hours - 12 == 0 ? 12 : hours - 12
+        hours = ("0" + hours).slice(-2)
+        const minutes = ("0" + ((quarter / 4 - hours + 0.75) * 60)).slice(-2)
+
+        if (hours < 12) {
+            return `${hours}:${minutes} AM`
+        } else {
+            return `${hours}:${minutes} PM`
+        }
+    }
+
+    function timeToQuarter(string) {
+        const hours = parseInt(string.slice(0, 2))
+        const minutes = parseInt(string.slice(3, 5))
+        const am = string.slice(6, 8) == "AM"
+
+        if (isNaN(hours) || isNaN(minutes) || string.length > 8 || !(/^[0-9]*$/).test(string.slice(0, 2)) || !/^[0-9]*$/.test(string.slice(3, 5)))
+            return null;
+
+        return ((hours + (am ? 0 : hours == 12 ? 0 : 12) - 1) * 4) + (minutes / 15) + 1
+    }
+
+    function onPlanPress() {
+        panelData.plan = !panelData.plan
+        setPanelData({ ...panelData })
+    }
+
+    function onClick() {
+        setLastMouseUp(new Date().getTime())
+    }
 
     return (
-        <div className={styles.eventWrapper} style={{
-            position: "absolute",
-            top: ((quarterStart - 1) * quarterHeight) + "px",
-            height: ((quarterEnd - quarterStart + 1) * quarterHeight - 1) + "px"
-        }} >
-            <div className={styles.event} style={{ backgroundColor: color }}>
-                &zwnj;
+        <div className={styles.eventWrapper} style={wrapperStyle} onMouseUp={onClick}>
+            <div className={(quarterEnd - quarterStart + 1 > 2 ? styles.event : styles.eventSmall) + (panelData.plan ? " " + styles.eventPlan : "")} style={{ backgroundColor: color }} onClick={() => { setPanel(true) }} onContextMenu={e => { onDeletePress(); e.preventDefault(); }}>
+                <div className={styles.eventTime}>{formatMinutes((quarterEnd - quarterStart + 1) * 15)}</div>
+                <div className={styles.eventName}>{name}</div>
             </div>
+            {panel ? (
+                <div className={styles.panel}>
+                    <div className={styles.panelControl}>
+                        <select onChange={onSelect} defaultValue={task.id}>
+                            {user.tasks.map(task => <option key={task.id} value={task.id}>{task.name}</option>)}
+                        </select>
+                        <div className={styles.panelControlSide}>
+                            <div className={styles.panelDelete} type="button" onClick={onDeletePress}>
+                                <Image src={"/trash-icon.svg"} height={20} width={20} />
+                            </div>
+                            <div className={panelData.plan ? styles.panelPlanActive : styles.panelPlan} type="button" onClick={onPlanPress}>
+                                <Image src={"/plan-icon.svg"} height={17} width={17} />
+                            </div>
+                        </div>
+                    </div>
+                    <div className={styles.panelTime}>
+                        <div className={styles.panelTimeFrom}>From <input type="text" value={tempTime.from} onBlur={e => { onTimeChange(e, true) }} onChange={e => { onTempChange(e, true) }} /></div>
+                        <div className={styles.panelTimeTo}>To <input type="text" value={tempTime.to} onBlur={e => { onTimeChange(e, false) }} onChange={e => { onTempChange(e, false) }} /></div>
+                    </div>
+                </div>
+            ) : <div />}
+
         </div>
     )
+}
+
+function formatMinutes(minutes) {
+    if (minutes < 60)
+        return minutes + "m"
+
+    return minutes / 60 + "h"
 }
 
 export default Page

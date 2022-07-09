@@ -110,22 +110,136 @@ $quarterHeight: 19.75px;
 }
 
 .eventWrapper {
+    display: flex;
+    flex-direction: column;
+
     width: 100%;
 
     padding: 3px;
 }
 
 .event {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
     height: 100%;
     width: 100%;
 
     border-radius: 5px;
 
+    user-select: none;
+
+    &Time {
+        font-weight: 700;
+        color: white;
+    }
+
+    &Name {
+        font-size: 300;
+        letter-spacing: 1px;
+        color: white;
+    }
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    &Small {
+        @extend .event;
+        flex-direction: row;
+        justify-content: flex-start;
+
+        .eventTime {
+            margin: 0 20px 0 10px;
+
+            font-size: 0.7rem;
+        }
+
+        .eventName {
+            font-size: 0.7rem;
+        }
+    }
+
+    &Plan {
+        opacity: 0.5;
+    }
 }
 
 .eventPlaceholder {
     @extend .event;
 
+    &:hover {
+        cursor: grabbing;
+    }
+
     background-color: #99C1F1;
     opacity: 0.5;
+}
+
+.panel {
+    position: absolute;
+
+    margin-left: 205px;
+
+    height: fit-content;
+    width: 200px;
+
+    padding: 10px;
+
+    border-radius: 5px;
+
+    box-shadow: 0 4px 8px 0 rgb(0, 0, 0, 0.25);
+    background-color: white;
+    z-index: 20;
+
+    &Control {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        &Side {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+        }
+    }
+
+    &Time {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    &Plan {
+        filter: invert(91%) sepia(0%) saturate(19%) hue-rotate(201deg) brightness(88%) contrast(99%);
+
+        &:hover {
+            cursor: pointer;
+            filter: invert(70%) sepia(0%) saturate(0%) hue-rotate(112deg) brightness(97%) contrast(89%);
+        }
+
+        &Active {
+            filter: invert(40%) sepia(100%) saturate(2780%) hue-rotate(188deg) brightness(99%) contrast(108%);
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+
+    &Delete {
+        height: fit-content;
+        width: fit-content;
+
+        filter: invert(13%) sepia(91%) saturate(7500%) hue-rotate(7deg) brightness(99%) contrast(118%);
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
 }
