@@ -65,8 +65,13 @@ $quarterHeight: 19.75px;
 }
 
 .dayName {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 300;
+
+    &Today {
+        @extend .dayName;
+        font-weight: 500;
+    }
 }
 
 .clickableArea {
@@ -184,9 +189,9 @@ $quarterHeight: 19.75px;
     margin-left: 205px;
 
     height: fit-content;
-    width: 200px;
+    width: 300px;
 
-    padding: 10px;
+    padding: 10px 15px;
 
     border-radius: 5px;
 
@@ -203,8 +208,22 @@ $quarterHeight: 19.75px;
         &Side {
             display: flex;
             flex-direction: row;
-            justify-content: flex-start;
+            justify-content: space-between;
             align-items: center;
+
+            width: 45px;
+        }
+    }
+
+    &Type {
+        border: none;
+        border-bottom: 1px solid #7D7D7D;
+
+        font-size: 1.1rem;
+        background: transparent;
+
+        &:hover {
+            cursor: pointer;
         }
     }
 
@@ -213,6 +232,36 @@ $quarterHeight: 19.75px;
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
+
+        margin-top: 10px;
+
+        &Input {
+            margin-left: 10px;
+            width: 80px;
+
+            border: none;
+            border-bottom: 1px solid #7D7D7D;
+
+            font-size: 0.9rem;
+            background: transparent;
+
+            &:focus {
+                outline: none;
+            }
+        }
+
+        &From {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: flex-center;
+        }
+
+        &To {
+            @extend .panelTimeFrom;
+
+            margin-left: 20px;
+        }
     }
 
     &Plan {
@@ -242,4 +291,36 @@ $quarterHeight: 19.75px;
             cursor: pointer;
         }
     }
+}
+
+.eventBody {
+    margin-top: 10px;
+    padding-top: 10px;
+
+    border-top: 1px solid #CDCDCD
+}
+
+.taskSelect {
+    border: none;
+    border-bottom: 1px solid #7D7D7D;
+
+    font-size: 0.9rem;
+    background: transparent;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.entry {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.key {
+    font-variant: small-caps;
+    font-weight: 700;
+    color: #7D7D7D;
 }

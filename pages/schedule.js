@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { getDateText, getDay, getTask } from '../lib/util'
+import { getDateText, getDay, getTask, getWeekDay } from '../lib/util'
 import { useAppContext } from '../lib/context'
 
 import styles from '../styles/schedule.module.scss'
@@ -17,7 +17,7 @@ function Page() {
     }
 
     return (
-        <div className={styles.wrapper}>
+        <div className={styles.wrapper} onContextMenu={e => e.preventDefault()}>
             <div className={styles.grid}>
                 <div className={styles.displayHours}>
                     {hours.map(hour => {
@@ -39,6 +39,9 @@ function Page() {
 function Day({ index, name, first }) {
     const [context, setContext] = useAppContext()
     const [user, setUser] = useUser({ userOnly: true })
+
+    if (!user)
+        return <div />
 
 
     const [dragging, setDragging] = useState(false)
@@ -65,7 +68,7 @@ function Day({ index, name, first }) {
 
     useEffect(() => {
         if (context.lastMouseUp != lastMouseUp && dragging) {
-            if (new Date().getTime() - clickTime > 100) {
+            if (new Date().getTime() - clickTime > 300) {
                 setLastMouseUp(context.lastMouseUp)
                 mouseUpHandler()
             } else {
@@ -156,7 +159,7 @@ function Day({ index, name, first }) {
                 <div className={styles.dayDate}>
                     {getDateText(index, context.week, context.year)}
                 </div>
-                <div className={styles.dayName}>
+                <div className={index == getWeekDay(new Date()) ? styles.dayNameToday : styles.dayName}>
                     {name}
                 </div>
             </div>
@@ -346,21 +349,33 @@ function Event({ event, quarterHeight, index }) {
             {panel ? (
                 <div className={styles.panel}>
                     <div className={styles.panelControl}>
-                        <select onChange={onSelect} defaultValue={task.id}>
-                            {user.tasks.map(task => <option key={task.id} value={task.id}>{task.name}</option>)}
+                        <select className={styles.panelType} defaultValue={"Task"}>
+                            <option value="Task">Task</option>
                         </select>
                         <div className={styles.panelControlSide}>
-                            <div className={styles.panelDelete} type="button" onClick={onDeletePress}>
-                                <Image src={"/trash-icon.svg"} height={20} width={20} />
-                            </div>
                             <div className={panelData.plan ? styles.panelPlanActive : styles.panelPlan} type="button" onClick={onPlanPress}>
                                 <Image src={"/plan-icon.svg"} height={17} width={17} />
+                            </div>
+                            <div className={styles.panelDelete} type="button" onClick={onDeletePress}>
+                                <Image src={"/trash-icon.svg"} height={20} width={20} />
                             </div>
                         </div>
                     </div>
                     <div className={styles.panelTime}>
-                        <div className={styles.panelTimeFrom}>From <input type="text" value={tempTime.from} onBlur={e => { onTimeChange(e, true) }} onChange={e => { onTempChange(e, true) }} /></div>
-                        <div className={styles.panelTimeTo}>To <input type="text" value={tempTime.to} onBlur={e => { onTimeChange(e, false) }} onChange={e => { onTempChange(e, false) }} /></div>
+                        <div className={styles.panelTimeFrom}>From <input className={styles.panelTimeInput} type="text" value={tempTime.from} onBlur={e => { onTimeChange(e, true) }} onChange={e => { onTempChange(e, true) }} /></div>
+                        <div className={styles.panelTimeTo}>To <input className={styles.panelTimeInput} type="text" value={tempTime.to} onBlur={e => { onTimeChange(e, false) }} onChange={e => { onTempChange(e, false) }} /></div>
+                    </div>
+                    <div className={styles.eventBody}>
+                        <div className={styles.entry}>
+                            <div className={styles.key}>
+                                task
+                            </div>
+                            <div className={styles.value}>
+                            <select className={styles.taskSelect} onChange={onSelect} defaultValue={task.id}>
+                            {user.tasks.map(task => <option key={task.id} value={task.id}>{task.name}</option>)}
+                        </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
             ) : <div />}
