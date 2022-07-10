@@ -6,7 +6,7 @@ import { generateId } from '../lib/util'
 import styles from '../styles/settings.module.scss'
 
 function Page() {
-    const [user, setUser] = useUser()
+    const [user, setUser] = useUser({ userOnly: true })
 
     function getSortedTasks() {
         var tasks = [...user.tasks]
@@ -156,7 +156,7 @@ function Task({ task }) {
         setUser({ ...user })
     }
 
-    return (user ? (
+    return (
         <div className={styles.task}>
             <input className={styles.taskName} type="text" value={name} onChange={e => { setName(e.target.value) }} />
             <div className={styles.taskColor} style={{ backgroundColor: color }} onClick={e => { setPicker(!picker) }} />
@@ -200,7 +200,7 @@ function Task({ task }) {
                 <Image src={"/trash-icon.svg"} height={20} width={20} />
             </div>
         </div>
-    ) : <div />)
+    )
 }
 
 function Checklist({ checklist }) {

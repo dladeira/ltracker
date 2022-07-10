@@ -9,7 +9,7 @@
 .grid {
     display: grid;
     grid-template-rows: 770px;
-    grid-template-columns: 60px repeat(7, auto) 20px;
+    grid-template-columns: 60px repeat(7, 1fr) 20px;
 
     width: 100%;
 
@@ -186,7 +186,7 @@ $quarterHeight: 19.75px;
 .panel {
     position: absolute;
 
-    margin-left: 205px;
+    margin-left: 210px;
 
     height: fit-content;
     width: 300px;

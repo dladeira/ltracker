@@ -42,20 +42,28 @@ function Page() {
                     <Link href="/api/login"><button className={styles.cta}>
                         Get Started
                     </button></Link>
+                    
                 </header>
 
                 <figure className={styles.pages}>
+
                     <image className={styles.page1}>
                         <Image src="/page-overview.png" layout="fill" />
                     </image>
+
                     <image className={styles.page3}>
                         <Image src="/page-journal.png" layout="fill" />
                     </image>
+
                     <image className={styles.page2}>
                         <Image src="/page-schedule.png" layout="fill" />
                     </image>
+
                 </figure>
+
             </section>
+
+
             <section className={styles.sectionSecondary}>
                 
             </section>

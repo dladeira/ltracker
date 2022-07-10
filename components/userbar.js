@@ -7,7 +7,6 @@ import styles from "../styles/userbar.module.scss"
 
 function Component() {
     const [user] = useUser({ userOnly: true })
-    const router = useRouter()
 
     return (
         <div className={styles.container}>
@@ -23,6 +22,7 @@ function Component() {
 
             <PageLink text="Overview" url="/overview" icon="/overview-icon.svg" />
             <PageLink text="Schedule" url="/schedule" icon="/schedule-icon.svg" />
+            <PageLink text="Journal" url="/journal" icon="/journal-icon.svg" />
             <div className={styles.bottomLinks}>
                 <PageLink text="Settings" url="/settings" icon="/settings-icon.svg" />
                 <PageLink text="Logout" url="/api/logout" icon="/logout-icon.svg" />
