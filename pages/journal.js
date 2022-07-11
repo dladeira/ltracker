@@ -3,6 +3,7 @@ import { useUser } from '../lib/hooks'
 import styles from '../styles/journal.module.scss'
 
 import Productivity from '../components/journal/productivity'
+import Checklist from '../components/journal/checklist'
 
 function Page() {
     useUser({ userOnly: true })
@@ -23,9 +24,7 @@ function Page() {
                 <h3 className={styles.gridTitle}>Text Entry</h3>
             </div>
 
-            <div className={`${styles.gridItem} ${styles.gridItemChecklist}`}>
-                <h3 className={styles.gridTitle}>Checklist</h3>
-            </div>
+            <Checklist />
         </div >
     )
 }

@@ -22,14 +22,15 @@ const userSchema = new mongoose.Schema({
                 quarterEnd: Number,
                 task: String,
                 plan: Boolean
-            }]
+            }],
+            checklist: Array
         }],
         default: []
     },
-    weeklyHourGoal: [{
+    weeklyHourGoal: {
         type: Number,
         default: 10
-    }]
+    }
 })
 
 export default mongoose.models.User || mongoose.model("User", userSchema)

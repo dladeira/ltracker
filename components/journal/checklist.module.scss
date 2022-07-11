@@ -1,0 +1,59 @@
+.gridItem {
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+    width: 100%;
+
+    padding: 15px;
+    padding-top: 5px;
+
+    background-color: white;
+
+    border-radius: 10px;
+
+    grid-column: 4 / 5;
+    grid-row: 3 / 4;
+}
+
+.gridTitle {
+    width: fit-content;
+
+    margin: 0;
+
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.checklists {
+    height: 100%;
+
+    margin-top: 10px;
+
+    overflow-y: scroll;
+}
+
+.checklist {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.checkbox {
+    height: 20px;
+    width: 20px;
+
+    margin: 7px 0;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.name {
+    margin: 0;
+    margin-left: 15px;
+
+    font-size: 1.1rem;
+}

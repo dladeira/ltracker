@@ -24,20 +24,20 @@ function Page() {
                         return <div key={"displayHour-" + hour} className={styles.displayHour}>{hour}</div>
                     })}
                 </div>
-                <Day index={1} name={"Monday"} first={true} />
-                <Day index={2} name={"Tuesday"} />
-                <Day index={3} name={"Wednesday"} />
-                <Day index={4} name={"Thursday"} />
-                <Day index={5} name={"Friday"} />
-                <Day index={6} name={"Saturday"} />
-                <Day index={7} name={"Sunday"} />
+                <Day index={0} name={"Monday"} first={true} />
+                <Day index={1} name={"Tuesday"} />
+                <Day index={2} name={"Wednesday"} />
+                <Day index={3} name={"Thursday"} />
+                <Day index={4} name={"Friday"} />
+                <Day index={5} name={"Saturday"} />
+                <Day index={6} name={"Sunday"} />
             </div>
         </div>
     )
 }
 
 function Day({ index, name, first }) {
-    const [context, setContext] = useAppContext()
+    const [context] = useAppContext()
     const [user, setUser] = useUser({ userOnly: true })
 
     if (!user)

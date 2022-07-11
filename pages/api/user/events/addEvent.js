@@ -1,4 +1,4 @@
-import { generateId, getDayIndex } from '../../../../lib/util'
+import { getDayIndex } from '../../../../lib/util'
 import { getUser } from '../index'
 
 async function Route(req, res) {
@@ -38,7 +38,8 @@ async function Route(req, res) {
                             quarterEnd: req.body.lastQuarter,
                             task: req.body.task,
                             plan: false
-                        }]
+                        }],
+                        checklist: []
                     })
                 }
             }

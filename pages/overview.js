@@ -1,5 +1,8 @@
 import { useUser } from '../lib/hooks'
 
+import Tasks from '../components/overview/tasks'
+import Checklist from '../components/overview/checklist'
+
 import styles from '../styles/overview.module.scss'
 
 function Page() {
@@ -7,17 +10,13 @@ function Page() {
 
     return (
         <div className={styles.grid}>
-            <div className={`${styles.gridItem} ${styles.gridItemTasks}`}>
-                <h3 className={styles.gridTitle}>Tasks</h3>
-            </div>
+            <Tasks />
 
             <div className={`${styles.gridItem} ${styles.gridItemSleep}`}>
                 <h3 className={styles.gridTitle}>Sleep</h3>
             </div>
 
-            <div className={`${styles.gridItem} ${styles.gridItemChecklist}`}>
-                <h3 className={styles.gridTitle}>Checklist</h3>
-            </div>
+            <Checklist />
 
             <div className={`${styles.gridItem} ${styles.gridItemPhysical}`}>
                 <h3 className={styles.gridTitle}>Physical Activity</h3>
