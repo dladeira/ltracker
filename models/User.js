@@ -25,7 +25,11 @@ const userSchema = new mongoose.Schema({
             }]
         }],
         default: []
-    }
+    },
+    weeklyHourGoal: [{
+        type: Number,
+        default: 10
+    }]
 })
 
 export default mongoose.models.User || mongoose.model("User", userSchema)
