@@ -9,8 +9,8 @@ function Component() {
     const [user] = useUser({ userOnly: true })
 
     return (
-        <div className={styles.gridItem}>
-            <h3 className={styles.gridTitle}>Tasks</h3>
+        <div className="h-full w-full bg-white rounded-lg p-3.5 pt-1">
+            <h3 className="text-lg font-medium">Tasks</h3>
 
             <div className={styles.header}>
 

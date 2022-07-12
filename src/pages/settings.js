@@ -3,6 +3,8 @@ import Image from 'next/image'
 import { useUser } from '../common/lib/hooks'
 import { generateId } from '../common/lib/util'
 
+import Grid from '../common/components/grid'
+
 import styles from '../styles/settings.module.scss'
 
 function Page() {
@@ -57,7 +59,7 @@ function Page() {
     }
 
     return (user ? (
-        <div className={styles.grid}>
+        <Grid>
             <div className={styles.gridItem} />
             <div className={styles.gridItem + " " + styles.itemTasks}>
                 <div className={styles.itemHeader}>
@@ -117,7 +119,7 @@ function Page() {
             <div className={styles.gridItem} />
             <div className={styles.gridItem} />
             <div className={styles.gridItem} />
-        </div >) : <div />
+        </Grid>) : <div />
     )
 }
 

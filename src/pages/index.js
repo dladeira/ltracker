@@ -13,11 +13,11 @@ function Page() {
     }
 
     return (
-        <div className={styles.container}>
+        <div className="flex flex-col">
 
-            <nav className={styles.navbar}>
+            <nav className={`${styles.navbar} flex flex-row justify-between items-center`}>
 
-                <div className={styles.brand}>
+                <div className="text-3xl font-semibold text-primary">
                     LadeiraTracker
                 </div>
 

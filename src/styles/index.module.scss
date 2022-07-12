@@ -9,10 +9,6 @@ $pageWidth: 1540px;
 }
 
 .navbar {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
 
     height: $navHeight;
     width: $pageWidth;
@@ -23,12 +19,6 @@ $pageWidth: 1540px;
 
     box-sizing: content-box;
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.0625);
-}
-
-.brand {
-    font-size: 1.75rem;
-    font-weight: 600;
-    color: #008BFF;
 }
 
 .login {
