@@ -1,6 +1,6 @@
-import Layout from '../components/layout'
+import Layout from '../common/components/layout'
 import Head from 'next/head'
-import { AppWrapper } from '../lib/context'
+import { AppWrapper } from '../common/lib/context'
 
 import '../styles/global.scss'
 

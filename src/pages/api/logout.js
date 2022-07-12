@@ -1,4 +1,4 @@
-import { removeLoginSession } from '../../lib/auth'
+import { removeLoginSession } from '../../common/lib/auth'
 
 export default async function logout(req, res) {
     removeLoginSession(res)

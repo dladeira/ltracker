@@ -1,6 +1,6 @@
-import { getLoginSession } from '../../../lib/auth'
-import dbConnect from '../../../lib/dbConnect'
-import User from '../../../models/User'
+import { getLoginSession } from '../../../common/lib/auth'
+import dbConnect from '../../../common/lib/dbConnect'
+import User from '../../../common/models/User'
 
 export default async function user(req, res) {
     await dbConnect();

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { getDateText, getDay, getTask, getWeekDay } from '../lib/util'
-import { useAppContext } from '../lib/context'
+import { getDateText, getDay, getTask, getWeekDay } from '../common/lib/util'
+import { useAppContext } from '../common/lib/context'
 
 import styles from '../styles/schedule.module.scss'
-import { useUser } from '../lib/hooks'
+import { useUser } from '../common/lib/hooks'
 
 function Page() {
     const hours = []

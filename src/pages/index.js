@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { useUser } from '../lib/hooks'
+import { useUser } from '../common/lib/hooks'
 import styles from '../styles/index.module.scss'
 
 function Page() {
@@ -42,7 +42,7 @@ function Page() {
                     <Link href="/api/login"><button className={styles.cta}>
                         Get Started
                     </button></Link>
-                    
+
                 </header>
 
                 <figure className={styles.pages}>
@@ -65,7 +65,7 @@ function Page() {
 
 
             <section className={styles.sectionSecondary}>
-                
+
             </section>
         </div>
     )

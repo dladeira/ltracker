@@ -1,7 +1,7 @@
-import { useUser } from '../lib/hooks'
+import { useUser } from '../common/lib/hooks'
 
-import Tasks from '../components/overview/tasks'
-import Checklist from '../components/overview/checklist'
+import Tasks from '../common/page_components/overview/tasks'
+import Checklist from '../common/page_components/overview/checklist'
 
 import styles from '../styles/overview.module.scss'
 

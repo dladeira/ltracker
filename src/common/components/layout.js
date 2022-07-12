@@ -4,9 +4,9 @@ import { useAppContext } from '../lib/context'
 import { useUser } from '../lib/hooks'
 import { getWeeksInYear, toTitleCase } from '../lib/util'
 
-import Userbar from '../components/userbar'
+import Userbar from './userbar'
 
-import styles from '../styles/layout.module.scss'
+import styles from './layout.module.scss'
 
 
 function Component({ children }) {

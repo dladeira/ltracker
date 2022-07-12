@@ -1,4 +1,4 @@
-import { generateId, getDayIndex } from '../../../lib/util'
+import { generateId, getDayIndex } from '../../../common/lib/util'
 import { getUser } from './index'
 
 async function Route(req, res) {

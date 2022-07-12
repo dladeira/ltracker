@@ -1,4 +1,4 @@
-import { getDayIndex } from '../../../../lib/util'
+import { getDayIndex } from '../../../../common/lib/util'
 import { getUser } from '../index'
 
 async function Route(req, res) {

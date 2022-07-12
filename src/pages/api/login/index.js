@@ -1,5 +1,5 @@
 import nextConnect from 'next-connect';
-import passport from '../../../lib/passport';
+import passport from '../../../common/lib/passport';
 
 const handler = nextConnect();
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { useUser } from '../lib/hooks'
-import { generateId } from '../lib/util'
+import { useUser } from '../common/lib/hooks'
+import { generateId } from '../common/lib/util'
 
 import styles from '../styles/settings.module.scss'
 
@@ -30,9 +30,27 @@ function Page() {
 
         setUser({ ...user })
 
-        await fetch(window.origin + "/api/tasks", {
+        await fetch(window.origin + "/api/user/setTasks", {
             body: JSON.stringify({
                 tasks: user.tasks
+            }),
+            method: "POST"
+        })
+    }
+
+    async function submitNewChecklist(e) {
+        e.preventDefault()
+
+        user.checklist.push({
+            name: "---",
+            id: generateId(user)
+        })
+
+        setUser({ ...user })
+
+        await fetch(window.origin + "/api/user/setChecklist", {
+            body: JSON.stringify({
+                checklist: user.checklist
             }),
             method: "POST"
         })
@@ -74,7 +92,7 @@ function Page() {
                     <div className={styles.itemTitle}>
                         Checklist
                     </div>
-                    <div className={styles.addButton} onClick={submitNewTask}>
+                    <div className={styles.addButton} onClick={submitNewChecklist}>
                         +
                     </div>
                 </div>
@@ -241,7 +259,7 @@ function Checklist({ checklist }) {
     async function onDeletePress() {
         user.checklist = user.checklist.filter(item => checklist.id != item.id)
 
-        await fetch(window.origin + "/api/user/Checklist", {
+        await fetch(window.origin + "/api/user/setChecklist", {
             body: JSON.stringify({
                 checklist: user.checklist
             }),

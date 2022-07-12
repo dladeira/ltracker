@@ -3,7 +3,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { useUser } from '../lib/hooks'
 
-import styles from "../styles/userbar.module.scss"
+import styles from "./userbar.module.scss"
 
 function Component() {
     const [user] = useUser({ userOnly: true })

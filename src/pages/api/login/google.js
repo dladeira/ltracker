@@ -1,6 +1,6 @@
 import nextConnect from 'next-connect';
-import passport from '../../../lib/passport';
-import { setLoginSession } from '../../../lib/auth';
+import passport from '../../../common/lib/passport';
+import { setLoginSession } from '../../../common/lib/auth';
 
 const handler = nextConnect();
 

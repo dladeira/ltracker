@@ -1,9 +1,9 @@
-import { useUser } from '../lib/hooks'
+import { useUser } from '../common/lib/hooks'
 
 import styles from '../styles/journal.module.scss'
 
-import Productivity from '../components/journal/productivity'
-import Checklist from '../components/journal/checklist'
+import Productivity from '../common/page_components/journal/productivity'
+import Checklist from '../common/page_components/journal/checklist'
 
 function Page() {
     useUser({ userOnly: true })
