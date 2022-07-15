@@ -42,8 +42,6 @@ function Checklist({ checklist }) {
     function isChecked() {
         const day = getDay(user, index, context.week, context.year)
 
-        console.log(index)
-
         if (day) {
             return day.checklist.includes(checklist.id)
         }

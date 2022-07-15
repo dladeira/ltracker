@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema({
             day: Number,
             week: Number,
             year: Number,
+            sleep: Number,
             events: [{
                 quarterStart: Number,
                 quarterEnd: Number,
@@ -25,7 +26,7 @@ const userSchema = new mongoose.Schema({
             }],
             checklist: Array
         }],
-        default: []
+        default: [],
     },
     weeklyHourGoal: {
         type: Number,

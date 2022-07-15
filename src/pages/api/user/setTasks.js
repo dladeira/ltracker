@@ -8,7 +8,7 @@ async function Route(req, res) {
             user.tasks = req.body.tasks
 
             await user.save()
-            res.status(200).send()
+            res.status(200).json(user)
         },
         onNotFound: () => {
             res.status(500).end('Authentication token is invalid, please log in')

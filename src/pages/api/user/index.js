@@ -3,7 +3,7 @@ import dbConnect from '../../../common/lib/dbConnect'
 import User from '../../../common/models/User'
 
 export default async function user(req, res) {
-    await dbConnect();
+    await dbConnect()
 
     await getUser(req, {
         onFound: user => {

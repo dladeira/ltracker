@@ -4,6 +4,7 @@ import styles from '../styles/journal.module.scss'
 
 import Productivity from '../common/page_components/journal/productivity'
 import Checklist from '../common/page_components/journal/checklist'
+import Sleep from '../common/page_components/journal/sleep'
 
 function Page() {
     useUser({ userOnly: true })
@@ -16,9 +17,7 @@ function Page() {
                 <h3 className={styles.gridTitle}>Energy Levels</h3>
             </div>
 
-            <div className={`${styles.gridItem} ${styles.gridItemSleep}`}>
-                <h3 className={styles.gridTitle}>Sleep</h3>
-            </div>
+            <Sleep />
 
             <div className={`${styles.gridItem} ${styles.gridItemEntry}`}>
                 <h3 className={styles.gridTitle}>Text Entry</h3>
