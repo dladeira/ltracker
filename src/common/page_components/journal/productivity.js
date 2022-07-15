@@ -2,13 +2,14 @@ import Image from 'next/image'
 
 import { useAppContext } from '../../lib/context'
 import { useUser } from '../../lib/hooks'
-import { getWeeklyHours } from '../../lib/util'
+import { getDailyHours, getIncrementInfo, getWeeklyHours } from '../../lib/util'
 
 import styles from './productivity.module.scss'
 
 function Component() {
     const [context] = useAppContext()
     const [user] = useUser({ userOnly: true })
+    const [lastWeek, lastYear] = getIncrementInfo(context.week, context.year, false)
 
     var batteryRatio = Math.round(getWeeklyHours(user, context.week, context.year) / user.weeklyHourGoal * 100)
     batteryRatio = batteryRatio > 100 ? 100 : batteryRatio
@@ -40,7 +41,7 @@ function Component() {
                 </div>
 
                 <div className={styles.hoursLast}>
-                    {getWeeklyHours(user, context.week - 1, context.year)}
+                    {getWeeklyHours(user, lastWeek, lastYear)}
                 </div>
 
             </div>

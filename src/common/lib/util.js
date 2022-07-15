@@ -70,6 +70,22 @@ export function getDaysInWeek(year, week) {
     return days
 }
 
+export function getIncrementInfo(week, year, increment) {
+    if (increment) {
+        if (week + 1 > getWeeksInYear(year)) {
+            return [1, year + 1]
+        } else {
+            return [week + 1, year]
+        }
+    } else {
+        if (week - 1 <= 0) {
+            return [1, year - 1]
+        } else {
+            return [week - 1, year]
+        }
+    }
+}
+
 // Math
 
 export function roundToFourth(number) {
@@ -162,6 +178,20 @@ export function getWeeklyHours(user, currentWeek, currentYear) {
 
     for (var task of getAllEventsForWeek(user, currentWeek, currentYear)) {
         totalHours += (task.quarterEnd - task.quarterStart + 1) * 0.25
+    }
+
+    return totalHours
+}
+
+export function getDailyHours(user, index, currentWeek, currentYear) {
+    var totalHours = 0
+    const day = getDay(user, index, currentWeek, currentYear)
+
+    if (!day)
+        return 0
+
+    for (var event of day.events) {
+        totalHours += (event.quarterEnd - event.quarterStart + 1) * 0.25
     }
 
     return totalHours
