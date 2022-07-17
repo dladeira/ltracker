@@ -22,7 +22,7 @@ function Component() {
     function getDefaultSleep() {
         const day = getDay(user, dayIndex, context.week, context.year)
 
-        return day.sleep ? day.sleep : 0
+        return day && day.sleep ? day.sleep : 0
     }
 
     async function saveSleep() {
