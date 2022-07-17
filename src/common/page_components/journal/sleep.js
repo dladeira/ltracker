@@ -37,7 +37,6 @@ function Component() {
         })
         const newUser = await res.json()
         setUser({ ...newUser })
-        console.log(newUser)
     }
 
     async function updateSleep(e) {

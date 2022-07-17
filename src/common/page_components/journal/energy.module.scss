@@ -1,0 +1,105 @@
+.wrapper {
+    position: relative;
+    height: 100%;
+    width: 100%;
+
+    margin-top: 20px;
+
+    user-select: none;
+}
+
+.point {
+    position: absolute;
+
+    border: 0 solid #008bff;
+    border-radius: 1000px;
+
+    z-index: 10;
+}
+
+.targetCanvas {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 7;
+}
+
+.drawnCanvas {
+    user-select: none;
+    z-index: 5;
+}
+
+// ==========
+// Graphics
+// ==========
+
+.graphicCanvas {
+    display: grid;
+    grid-template-columns: repeat(19, 59px);
+    grid-template-rows: 90% 10%;
+
+    height: 100%;
+    width: 100%;
+
+    padding-top: 20px;
+    padding-left: 20px;
+
+    z-index: 2;
+    user-select: none;
+}
+
+.line {
+    height: 100%;
+    width: 1px;
+
+    margin: 0 auto;
+
+    background-color: #D9D9D9;
+    
+    z-index: 3;
+}
+
+.hour {
+    height: 100%;
+    width: 100%;
+
+    margin-top: 10px;
+
+    font-size: 0.75rem;
+    text-align: center;
+    color: #7D7D7D;
+}
+
+// ==========
+// Horizontal Graphics
+// ==========
+
+.graphicHorizontalCanvas {
+    position: absolute;
+    display: grid;
+    grid-template-columns: 2% 2% 96%;
+    grid-template-rows: repeat(6, 1fr);
+    align-items: center;
+
+    height: 100%;
+    width: 100%;
+
+    padding-top: 0px;
+    padding-bottom: 15px;
+}
+
+.percent {
+    height: fit-content;
+    width: 100%;
+
+    font-size: 0.75rem;
+    text-align: center;
+    color: #008cff8c;
+}
+
+.horizontalLine {
+    height: 1px;
+    width: 100%;
+
+    background-color: #D9D9D9;
+}
