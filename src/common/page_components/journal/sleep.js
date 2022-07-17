@@ -11,8 +11,12 @@ function Component() {
     const dayIndex = getWeekDay(new Date())
     const [sleep, setSleep] = useState(getDefaultSleep())
     const [lastMouseUp, setLastMouseUp] = useState(context.lastMouseUp)
+    const [initial, setInitial] = useState(true)
 
     useEffect(() => {
+        if (initial)
+            return setInitial(false)
+
         if (context.lastMouseUp != lastMouseUp) {
             setLastMouseUp(context.lastMouseUp)
             saveSleep()

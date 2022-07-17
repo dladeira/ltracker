@@ -24,7 +24,8 @@ const userSchema = new mongoose.Schema({
                 task: String,
                 plan: Boolean
             }],
-            checklist: Array
+            checklist: Array,
+            points: Array
         }],
         default: [],
     },
