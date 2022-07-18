@@ -55,7 +55,7 @@ function Component() {
 
                 <article className={styles.goal}>
                     <h1 className={styles.goalTitle}>
-                        Daily Goal
+                        Weekly Goal
                     </h1>
                     <p className={styles.goalText}>{batteryRatio}%</p>
                     <p className={styles.goalSubText}>( {getWeeklyHours(user, context.week, context.year)} / {user.weeklyHourGoal} )</p>

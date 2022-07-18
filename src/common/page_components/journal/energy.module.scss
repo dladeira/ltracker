@@ -15,6 +15,12 @@
     border-radius: 1000px;
 
     z-index: 10;
+
+    &:hover {
+        cursor: pointer;
+
+        border: 0 solid darken(#008bff, 4);
+    }
 }
 
 .targetCanvas {
