@@ -35,7 +35,7 @@ function Component() {
                 </div>
 
                 <div className={styles.hoursLast}>
-                    {getWeekSleepAverage(user, context.week - 1, lastYear)}h
+                    {getWeekSleepAverage(user, lastWeek, lastYear)}h
                 </div>
 
             </div>
