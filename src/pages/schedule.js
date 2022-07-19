@@ -40,9 +40,6 @@ function Day({ index, name, first }) {
     const [context] = useAppContext()
     const [user, setUser] = useUser({ userOnly: true })
 
-    if (!user)
-        return <div />
-
 
     const [dragging, setDragging] = useState(false)
     const [yOnMouseDown, setYOnMouseDown] = useState(0)

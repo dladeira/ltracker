@@ -1,8 +1,9 @@
 import { useUser } from '../common/lib/hooks'
 
+import Grid from '../common/components/grid'
 import Tasks from '../common/page_components/overview/tasks'
 import Checklist from '../common/page_components/overview/checklist'
-import Grid from '../common/components/grid'
+import Sleep from '../common/page_components/overview/sleep'
 
 import styles from '../styles/overview.module.scss'
 
@@ -13,9 +14,7 @@ function Page() {
         <Grid>
             <Tasks />
 
-            <div className={`${styles.gridItem} ${styles.gridItemSleep}`}>
-                <h3 className={styles.gridTitle}>Sleep</h3>
-            </div>
+            <Sleep />
 
             <Checklist />
 

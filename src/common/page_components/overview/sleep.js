@@ -1,8 +1,8 @@
 import { useAppContext } from '../../lib/context'
 import { useUser } from '../../lib/hooks'
-import { getIncrementInfo, getWeeklyHours } from '../../lib/util'
+import { getIncrementInfo, getWeekSleepAverage } from '../../lib/util'
 
-import styles from './tasks.module.scss'
+import styles from './sleep.module.scss'
 
 function Component() {
     const [context] = useAppContext()
@@ -11,23 +11,23 @@ function Component() {
 
     return (
         <div className="h-full w-full bg-white rounded-lg p-3.5 pt-1">
-            <h3 className="text-lg font-medium">Tasks</h3>
+            <h3 className="text-lg font-medium">Sleep</h3>
 
             <div className={styles.header}>
 
                 <div className={styles.headerThis}>
-                    this week
+                    avg this week
                 </div>
 
                 <div className={styles.headerLast}>
-                    last week
+                    avg last week
                 </div>
 
             </div>
             <div className={styles.hours}>
 
                 <div className={styles.hoursThis}>
-                    {getWeeklyHours(user, context.week, context.year)}h
+                    {getWeekSleepAverage(user, context.week, context.year)}h
                 </div>
 
                 <div className={styles.slash}>
@@ -35,7 +35,7 @@ function Component() {
                 </div>
 
                 <div className={styles.hoursLast}>
-                    {getWeeklyHours(user, lastWeek, lastYear)}h
+                    {getWeekSleepAverage(user, context.week - 1, lastYear)}h
                 </div>
 
             </div>

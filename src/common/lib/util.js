@@ -203,9 +203,9 @@ export function getWeeklyChecklistInfo(user, currentWeek, currentYear) {
         for (var dayIndex in user.days) {
             if (user.days[dayIndex].week == currentWeek && user.days[dayIndex].year == currentYear && user.days[dayIndex].day == weekDay) {
                 const day = user.days[dayIndex]
-            for (var todo of user.checklist) {
-                info[day.checklist.includes(todo.id) ? "complete" : "incomplete"]++
-            }
+                for (var todo of user.checklist) {
+                    info[day.checklist.includes(todo.id) ? "complete" : "incomplete"]++
+                }
             }
         }
     }
@@ -232,6 +232,21 @@ export function getDayIndex(user, day, week, year) {
     }
 
     return -1
+}
+
+export function getWeekSleepAverage(user, week, year) {
+    var hours = 0
+
+    mainLoop:
+    for (var i = 0; i < 7; i++) {
+        for (var day of user.days) {
+            if (day.day == i && day.week == week && day.year == year) {
+                hours += day.sleep ? day.sleep : 0
+                continue mainLoop;
+            }
+        }
+    }
+    return Math.round(hours / 7 * 2) / 2
 }
 
 // Strings
