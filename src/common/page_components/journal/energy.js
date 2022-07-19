@@ -158,11 +158,11 @@ function Canvas() {
         htmlUp = true
     }
 
-    function contextMenuHandler(e, index) {
+    function contextMenuHandler(e, id) {
         clearCanvas()
 
         e.preventDefault()
-        points.splice(index, 1)
+        points.splice(points.findIndex(point => point.id == id), 1)
         setPoints([...points])
         setDragging(undefined)
     }
@@ -219,11 +219,11 @@ function Canvas() {
             <div className={styles.targetCanvas} onMouseMove={moveHandler} onMouseDown={canvasDownHandler} onContextMenu={canvasContextMenuHandler} />
             <div className={styles.graphicHorizontalCanvas}>
                 {percents.map(percent =>
-                    <>
+                    <div className={styles.horizontalContainer} key={`energyHorizontalContainer-${Math.random()}`}>
                         <div key={`energyHorizontalPercent-${percent}`} className={styles.percent} >{percent}</div>
                         <div />
                         <div key={`energyHorizontalLine-${percent}`} className={styles.horizontalLine} />
-                    </>
+                    </div>
                 )}
             </div>
             <div className={styles.graphicCanvas}>

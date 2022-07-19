@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 import { useAppContext } from '../../lib/context'
 import { useUser } from '../../lib/hooks'
-import { getDailyHours, getIncrementInfo, getWeeklyHours } from '../../lib/util'
+import { getIncrementInfo, getWeeklyHours } from '../../lib/util'
 
 import styles from './productivity.module.scss'
 

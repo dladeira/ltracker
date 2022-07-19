@@ -83,7 +83,7 @@
 .graphicHorizontalCanvas {
     position: absolute;
     display: grid;
-    grid-template-columns: 2% 2% 96%;
+    grid-template-columns: 100%;
     grid-template-rows: repeat(12, 1fr);
     align-items: center;
 
@@ -92,6 +92,13 @@
 
     padding-top: 0px;
     padding-bottom: 15px;
+}
+
+.horizontalContainer {
+    display: grid;
+    grid-template-columns: 2% 2% 96%;
+    grid-template-rows: 1fr;
+    align-items: center;
 }
 
 .percent {

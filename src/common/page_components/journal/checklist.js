@@ -6,13 +6,22 @@ import { getDay } from '../../lib/util'
 import styles from './checklist.module.scss'
 
 function Component() {
+    const [context] = useAppContext()
     const [user] = useUser({ userOnly: true })
+    const [lastDate, setLastDate] = useState(context.day + context.week + context.year)
+
+    useEffect(() => {
+        const date = context.day + context.week + context.year
+        if (date != lastDate) {
+            setLastDate(date)
+        }
+    }, [context])
 
     return (
         <div className={styles.gridItem}>
             <h3 className={styles.gridTitle}>Checklist</h3>
             <div className={styles.checklists}>
-                {user.checklist.map(checklist => <Checklist checklist={checklist} />)}
+                {user.checklist.map(checklist => <Checklist key={`checklistItem-${lastDate}-${checklist.id}`} checklist={checklist} />)}
             </div>
         </div>
     )
@@ -22,16 +31,6 @@ function Checklist({ checklist }) {
     const [context] = useAppContext()
     const [user, setUser] = useUser({ userOnly: true })
     const [checked, setChecked] = useState(isChecked())
-    const [lastDate, setLastDate] = useState(context.day + context.week + context.year)
-
-    useEffect(() => {
-        const date = context.day + context.week + context.year
-        if (date != lastDate) {
-            setLastDate(date)
-            setChecked(isChecked())
-            console.log('updating checked - ' + isChecked())
-        }
-    }, [context])
 
     async function updateChecked() {
         const res = await fetch("/api/user/toggleChecklist", {
@@ -57,7 +56,7 @@ function Checklist({ checklist }) {
     }
 
     return (
-        <div key={`checklistItem-${lastDate}-${checklist.id}`} className={styles.checklist}>
+        <div className={styles.checklist}>
             <input className={styles.checkbox} type="checkbox" defaultChecked={checked} value={checked} onClick={updateChecked} />
 
             <p className={styles.name}>{checklist.name}</p>
