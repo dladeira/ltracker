@@ -7,20 +7,16 @@ import styles from '../styles/schedule.module.scss'
 import { useUser } from '../common/lib/hooks'
 
 function Page() {
-    const hours = []
-    for (var i = 1; i <= 24; i++) {
-        if (i - 12 <= 0) {
-            hours.push(`${i} AM`)
-        } else {
-            hours.push(`${i - 12} PM`)
-        }
-    }
-
+    const hours = ["12 AM", "1 AM", "2 AM", "3 AM", "4 AM", "5 AM", "6 AM", "7 AM", "8 AM", "9 AM", "10 AM", "11 AM", "12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM", "9 PM", "10 PM", "11 PM", "12 AM"]
+    var i = 0
+    
     return (
         <div className={styles.wrapper} onContextMenu={e => e.preventDefault()}>
             <div className={styles.grid}>
                 <div className={styles.displayHours}>
                     {hours.map(hour => {
+                        if (i++ == 24)
+                            return <div key={"displayHour-" + hour} className={styles.displayHourLast}>{hour}</div>
                         return <div key={"displayHour-" + hour} className={styles.displayHour}>{hour}</div>
                     })}
                 </div>
@@ -39,7 +35,6 @@ function Page() {
 function Day({ index, name, first }) {
     const [context] = useAppContext()
     const [user, setUser] = useUser({ userOnly: true })
-
 
     const [dragging, setDragging] = useState(false)
     const [yOnMouseDown, setYOnMouseDown] = useState(0)
@@ -368,9 +363,9 @@ function Event({ event, quarterHeight, index }) {
                                 task
                             </div>
                             <div className={styles.value}>
-                            <select className={styles.taskSelect} onChange={onSelect} defaultValue={task.id}>
-                            {user.tasks.map(task => <option key={task.id} value={task.id}>{task.name}</option>)}
-                        </select>
+                                <select className={styles.taskSelect} onChange={onSelect} defaultValue={task.id}>
+                                    {user.tasks.map(task => <option key={task.id} value={task.id}>{task.name}</option>)}
+                                </select>
                             </div>
                         </div>
                     </div>

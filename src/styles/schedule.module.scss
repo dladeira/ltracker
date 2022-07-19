@@ -30,11 +30,11 @@
 $quarterHeight: 19.75px;
 
 .displayHours {
-    margin-top: 88px;
+    margin-top: 86px;
 }
 
 .displayHour {
-    height: 79px;
+    height: 80px;
     width: fit-content;
 
     margin-left: auto;
@@ -42,6 +42,12 @@ $quarterHeight: 19.75px;
 
     font-size: 0.75rem;
     color: #7D7D7D;
+
+    &Last {
+        @extend .displayHour;
+
+        height: fit-content;
+    }
 }
 
 .weekDay {
