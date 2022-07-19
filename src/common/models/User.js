@@ -25,7 +25,8 @@ const userSchema = new mongoose.Schema({
                 plan: Boolean
             }],
             checklist: Array,
-            points: Array
+            points: Array,
+            text: String
         }],
         default: [],
     },

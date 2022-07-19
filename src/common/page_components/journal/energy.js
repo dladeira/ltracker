@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useAppContext } from '../../lib/context'
 import { useUser } from '../../lib/hooks'
-import { getDay, getDayIndex, getWeekDay } from '../../lib/util'
+import { getDayIndex, getWeekDay } from '../../lib/util'
 
 import styles from './energy.module.scss'
 
 function Component() {
     return (
         <div className="flex flex-col relative h-full w-full bg-white rounded-lg p-3.5 pt-1 col-span-3 row-span-2">
-            <h3 className="text-lg font-medium">Energy Level</h3>
+            <h3 className="text-lg font-medium">Energy Levels</h3>
             <Canvas />
         </div>
     )
