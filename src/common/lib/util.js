@@ -204,7 +204,6 @@ export function getWeeklyChecklistInfo(user, currentWeek, currentYear) {
             if (user.days[dayIndex].week == currentWeek && user.days[dayIndex].year == currentYear && user.days[dayIndex].day == weekDay) {
                 const day = user.days[dayIndex]
             for (var todo of user.checklist) {
-                console.log("doing todo")
                 info[day.checklist.includes(todo.id) ? "complete" : "incomplete"]++
             }
             }

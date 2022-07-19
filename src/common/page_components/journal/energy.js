@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAppContext } from '../../lib/context'
 import { useUser } from '../../lib/hooks'
-import { getDay, getWeekDay } from '../../lib/util'
+import { getDay, getDayIndex, getWeekDay } from '../../lib/util'
 
 import styles from './energy.module.scss'
 
@@ -18,18 +18,22 @@ function Canvas() {
     const [context] = useAppContext()
     const [user, setUser] = useUser({ userOnly: true })
 
-    const [initial, setInitial] = useState(true)
-
     const [dragging, setDragging] = useState()
     var htmlDragging = false
     var htmlUp = false
     const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
-    const day = getDay(user, getWeekDay(new Date()), context.week, context.year)
+
+    const dayIndex = getDayIndex(user, getWeekDay(new Date), context.week, context.year)
+    const day = user.days[dayIndex]
 
     const [lastMouseUp, setLastMouseUp] = useState()
-    const [points, setPoints] = useState(day && day.points ? day.points : [])
+    const [points, setHardPoints] = useState(day && day.points ? day.points : [])
 
-    async function savePoints() {
+    function setPoints(points) {
+        savePoints(points)
+    }
+
+    async function savePoints(points) {
         const res = await fetch("/api/user/setPoints", {
             method: "POST",
             body: JSON.stringify({
@@ -41,7 +45,8 @@ function Canvas() {
         })
         const newUser = await res.json()
         setUser({ ...newUser })
-        console.log("saving points")
+
+
     }
 
     const hours = ["6 AM", "7 AM", "8 AM", "9 AM", "10 AM", "11 AM", "12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM", "19PM", "10 PM", "11 PM", "12 AM"]
@@ -49,21 +54,21 @@ function Canvas() {
     const pointSize = 15
 
     useEffect(() => {
-        if (initial)
-            return setInitial(false)
-
-        savePoints()
-    }, [points])
+        const day = user.days[getDayIndex(user, getWeekDay(new Date), context.week, context.year)]
+        setHardPoints(day && day.points ? day.points : [])
+    }, [user])
 
     useEffect(() => {
+        var i = 0
         for (var point of points) {
-            const index = points.indexOf(point)
-            const nextPoint = points[index + 1]
+            const nextPoint = points[i + 1]
             if (nextPoint != null) {
-                const point1 = getPointData(document.getElementById("energyPoint-" + index));
-                const point2 = getPointData(document.getElementById("energyPoint-" + (index + 1)));
-                drawLineXY(point1, point2, index)
+                const point1 = getPointData(document.getElementById("energyPoint-" + point.id));
+                const point2 = getPointData(document.getElementById("energyPoint-" + nextPoint.id));
+                drawLineXY(point1, point2, i)
             }
+
+            i++
         }
     })
 
@@ -72,22 +77,37 @@ function Canvas() {
             setLastMouseUp(context.lastMouseUp)
             if (dragging !== undefined)
                 mouseUpHandler()
+        } else {
+            clearCanvas()
         }
     }, [context])
 
+    useEffect(() => {
+        return clearCanvas
+    }, [])
+
     function moveHandler(e) {
         if (dragging !== undefined && !htmlUp) {
-            const data = { hour: posToValue(e.clientX, true), energyLevel: posToValue(e.clientY, false) }
+            const data = { hour: posToValue(e.clientX, true), energyLevel: posToValue(e.clientY, false), id: dragging }
+
             for (var point of points) {
-                if (points.indexOf(point) == dragging && point.hour == data.hour && point.energyLevel == data.energyLevel)
+                // We didn't move it anyhwere new
+                if (point.id == dragging && point.hour == data.hour && point.energyLevel == data.energyLevel)
                     return
-                if (point.hour == data.hour && points.indexOf(point) != dragging)
+
+                // We are trying to put point the same hour as another one
+                if (point.hour == data.hour && point.id != dragging)
                     return
             }
 
-            points[dragging] = data
+            for (var point of points) {
+                if (point.id == dragging) {
+                    point.hour = data.hour
+                    point.energyLevel = data.energyLevel
+                }
+            }
+
             points.sort((a, b) => a.hour - b.hour)
-            setDragging(points.findIndex(point => data.hour == point.hour))
             setPoints([...points])
         }
     }
@@ -128,22 +148,18 @@ function Canvas() {
         return value * size + offset
     }
 
-    function mouseDownHandler(index) {
-        setDragging(index)
+    function mouseDownHandler(id) {
+        setDragging(id)
         htmlDragging = true
     }
 
     function mouseUpHandler() {
-        console.log("mouse up")
         setDragging(undefined)
         htmlUp = true
     }
 
     function contextMenuHandler(e, index) {
-        var oldLength = points.length
-        for (var i = 0; i < oldLength - 1; i++) {
-            document.getElementById("energyLineCanvas-" + i).remove()
-        }
+        clearCanvas()
 
         e.preventDefault()
         points.splice(index, 1)
@@ -151,9 +167,18 @@ function Canvas() {
         setDragging(undefined)
     }
 
+    function clearCanvas() {
+        var oldLength = points.length
+        for (var i = 0; i < oldLength - 1; i++) {
+            const el = document.getElementById("energyLineCanvas-" + i)
+            if (el)
+                el.remove()
+        }
+    }
+
     function canvasDownHandler(e) {
-        if (!htmlDragging) {
-            const data = { hour: posToValue(e.clientX, true), energyLevel: posToValue(e.clientY, false) }
+        if (e.button == 0 && !htmlDragging) {
+            const data = { hour: posToValue(e.clientX, true), energyLevel: posToValue(e.clientY, false), id: generatePointId() }
 
             for (var point of points)
                 if (point.hour == data.hour && points.indexOf(point) != dragging)
@@ -162,12 +187,31 @@ function Canvas() {
             points.push(data)
             points.sort((a, b) => a.hour - b.hour)
             setPoints([...points])
-            setDragging(points.length - 1)
+            setDragging(data.id)
         }
     }
 
     function canvasContextMenuHandler(e) {
         e.preventDefault()
+    }
+
+    function generatePointId() {
+        while (true) {
+            var result = '';
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+            for (var i = 0; i < 6; i++) {
+                result += characters.charAt(Math.floor(Math.random() *
+                    characters.length));
+            }
+
+            for (var point of points) {
+                if (point.id == result)
+                    continue
+            }
+
+            return result
+        }
     }
 
     return (
@@ -188,8 +232,7 @@ function Canvas() {
             </div>
             {
                 points.map(point => {
-                    const index = points.indexOf(point)
-                    return <div key={`energyPoint-${index}`} id={`energyPoint-${index}`} className={styles.point} style={{ top: valueToPos(point.energyLevel, false) + "px", left: valueToPos(point.hour, true) + "px", borderWidth: pointSize + "px" }} onMouseMove={moveHandler} onMouseDown={e => mouseDownHandler(index)} onContextMenu={e => { contextMenuHandler(e, index) }} />
+                    return <div key={`energyPoint-${point.id}`} id={`energyPoint-${point.id}`} className={styles.point} style={{ top: valueToPos(point.energyLevel, false) + "px", left: valueToPos(point.hour, true) + "px", borderWidth: pointSize + "px" }} onMouseMove={moveHandler} onMouseDown={e => mouseDownHandler(point.id)} onContextMenu={e => { contextMenuHandler(e, point.id) }} />
                 })
             }
         </div >

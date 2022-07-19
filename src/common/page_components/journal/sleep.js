@@ -23,6 +23,10 @@ function Component() {
         }
     }, [context])
 
+    useEffect(() => {
+        setSleep(getDefaultSleep())
+    }, [user])
+
     function getDefaultSleep() {
         const day = getDay(user, dayIndex, context.week, context.year)
 
