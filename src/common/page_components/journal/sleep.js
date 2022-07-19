@@ -1,21 +1,28 @@
 import { useEffect, useState } from 'react'
 import { useAppContext } from '../../lib/context'
 import { useUser } from '../../lib/hooks'
-import { getDay, getWeekDay } from '../../lib/util'
+import { getDay } from '../../lib/util'
 
 import styles from './sleep.module.scss'
 
 function Component() {
     const [context] = useAppContext()
     const [user, setUser] = useUser({ userOnly: true })
-    const dayIndex = getWeekDay(new Date())
     const [sleep, setSleep] = useState(getDefaultSleep())
     const [lastMouseUp, setLastMouseUp] = useState(context.lastMouseUp)
     const [initial, setInitial] = useState(true)
+    const [lastDate, setLastDate] = useState(context.day + context.week + context.year)
 
     useEffect(() => {
         if (initial)
             return setInitial(false)
+
+        const date = context.day + context.week + context.year
+        if (date != lastDate) {
+            setLastDate(date)
+            setSleep(getDefaultSleep())
+            return
+        }
 
         if (context.lastMouseUp != lastMouseUp) {
             setLastMouseUp(context.lastMouseUp)
@@ -28,7 +35,7 @@ function Component() {
     }, [user])
 
     function getDefaultSleep() {
-        const day = getDay(user, dayIndex, context.week, context.year)
+        const day = getDay(user, context.day, context.week, context.year)
 
         return day && day.sleep ? day.sleep : 0
     }
@@ -37,7 +44,7 @@ function Component() {
         const res = await fetch("/api/user/setSleep", {
             method: "POST",
             body: JSON.stringify({
-                day: dayIndex,
+                day: context.day,
                 week: context.week,
                 year: context.year,
                 sleep: sleep

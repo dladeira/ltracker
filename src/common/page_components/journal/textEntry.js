@@ -1,19 +1,17 @@
 import { useEffect, useState } from 'react'
 import { useAppContext } from '../../lib/context'
 import { useUser } from '../../lib/hooks'
-import { getDay, getWeekDay } from '../../lib/util'
+import { getDay } from '../../lib/util'
 
 import styles from './textEntry.module.scss'
 
 function Component() {
     const [context] = useAppContext()
     const [user, setUser] = useUser({ userOnly: true })
-    const dayIndex = getWeekDay(new Date())
     const [text, setText] = useState(getDefaultText())
-    const [lastMouseUp, setLastMouseUp] = useState(context.lastMouseUp)
     const [lastSaveText, setLastSaveText] = useState(new Date().getTime())
     const [initial, setInitial] = useState(true)
-    const [lastWeek, setLastWeek] = useState(context.week)
+    const [lastDate, setLastDate] = useState(context.day + context.week + context.year)
 
     useEffect(() => {
         if (initial)
@@ -30,8 +28,9 @@ function Component() {
     }, [])
 
     useEffect(() => {
-        if (context.week != lastWeek) {
-            setLastWeek(context.week)
+        const date = context.day + context.week + context.year
+        if (date != lastDate) {
+            setLastDate(date)
             setText(getDefaultText())
         }
     }, [context])
@@ -41,17 +40,16 @@ function Component() {
     }, [user])
 
     function getDefaultText() {
-        const day = getDay(user, dayIndex, context.week, context.year)
+        const day = getDay(user, context.day, context.week, context.year)
 
         return day && day.text ? day.text : ""
     }
 
     async function saveText() {
-        console.log("saving text")
         const res = await fetch("/api/user/setText", {
             method: "POST",
             body: JSON.stringify({
-                day: dayIndex,
+                day: context.day,
                 week: context.week,
                 year: context.year,
                 text: text

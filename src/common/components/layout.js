@@ -2,7 +2,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useAppContext } from '../lib/context'
 import { useUser } from '../lib/hooks'
-import { getWeeksInYear, toTitleCase } from '../lib/util'
+import { getWeekDay, getWeeksInYear, toTitleCase } from '../lib/util'
 
 import Userbar from './userbar'
 
@@ -21,7 +21,7 @@ function Component({ children }) {
 
     function mouseUpEvent() {
         context.lastMouseUp = new Date().getTime()
-        setContext({...context})
+        setContext({ ...context })
     }
 
     return (user ?
@@ -31,6 +31,7 @@ function Component({ children }) {
                     <Userbar />
                     <div className={styles.controlContainer}>
                         <PageTitle />
+                        <DayNavigation />
                         <WeekNavigation />
                     </div>
                     {children}
@@ -54,6 +55,24 @@ function PageTitle() {
     )
 }
 
+function DayNavigation() {
+    const [context, setContext] = useAppContext()
+    const days = [0, 1, 2, 3, 4, 5, 6]
+    const dayNames = ["M", "T", "W", "T", "F", "S", "S"]
+    function setDay(index) {
+        context.day = index
+        setContext({ ...context })
+    }
+
+    return (
+        <div className={styles.dayContainer}>
+            {days.map(day =>
+                <div key={`weekDaySelect-${day}`} className={styles.day + (context.day == day ? " " + styles.daySelected : "") + (getWeekDay(new Date()) == day ? " " + styles.dayToday : "")} onClick={e => { setDay(day) }}>{dayNames[day]}</div>
+            )}
+        </div>
+    )
+}
+
 function WeekNavigation() {
     const [context, setContext] = useAppContext()
     const arrowSize = 48;
@@ -62,25 +81,22 @@ function WeekNavigation() {
 
     function toggleWeek(increment) {
         if (increment) {
-            console.log(context.year)
             if (context.week + 1 > getWeeksInYear(context.year)) {
                 context.week = 1
                 context.year = context.year + 1
-                setContext({ ...context })
             } else {
                 context.week = context.week + 1
-                setContext({ ...context })
             }
         } else {
             if (context.week - 1 <= 0) {
                 context.week = getWeeksInYear(context.year - 1)
                 context.year = context.year - 1
-                setContext({ ...context })
             } else {
                 context.week = context.week - 1
-                setContext({ ...context })
+
             }
         }
+        setContext({ ...context })
     }
 
     return (

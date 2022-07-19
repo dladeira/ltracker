@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAppContext } from '../../lib/context'
 import { useUser } from '../../lib/hooks'
-import { getDayIndex, getWeekDay } from '../../lib/util'
+import { getDayIndex } from '../../lib/util'
 
 import styles from './energy.module.scss'
 
@@ -23,7 +23,7 @@ function Canvas() {
     var htmlUp = false
     const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
 
-    const dayIndex = getDayIndex(user, getWeekDay(new Date), context.week, context.year)
+    const dayIndex = getDayIndex(user, context.day, context.week, context.year)
     const day = user.days[dayIndex]
 
     const [lastMouseUp, setLastMouseUp] = useState()
@@ -37,7 +37,7 @@ function Canvas() {
         const res = await fetch("/api/user/setPoints", {
             method: "POST",
             body: JSON.stringify({
-                day: getWeekDay(new Date()),
+                day: context.day,
                 week: context.week,
                 year: context.year,
                 points: points
@@ -54,7 +54,7 @@ function Canvas() {
     const pointSize = 15
 
     useEffect(() => {
-        const day = user.days[getDayIndex(user, getWeekDay(new Date), context.week, context.year)]
+        const day = user.days[getDayIndex(user, context.day, context.week, context.year)]
         setHardPoints(day && day.points ? day.points : [])
     }, [user])
 
