@@ -13,7 +13,6 @@ const fetcher = (url) =>
 
 export function useUser({ userOnly, adminOnly } = {}) {
     const [context, setContext] = useAppContext()
-    const [user, setUser] = useState()
     const { data, error } = useSWR('/api/user', fetcher)
     const userData = data?.user
     const finished = Boolean(data)
@@ -23,11 +22,9 @@ export function useUser({ userOnly, adminOnly } = {}) {
         if (!finished)
             return
 
-        // Keep statement here or else program breaks
         if (!context.user) {
             context.user = userData
-            setContext(context)
-            setUser(userData)
+            setContext({ ...context })
         }
 
         if (
@@ -38,6 +35,8 @@ export function useUser({ userOnly, adminOnly } = {}) {
         ) {
             return Router.push("/api/login")
         }
-    }, [userOnly, finished, loggedIn, adminOnly, context])
-    return error ? null : [context.user, e => { setUser(e); context.user = e; setContext({ ...context }) }]
+    }, [finished])
+    // return error ? null : [context.user, e => { setUser(e); context.user = e; setContext({ ...context }) }]
+    // return error ? null : [user, e => { setUser(e); }]
+    return error ? null : [context.user, e => { context.user = e; setContext({ ...context }) }]
 }

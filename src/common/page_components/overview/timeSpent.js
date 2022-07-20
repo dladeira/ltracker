@@ -60,7 +60,6 @@ function getChartData() {
     const data = []
     data.push(getDailyHoursArray(user, context.week, context.year))
     data.push(getDailyHoursArray(user, lastWeek, lastYear))
-    console.log(data)
 
     return data
 }

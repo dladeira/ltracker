@@ -9,7 +9,7 @@ import TimeSpent from '../common/page_components/overview/timeSpent'
 import styles from '../styles/overview.module.scss'
 
 function Page() {
-    const [user] = useUser({ userOnly: true })
+    useUser({ userOnly: true })
 
     return (
         <Grid>

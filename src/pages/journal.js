@@ -7,6 +7,7 @@ import Checklist from '../common/page_components/journal/checklist'
 import Sleep from '../common/page_components/journal/sleep'
 import Energy from '../common/page_components/journal/energy'
 import TextEntry from '../common/page_components/journal/textEntry'
+import { useAppContext } from '../common/lib/context'
 
 function Page() {
     useUser({ userOnly: true })

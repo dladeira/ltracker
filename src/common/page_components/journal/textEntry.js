@@ -24,7 +24,7 @@ function Component() {
     }, [text])
 
     useEffect(() => {
-        return saveText
+        return saveText.bind(null, true)
     }, [])
 
     useEffect(() => {
@@ -35,17 +35,13 @@ function Component() {
         }
     }, [context])
 
-    useEffect(() => {
-
-    }, [user])
-
     function getDefaultText() {
         const day = getDay(user, context.day, context.week, context.year)
 
         return day && day.text ? day.text : ""
     }
 
-    async function saveText() {
+    async function saveText(dontUpdateUser) {
         const res = await fetch("/api/user/setText", {
             method: "POST",
             body: JSON.stringify({
@@ -55,8 +51,10 @@ function Component() {
                 text: text
             })
         })
-        const newUser = await res.json()
-        setUser({ ...newUser })
+        if (!dontUpdateUser) {
+            const newUser = await res.json()
+            setUser({ ...newUser })
+        }
     }
 
     return (
