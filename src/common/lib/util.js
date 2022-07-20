@@ -134,6 +134,12 @@ export function generateId(user) {
                         continue mainLoop
                 }
             }
+
+            if (user.lists)
+                for (var i = 0; i < user.lists; i++) {
+                    if (user.lists[i].id == result)
+                        continue mainLoop
+                }
         }
 
         return result;

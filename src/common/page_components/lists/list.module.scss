@@ -1,0 +1,137 @@
+.control {
+    display: flex;
+    flex-direction: row-reverse;
+
+    margin-bottom: auto;
+}
+
+.title {
+    width: 100%;
+
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-align: center;
+}
+
+.options {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+
+    margin-left: auto;
+    padding: 12px;
+
+    transition: background-color 500ms cubic-bezier(.08, .82, .17, 1);
+
+    &:hover {
+        border-radius: 1000px;
+
+        background-color: #cdcdcd2f;
+        cursor: pointer;
+    }
+}
+
+.dot {
+    height: 5px;
+    width: 5px;
+
+    margin: 1.5px;
+
+    border-radius: 100px;
+
+    background-color: #7D7D7D;
+}
+
+.items {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.item {
+    width: calc(50% - 1px);
+
+    font-size: 1rem;
+
+    &Left {
+        @extend .item;
+    
+        text-align: right;
+    }
+
+    &Right {
+        @extend .item;
+    
+        text-align: left;
+    }
+}
+
+.checkbox {
+    margin: 0 10px;
+
+    border-radius: 10px;
+
+    &Left {
+        @extend .checkbox;
+
+        padding-left: 5px;
+    }
+
+    &Right {
+        @extend .checkbox;
+
+        padding-right: 5px;
+    }
+}
+
+.divider {
+    height: 30px;
+    width: 2px;
+
+    background-color: #CDCDCD;
+}
+
+// ==========
+// PANEL
+// ==========
+
+.panelContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    height: 100%;
+    width: 100%;
+
+    background-color: rgba(0, 0, 0, 0.5);
+
+    z-index: 14;
+}
+
+.panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    position: absolute;
+    top: calc(50% - 250px);
+    left: calc(50% - 250px);
+
+    height: 500px;
+    width: 500px;
+
+    border-radius: 5px;
+
+    background-color: white;
+    z-index: 15;
+}

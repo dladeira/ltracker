@@ -1,0 +1,25 @@
+.container {
+    border: 5px solid #C4C4C4;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.plusArrow1 {
+    position: absolute;
+
+    height: 40%;
+    width: 10px;
+
+    border-radius: 10px;
+
+    background-color: #C4C4C4;
+}
+
+.plusArrow2 {
+    @extend .plusArrow1;
+
+    height: 10px;
+    width: 27%;
+}

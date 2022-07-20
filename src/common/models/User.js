@@ -33,6 +33,20 @@ const userSchema = new mongoose.Schema({
     weeklyHourGoal: {
         type: Number,
         default: 10
+    },
+    lists: {
+        type: [{
+            name: String,
+            dynamic: Boolean,
+            items: {
+                type: [{
+                    id: String,
+                    name: String
+                }]
+            },
+            id: String
+        }],
+        default: []
     }
 })
 
