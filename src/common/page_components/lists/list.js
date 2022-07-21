@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react'
-import { useAppContext } from '../../lib/context'
+import Image from 'next/image'
+import { useState } from 'react'
 import { useUser } from '../../lib/hooks'
+import { generateId } from '../../lib/util'
 
 import styles from './list.module.scss'
 
 function Component({ list }) {
-    const [context] = useAppContext()
-    const [user] = useUser({ userOnly: true })
     const [panelOpen, setPanelOpen] = useState(false)
     const rows = [0, 2, 4, 6, 8, 10]
 
@@ -56,7 +55,7 @@ function Item({ name, right }) {
 }
 
 function Panel({ list, openData }) {
-    const [user, setUser] = useUser({ userOnly: true})
+    const [user, setUser] = useUser({ userOnly: true })
     const [name, setName] = useState(list.name)
     const [items, setItems] = useState(list.items)
     const [open, setOpen] = openData
@@ -70,6 +69,44 @@ function Panel({ list, openData }) {
         }
 
         setItems([...items])
+    }
+
+    async function deleteItem(item) {
+        for (var i = 0; i < items.length; i++) {
+            const loopItem = items[i]
+            if (loopItem.id == item.id) {
+                items.splice(i, 1)
+                setItems([...items])
+                list.items = items
+                const res = await fetch("/api/user/lists/updateList", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        listId: list.id,
+                        list: list
+                    })
+                })
+                const newUser = await res.json()
+                setUser({ ...newUser })
+            }
+        }
+    }
+
+    async function addItem() {
+        items.push({
+            name: "New Item",
+            id: generateId(user)
+        })
+        setItems([...items])
+        list.items = items
+        const res = await fetch("/api/user/lists/updateList", {
+            method: "POST",
+            body: JSON.stringify({
+                listId: list.id,
+                list: list
+            })
+        })
+        const newUser = await res.json()
+        setUser({ ...newUser })
     }
 
     function closePanel() {
@@ -98,21 +135,35 @@ function Panel({ list, openData }) {
     return (open ? (
         <div className={styles.panelContainer} onClick={() => closePanel()}>
             <div className={styles.panel} onClick={e => e.stopPropagation()}>
-                <input type="text" value={name} onChange={e => setName(e.target.value)} />
-                {list.items.map(item => {
-                    return <PanelItem key={"listEdit-" + list.id + "-" + item.id} itemData={[item, setItem]} />
-                })}
-                <p onClick={onDeletePress}>DELETE</p>
+                <div className={styles.listDeleteEdit} type="button" onClick={onDeletePress}>
+                    <Image src={"/trash-icon.svg"} height={40} width={40} />
+                </div>
+                <input className={styles.nameInput} type="text" value={name} onChange={e => setName(e.target.value)} />
+
+                <div className={styles.items}>
+                    {items.map(item => {
+                        return <PanelItem key={"listEdit-" + list.id + "-" + item.id} itemData={[item, setItem, deleteItem]} />
+                    })}
+                </div>
+                <div className={styles.addNewItem} onClick={addItem}>
+                    +
+                </div>
             </div>
         </div>
     ) : <div />)
 }
 
 function PanelItem({ itemData }) {
-    const [item, setItem] = itemData
+    const [item, setItem, deleteItem] = itemData
 
     return (
-        <input type="text" value={item.name} onChange={e => { item.name = e.target.value; setItem(item) }} />
+        <div className={styles.editItem}>
+            <input className={styles.itemInput} type="text" value={item.name} onChange={e => { item.name = e.target.value; setItem(item) }} />
+
+            <div className={styles.itemDelete} type="button" onClick={e => deleteItem(item)}>
+                <Image src={"/trash-icon.svg"} height={20} width={20} />
+            </div>
+        </div>
     )
 }
 

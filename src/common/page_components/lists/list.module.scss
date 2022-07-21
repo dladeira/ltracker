@@ -118,6 +118,7 @@
 }
 
 .panel {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -134,4 +135,100 @@
 
     background-color: white;
     z-index: 15;
+}
+
+.nameInput {
+    width: 60%;
+
+    margin: 10px auto;
+    margin-bottom: 50px;
+
+    border: none;
+    border-bottom: 1px solid #CDCDCD;
+    outline: none;
+
+    font-size: 2rem;
+
+}
+
+.listDeleteEdit {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+
+    &:hover {
+        cursor: pointer;
+    
+        filter: invert(97%) sepia(0%) saturate(0%) hue-rotate(155deg) brightness(82%) contrast(91%);
+    }
+}
+
+.items {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+
+    margin: 0 15px;
+}
+
+.editItem {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 29%;
+
+    margin: 5px 2%;
+}
+
+.itemInput {
+    width: 83%;    
+
+    border: none;
+    border-bottom: 1px solid #CDCDCD;
+    outline: none;
+
+    font-size: 1rem;
+}
+
+.itemDelete {
+    margin-top: 5px;
+    
+    &:hover {
+        cursor: pointer;
+    
+        filter: invert(97%) sepia(0%) saturate(0%) hue-rotate(155deg) brightness(82%) contrast(91%);
+    }
+}
+
+.addNewItem {
+    position: absolute;
+    top: 5px;
+    left: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 30px;
+    width: 30px;
+
+    margin: 10px auto;
+    padding: 20px 30px;
+    padding-bottom: 25px;
+
+    border-radius: 5px;
+
+    font-size: 3rem;
+
+    background-color: #008BFF;
+    color: white;
+
+    user-select: none;
+
+    &:hover {
+        cursor: pointer;
+    }
 }
