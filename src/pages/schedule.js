@@ -8,10 +8,10 @@ import { useUser } from '../common/lib/hooks'
 
 function Page() {
     useUser({ userOnly: true })
-    
+
     const hours = ["12 AM", "1 AM", "2 AM", "3 AM", "4 AM", "5 AM", "6 AM", "7 AM", "8 AM", "9 AM", "10 AM", "11 AM", "12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM", "9 PM", "10 PM", "11 PM", "12 AM"]
     var i = 0
-    
+
     return (
         <div className={styles.wrapper} onContextMenu={e => e.preventDefault()}>
             <div className={styles.grid}>
@@ -212,6 +212,22 @@ function Event({ event, quarterHeight, index }) {
         to: quarterToTime(quarterEnd + 1)
     })
 
+    function getEvents() {
+        const day = getDay(user, index, context.week, context.year)
+        if (day)
+            return day.events
+        return []
+    }
+
+    function getEvent(quarter) {
+        for (var event of getEvents()) {
+            for (var i = event.quarterStart; i <= event.quarterEnd; i++) {
+                if (i == quarter)
+                    return event
+            }
+        }
+    }
+
     useEffect(() => {
         if (Math.abs(context.lastMouseUp - lastMouseUp) > 200 && panel) {
             setLastMouseUp(context.lastMouseUp)
@@ -237,6 +253,11 @@ function Event({ event, quarterHeight, index }) {
                 plan: panelData.plan
             })
         }).then(res => res.json().then(newUser => setUser({ ...newUser })))
+
+        setTempTime({
+            from: quarterToTime(panelData.from),
+            to: quarterToTime(panelData.to + 1)
+        })
     }, [panelData])
 
     const wrapperStyle = {
@@ -268,25 +289,38 @@ function Event({ event, quarterHeight, index }) {
     function onTimeChange(e, from) {
         const newTime = timeToQuarter(e.target.value)
         if (newTime != null) {
-            if (from && quarterEnd > newTime) {
-                panelData.from = newTime
-                setPanelData({ ...panelData })
-
-            } else if (!from && quarterStart < newTime) {
-                panelData.to = newTime
-                setPanelData({ ...panelData })
+            var overlapping = false
+            if (from) {
+                for (var quarter = newTime + 1; quarter <= panelData.to; quarter++) {
+                    if (getEvent(quarter) != null && getEvent(quarter)._id != event._id) {
+                        overlapping = true
+                    }
+                }
             } else {
-                setTempTime({
-                    from: quarterToTime(panelData.from),
-                    to: quarterToTime(panelData.to + 1)
-                })
+                for (var quarter = panelData.from; quarter <= newTime; quarter++) {
+                    if (getEvent(quarter) != null && getEvent(quarter)._id != event._id) {
+                        overlapping = true
+                    }
+                }
             }
-        } else {
-            setTempTime({
-                from: quarterToTime(panelData.from),
-                to: quarterToTime(panelData.to + 1)
-            })
+
+            if (!overlapping) {
+                if (from && quarterEnd >= newTime + 1) {
+
+                    panelData.from = newTime + 1
+                    return setPanelData({ ...panelData })
+                }
+                if (!from && quarterStart <= newTime) {
+                    panelData.to = newTime
+                    return setPanelData({ ...panelData })
+                }
+            }
         }
+
+        setTempTime({
+            from: quarterToTime(panelData.from),
+            to: quarterToTime(panelData.to + 1)
+        })
     }
 
     function onTempChange(e, from) {
@@ -300,11 +334,10 @@ function Event({ event, quarterHeight, index }) {
     }
 
     function quarterToTime(quarter) {
-        console.log(quarter)
-        var hours = Math.floor(quarter / 4)
+        var hours = Math.floor((quarter - 1) / 4)
         hours = hours < 12 ? hours : hours == 12 ? 12 : hours - 12
         hours = ("0" + hours).slice(-2)
-        const minutes = ("0" + ((quarter / 4 - hours - 0.25) * 60)).slice(-2)
+        const minutes = ("0" + (((quarter - 1) % 4) * 15)).slice(-2)
 
         if (hours < 12) {
             return `${hours}:${minutes} AM`
@@ -315,13 +348,13 @@ function Event({ event, quarterHeight, index }) {
 
     function timeToQuarter(string) {
         const hours = parseInt(string.slice(0, 2))
-        const minutes = parseInt(string.slice(3, 5))
+        const minutes = roundTo15(parseInt(string.slice(3, 5)))
         const am = string.slice(6, 8) == "AM"
 
-        if (isNaN(hours) || isNaN(minutes) || string.length > 8 || !(/^[0-9]*$/).test(string.slice(0, 2)) || !/^[0-9]*$/.test(string.slice(3, 5)))
+        if (isNaN(hours) || isNaN(minutes) || string.length != 8 || !(/^[0-9]*$/).test(string.slice(0, 2)) || !/^[0-9]*$/.test(string.slice(3, 5)))
             return null;
 
-        return ((hours + (am ? 0 : hours == 12 ? 0 : 12) - 1) * 4) + (minutes / 15) + 1
+        return ((hours + (am ? 0 : hours == 12 ? 0 : 12)) * 4) + (minutes / 15)
     }
 
     function onPlanPress() {
@@ -382,6 +415,14 @@ function formatMinutes(minutes) {
         return minutes + "m"
 
     return minutes / 60 + "h"
+}
+
+function roundTo15(number) {
+    var remainder = number % 15
+    number -= remainder
+    number = remainder > 7.5 ? number + 15 : number
+
+    return number
 }
 
 export default Page
