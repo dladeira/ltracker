@@ -397,7 +397,7 @@ function Event({ event, quarterHeight, index }) {
                                 task
                             </div>
                             <div className={styles.value}>
-                                <select className={styles.taskSelect} onChange={onSelect} defaultValue={task.id}>
+                                <select className={styles.taskSelect} onChange={onSelect} defaultValue={task}>
                                     {user.tasks.map(task => <option key={task.id} value={task.id}>{task.name}</option>)}
                                 </select>
                             </div>
