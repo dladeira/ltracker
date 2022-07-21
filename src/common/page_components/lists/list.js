@@ -56,7 +56,7 @@ function Item({ name, right }) {
 }
 
 function Panel({ list, openData }) {
-    const [user, setUser] = useUser()
+    const [user, setUser] = useUser({ userOnly: true})
     const [name, setName] = useState(list.name)
     const [items, setItems] = useState(list.items)
     const [open, setOpen] = openData

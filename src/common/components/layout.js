@@ -59,7 +59,7 @@ function DayNavigation() {
     const [context, setContext] = useAppContext()
     const days = [0, 1, 2, 3, 4, 5, 6]
     const dayNames = ["M", "T", "W", "T", "F", "S", "S"]
-    
+
     function setDay(index) {
         context.day = index
         setContext({ ...context })

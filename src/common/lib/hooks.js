@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import Router from 'next/router'
 import useSWR from 'swr'
 
@@ -35,8 +35,18 @@ export function useUser({ userOnly, adminOnly } = {}) {
         ) {
             return Router.push("/api/login")
         }
-    }, [finished])
-    // return error ? null : [context.user, e => { setUser(e); context.user = e; setContext({ ...context }) }]
-    // return error ? null : [user, e => { setUser(e); }]
+    }, [finished, userOnly, adminOnly])
+
+    if (finished || context.user) {
+        if (
+            // userOnly
+            (!loggedIn && userOnly) ||
+            // adminOnly
+            (loggedIn && !data.user.admin && adminOnly)
+        ) {
+            Router.push("/api/login")
+        }
+    }
+
     return error ? null : [context.user, e => { context.user = e; setContext({ ...context }) }]
 }

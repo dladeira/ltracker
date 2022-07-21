@@ -124,7 +124,7 @@ function Page() {
 }
 
 function Task({ task }) {
-    const [user, setUser] = useUser()
+    const [user, setUser] = useUser({ userOnly: true})
     const [name, setName] = useState(task.name)
     const [color, setColor] = useState(task.color)
     const [picker, setPicker] = useState(false) // Whether the color picker is open
@@ -224,7 +224,7 @@ function Task({ task }) {
 }
 
 function Checklist({ checklist }) {
-    const [user, setUser] = useUser()
+    const [user, setUser] = useUser({ userOnly: true})
     const [name, setName] = useState(checklist.name)
     const [initial, setInitial] = useState(true)
 

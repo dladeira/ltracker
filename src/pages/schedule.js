@@ -18,7 +18,7 @@ function Page() {
                 <div className={styles.displayHours}>
                     {hours.map(hour => {
                         if (i++ == 24)
-                            return <div key={"displayHour-" + hour} className={styles.displayHourLast}>{hour}</div>
+                            return <div key={"displayHour-" + hour + "-last"} className={styles.displayHourLast}>{hour}</div>
                         return <div key={"displayHour-" + hour} className={styles.displayHour}>{hour}</div>
                     })}
                 </div>
@@ -209,7 +209,7 @@ function Event({ event, quarterHeight, index }) {
     })
     const [tempTime, setTempTime] = useState({
         from: quarterToTime(quarterStart),
-        to: quarterToTime(quarterEnd)
+        to: quarterToTime(quarterEnd + 1)
     })
 
     useEffect(() => {
@@ -237,8 +237,6 @@ function Event({ event, quarterHeight, index }) {
                 plan: panelData.plan
             })
         }).then(res => res.json().then(newUser => setUser({ ...newUser })))
-
-        console.log("updating")
     }, [panelData])
 
     const wrapperStyle = {
@@ -280,13 +278,13 @@ function Event({ event, quarterHeight, index }) {
             } else {
                 setTempTime({
                     from: quarterToTime(panelData.from),
-                    to: quarterToTime(panelData.to)
+                    to: quarterToTime(panelData.to + 1)
                 })
             }
         } else {
             setTempTime({
                 from: quarterToTime(panelData.from),
-                to: quarterToTime(panelData.to)
+                to: quarterToTime(panelData.to + 1)
             })
         }
     }
@@ -302,10 +300,11 @@ function Event({ event, quarterHeight, index }) {
     }
 
     function quarterToTime(quarter) {
-        var hours = Math.floor(quarter / 4) + 1
-        hours = hours < 12 ? hours : hours - 12 == 0 ? 12 : hours - 12
+        console.log(quarter)
+        var hours = Math.floor(quarter / 4)
+        hours = hours < 12 ? hours : hours == 12 ? 12 : hours - 12
         hours = ("0" + hours).slice(-2)
-        const minutes = ("0" + ((quarter / 4 - hours + 0.75) * 60)).slice(-2)
+        const minutes = ("0" + ((quarter / 4 - hours - 0.25) * 60)).slice(-2)
 
         if (hours < 12) {
             return `${hours}:${minutes} AM`

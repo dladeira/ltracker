@@ -23,7 +23,6 @@ export async function getUser(req, { onFound, onNotFound }) {
         const session = await getLoginSession(req)
         const user = (session && (await findUser({ _id: session._doc._id }))) ?? null
 
-
         await onFound(user)
     } catch (error) {
         console.error(error)

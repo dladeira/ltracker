@@ -9,11 +9,10 @@ $pageWidth: 1540px;
 }
 
 .navbar {
-
     height: $navHeight;
     width: $pageWidth;
 
-    padding: 0 calc((100vw - $pageWidth) / 2);
+    padding: 0 calc((100vw - #{$pageWidth}) / 2);
 
     background-color: white;
 
@@ -96,6 +95,7 @@ $pageWidth: 1540px;
 
 .pages {
     margin: 0;
+    margin-bottom: 10px;
 
     width: (1910px / 2.5);
 }
@@ -119,11 +119,11 @@ $pageWidth: 1540px;
 }
 
 .page1 {
-    left: calc((100vw - $pageWidth) / 2);
+    left: calc((100vw - #{$pageWidth}) / 2);
 }
 
 .page3 {
-    right: calc((100vw - $pageWidth) / 2);
+    right: calc((100vw - #{$pageWidth}) / 2);
 }
 
 .page2 {
