@@ -316,7 +316,6 @@ function Event({ event, quarterHeight, index }) {
                 }
             }
         }
-
         setTempTime({
             from: quarterToTime(panelData.from),
             to: quarterToTime(panelData.to + 1)
@@ -335,11 +334,12 @@ function Event({ event, quarterHeight, index }) {
 
     function quarterToTime(quarter) {
         var hours = Math.floor((quarter - 1) / 4)
+        const am = hours < 12
         hours = hours < 12 ? hours : hours == 12 ? 12 : hours - 12
         hours = ("0" + hours).slice(-2)
         const minutes = ("0" + (((quarter - 1) % 4) * 15)).slice(-2)
 
-        if (hours < 12) {
+        if (am) {
             return `${hours}:${minutes} AM`
         } else {
             return `${hours}:${minutes} PM`
