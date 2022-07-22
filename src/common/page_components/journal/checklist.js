@@ -21,7 +21,7 @@ function Component() {
         <div className={styles.gridItem}>
             <h3 className={styles.gridTitle}>Checklist</h3>
             <div className={styles.checklists}>
-                {user.checklist.map(checklist => <Checklist key={`checklistItem-${lastDate}-${checklist.id}`} checklist={checklist} />)}
+                {user.getChecklist().map(checklist => <Checklist key={`checklistItem-${lastDate}-${checklist.id}`} checklist={checklist} />)}
             </div>
         </div>
     )
@@ -48,11 +48,7 @@ function Checklist({ checklist }) {
     }
 
     function isChecked() {
-        const day = getDay(user, context.day, context.week, context.year)
-
-        if (day) {
-            return day.checklist.includes(checklist.id)
-        }
+        return user.getChecklistForDay(context.day, context.week, context.year).includes(checklist.id)
     }
 
     return (

@@ -1,10 +1,10 @@
 import { useAppContext } from '../../lib/context'
 import { useUser } from '../../lib/hooks'
-import { getIncrementInfo, getWeeklyHours } from '../../lib/util'
+import { getIncrementInfo } from '../../lib/util'
 
 import styles from './tasks.module.scss'
 
-function Component() {
+export function Tasks() {
     const [context] = useAppContext()
     const [user] = useUser({ userOnly: true })
     const [lastWeek, lastYear] = getIncrementInfo(context.week, context.year, false)
@@ -27,7 +27,7 @@ function Component() {
             <div className={styles.hours}>
 
                 <div className={styles.hoursThis}>
-                    {getWeeklyHours(user, context.week, context.year)}h
+                    {Math.round(user.getHoursForWeek(context.week, context.year))}h
                 </div>
 
                 <div className={styles.slash}>
@@ -35,12 +35,10 @@ function Component() {
                 </div>
 
                 <div className={styles.hoursLast}>
-                    {getWeeklyHours(user, lastWeek, lastYear)}h
+                    {Math.round(user.getHoursForWeek(lastWeek, lastYear))}h
                 </div>
 
             </div>
         </div>
     )
 }
-
-export default Component

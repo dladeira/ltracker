@@ -1,10 +1,10 @@
 import { useAppContext } from '../../lib/context'
 import { useUser } from '../../lib/hooks'
-import { getIncrementInfo, getWeekSleepAverage } from '../../lib/util'
+import { getIncrementInfo } from '../../lib/util'
 
 import styles from './sleep.module.scss'
 
-function Component() {
+export function Sleep() {
     const [context] = useAppContext()
     const [user] = useUser({ userOnly: true })
     const [lastWeek, lastYear] = getIncrementInfo(context.week, context.year, false)
@@ -27,7 +27,7 @@ function Component() {
             <div className={styles.hours}>
 
                 <div className={styles.hoursThis}>
-                    {getWeekSleepAverage(user, context.week, context.year)}h
+                    {Math.round(user.getSleepForWeek(context.week, context.year) / 7 * 2) / 2}h
                 </div>
 
                 <div className={styles.slash}>
@@ -35,12 +35,10 @@ function Component() {
                 </div>
 
                 <div className={styles.hoursLast}>
-                    {getWeekSleepAverage(user, lastWeek, lastYear)}h
+                    {Math.round(user.getSleepForWeek(lastWeek, lastYear) / 7 * 2) / 2}h
                 </div>
 
             </div>
         </div>
     )
 }
-
-export default Component

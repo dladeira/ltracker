@@ -1,10 +1,9 @@
-import { useAppContext } from '../../lib/context'
 import { useUser } from '../../lib/hooks'
 
 import styles from './addList.module.scss'
 
 function Component() {
-    const [, setUser] = useUser({ userOnly: true })
+    const [setUser] = useUser({ userOnly: true })
 
     async function clickHandler() {
         const res = await fetch("/api/user/lists/addList", { method: "POST" })

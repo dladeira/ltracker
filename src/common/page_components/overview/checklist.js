@@ -1,17 +1,15 @@
 import { useAppContext } from '../../lib/context'
 import { useUser } from '../../lib/hooks'
-import { getWeeklyChecklistInfo } from '../../lib/util'
 
 import styles from './checklist.module.scss'
 
-function Component() {
+export function Checklist() {
     const [context] = useAppContext()
     const [user] = useUser({ userOnly: true })
-    const info = getWeeklyChecklistInfo(user, context.week, context.year)
 
     return (
-        <div className={styles.gridItem}>
-            <h3 className={styles.gridTitle}>Checklist</h3>
+        <div className="h-full w-full bg-white rounded-lg p-3.5 pt-1">
+            <h3 className="text-lg font-medium">Checklist</h3>
 
             <div className={styles.header}>
 
@@ -27,7 +25,7 @@ function Component() {
             <div className={styles.hours}>
 
                 <div className={styles.hoursThis}>
-                    {info.complete}
+                    {user.getChecklistForWeek(context.week, context.year)[0]}
                 </div>
 
                 <div className={styles.slash}>
@@ -35,12 +33,10 @@ function Component() {
                 </div>
 
                 <div className={styles.hoursLast}>
-                    {info.incomplete}
+                    {user.getChecklistForWeek(context.week, context.year)[1]}
                 </div>
 
             </div>
         </div>
     )
 }
-
-export default Component

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { getDateText, getDay, getTask, getWeekDay } from '../common/lib/util'
+import { getDateText, getWeekDay } from '../common/lib/util'
 import { useAppContext } from '../common/lib/context'
 
 import styles from '../styles/schedule.module.scss'
@@ -78,10 +78,7 @@ function Day({ index, name, first }) {
     })
 
     function getEvents() {
-        const day = getDay(user, index, context.week, context.year)
-        if (day)
-            return day.events
-        return []
+        return user.getEventsForDay(index, context.week, context.year)
     }
 
     function moveHandler(e) {
@@ -130,7 +127,7 @@ function Day({ index, name, first }) {
                     year: context.year,
                     firstQuarter: quarterData.first,
                     lastQuarter: quarterData.last,
-                    task: user.tasks[0].id
+                    task: user.getTasks()[0].id
                 })
             })
             const newUser = await res.json()
@@ -196,7 +193,7 @@ function Event({ event, quarterHeight, index }) {
     const [context] = useAppContext()
     const [user, setUser] = useUser({ userOnly: true })
     const { quarterStart, quarterEnd, task, plan } = event
-    const { name, color } = getTask(user, task)
+    const { name, color } = user.getTask(task)
     const [panel, setPanel] = useState(false)
     const [initial, setInitial] = useState(true)
     const [lastMouseUp, setLastMouseUp] = useState(0)
@@ -213,10 +210,7 @@ function Event({ event, quarterHeight, index }) {
     })
 
     function getEvents() {
-        const day = getDay(user, index, context.week, context.year)
-        if (day)
-            return day.events
-        return []
+        return user.getEventsForDay(index, context.week, context.year)
     }
 
     function getEvent(quarter) {
@@ -398,7 +392,7 @@ function Event({ event, quarterHeight, index }) {
                             </div>
                             <div className={styles.value}>
                                 <select className={styles.taskSelect} onChange={onSelect} defaultValue={task}>
-                                    {user.tasks.map(task => <option key={task.id} value={task.id}>{task.name}</option>)}
+                                    {user.getTasks().map(task => <option key={task.id} value={task.id}>{task.name}</option>)}
                                 </select>
                             </div>
                         </div>

@@ -8,10 +8,10 @@ import styles from './productivity.module.scss'
 
 function Component() {
     const [context] = useAppContext()
-    const [user] = useUser({ userOnly: true })
+    const [fakeUser,,user] = useUser({ userOnly: true })
     const [lastWeek, lastYear] = getIncrementInfo(context.week, context.year, false)
 
-    var batteryRatio = Math.round(getWeeklyHours(user, context.week, context.year) / user.weeklyHourGoal * 100)
+    var batteryRatio = Math.round(user.getHoursForWeek(context.week, context.year) / user.getWeeklyHourGoal * 100)
     batteryRatio = batteryRatio > 100 ? 100 : batteryRatio
     const batteryNumber = 210 - (batteryRatio / 100 * 210)
 
@@ -33,7 +33,7 @@ function Component() {
             <div className={styles.hours}>
 
                 <div className={styles.hoursThis}>
-                    {getWeeklyHours(user, context.week, context.year)}
+                    {user.getHoursForWeek(context.week, context.year)}
                 </div>
 
                 <div className={styles.slash}>
@@ -41,7 +41,7 @@ function Component() {
                 </div>
 
                 <div className={styles.hoursLast}>
-                    {getWeeklyHours(user, lastWeek, lastYear)}
+                    {user.getHoursForWeek(lastWeek, lastYear)}
                 </div>
 
             </div>
@@ -58,7 +58,7 @@ function Component() {
                         Weekly Goal
                     </h1>
                     <p className={styles.goalText}>{batteryRatio}%</p>
-                    <p className={styles.goalSubText}>( {getWeeklyHours(user, context.week, context.year)} / {user.weeklyHourGoal} )</p>
+                    <p className={styles.goalSubText}>( {user.getHoursForWeek(context.week, context.year)} / {user.getWeeklyHourGoal()} )</p>
                 </article>
             </section>
         </div>

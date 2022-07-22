@@ -7,7 +7,7 @@ import { getIncrementInfo } from '../../lib/util'
 
 import styles from './timeSpent.module.scss'
 
-function Component() {
+export function TimeSpent() {
     const data = {
         labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
         datasets: [
@@ -54,40 +54,21 @@ function Component() {
 
 function getChartData() {
     const [context] = useAppContext()
-    const [user] = useUser({ userOnly: true })
     const [lastWeek, lastYear] = getIncrementInfo(context.week, context.year, false)
 
     const data = []
-    data.push(getDailyHoursArray(user, context.week, context.year))
-    data.push(getDailyHoursArray(user, lastWeek, lastYear))
+    data.push(getDailyHoursArray(context.week, context.year))
+    data.push(getDailyHoursArray(lastWeek, lastYear))
 
     return data
 }
 
-function getDailyHoursArray(user, week, year) {
+function getDailyHoursArray(week, year) {
+    const [user] = useUser({ userOnly: true })
     var hours = []
     for (var i = 0; i < 7; i++) {
-        var foundDay = false
-        for (var day of user.days) {
-            if (day.day == i && day.week == week && day.year == year) {
-
-                foundDay = true
-
-                var totalTime = 0
-                if (day.events)
-                    for (var event of day.events) {
-                        totalTime += (event.quarterEnd - event.quarterStart + 1) * 15
-                    }
-                hours.push(Math.round(totalTime / 60 * 4) / 4)
-            }
-        }
-
-        if (!foundDay) {
-            hours.push(0)
-        }
+        hours.push(user.getHoursForDay(i, week, year))
     }
 
     return hours
 }
-
-export default Component

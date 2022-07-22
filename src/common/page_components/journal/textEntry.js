@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useAppContext } from '../../lib/context'
 import { useUser } from '../../lib/hooks'
-import { getDay } from '../../lib/util'
 
 import styles from './textEntry.module.scss'
 
 function Component() {
     const [context] = useAppContext()
     const [user, setUser] = useUser({ userOnly: true })
-    const [text, setText] = useState(getDefaultText())
+    const [text, setText] = useState(user.getTextForDay(context.day, context.week, context.year))
     const [lastSaveText, setLastSaveText] = useState(new Date().getTime())
     const [initial, setInitial] = useState(true)
     const [lastDate, setLastDate] = useState(context.day + context.week + context.year)
@@ -31,15 +30,9 @@ function Component() {
         const date = context.day + context.week + context.year
         if (date != lastDate) {
             setLastDate(date)
-            setText(getDefaultText())
+            setText(user.getTextForDay(context.day, context.week, context.year))
         }
     }, [context])
-
-    function getDefaultText() {
-        const day = getDay(user, context.day, context.week, context.year)
-
-        return day && day.text ? day.text : ""
-    }
 
     async function saveText(dontUpdateUser) {
         const res = await fetch("/api/user/setText", {

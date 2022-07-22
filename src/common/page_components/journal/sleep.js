@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useAppContext } from '../../lib/context'
 import { useUser } from '../../lib/hooks'
-import { getDay } from '../../lib/util'
 
 import styles from './sleep.module.scss'
 
 function Component() {
     const [context] = useAppContext()
     const [user, setUser] = useUser({ userOnly: true })
-    const [sleep, setSleep] = useState(getDefaultSleep())
+    const [sleep, setSleep] = useState(user.getSleepForDay(context.day, context.week, context.year))
     const [lastMouseUp, setLastMouseUp] = useState(context.lastMouseUp)
     const [initial, setInitial] = useState(true)
     const [lastDate, setLastDate] = useState(context.day + context.week + context.year)
@@ -20,7 +19,7 @@ function Component() {
         const date = context.day + context.week + context.year
         if (date != lastDate) {
             setLastDate(date)
-            setSleep(getDefaultSleep())
+            setSleep(user.getSleepForDay(context.day, context.week, context.year))
             return
         }
 
@@ -31,14 +30,8 @@ function Component() {
     }, [context])
 
     useEffect(() => {
-        setSleep(getDefaultSleep())
+        setSleep(user.getSleepForDay(context.day, context.week, context.year))
     }, [user])
-
-    function getDefaultSleep() {
-        const day = getDay(user, context.day, context.week, context.year)
-
-        return day && day.sleep ? day.sleep : 0
-    }
 
     async function saveSleep() {
         const res = await fetch("/api/user/setSleep", {

@@ -1,10 +1,7 @@
 import { useUser } from '../common/lib/hooks'
 
 import Grid from '../common/components/grid'
-import Tasks from '../common/page_components/overview/tasks'
-import Checklist from '../common/page_components/overview/checklist'
-import Sleep from '../common/page_components/overview/sleep'
-import TimeSpent from '../common/page_components/overview/timeSpent'
+import { Tasks, Checklist, Sleep, TimeSpent} from '../common/page_components/overview/index'
 
 import styles from '../styles/overview.module.scss'
 
