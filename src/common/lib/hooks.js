@@ -58,6 +58,14 @@ class User {
         this.data = user
     }
 
+    getUsername() {
+        return this.data.lastName
+    }
+
+    getEmail() {
+        return this.data.email
+    }
+
     getDays() {
         return this.data.days
     }

@@ -14,9 +14,9 @@ function Component() {
                 <Image src="/ladeira.jpg" layout="fill" />
             </div>
 
-            <div className={styles.username}>{user.lastName}</div>
+            <div className={styles.username}>{user.getUsername()}</div>
 
-            <div className={styles.email}>{user.email}</div>
+            <div className={styles.email}>{user.getEmail()}</div>
 
             <div className={styles.divider} />
 
