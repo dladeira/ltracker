@@ -205,6 +205,11 @@ $quarterHeight: 19.75px;
     background-color: white;
     z-index: 20;
 
+    &Left {
+        left: -310px;
+        margin-left: 0;
+    }
+
     &Control {
         display: flex;
         flex-direction: row;

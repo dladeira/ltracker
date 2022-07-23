@@ -367,7 +367,7 @@ function Event({ event, quarterHeight, index }) {
                 <div className={styles.eventName}>{name}</div>
             </div>
             {panel ? (
-                <div className={styles.panel}>
+                <div className={styles.panel + (index > 4 ? " " + styles.panelLeft : "")}>
                     <div className={styles.panelControl}>
                         <select className={styles.panelType} defaultValue={"Task"}>
                             <option value="Task">Task</option>
