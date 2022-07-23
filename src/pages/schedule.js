@@ -193,7 +193,7 @@ function Event({ event, quarterHeight, index }) {
     const [context] = useAppContext()
     const [user, setUser] = useUser({ userOnly: true })
     const { quarterStart, quarterEnd, task, plan } = event
-    const { name, color } = user.getTask(task)
+    const { name, color } = user.getTask(task) ? user.getTask(task) : { name: "ERROR", color: "#000000" }
     const [panel, setPanel] = useState(false)
     const [initial, setInitial] = useState(true)
     const [lastMouseUp, setLastMouseUp] = useState(0)

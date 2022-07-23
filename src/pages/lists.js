@@ -9,9 +9,9 @@ function Page() {
 
     return (
         <Grid>
-            {user.lists ? user.lists.map(list => {
+            {user.getLists().map(list => {
                 return <List key={list.id} list={list} />
-            }) : ""}
+            })}
             <AddList />
         </Grid>
     )

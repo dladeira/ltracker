@@ -21,7 +21,7 @@ function Component() {
         <div className={styles.gridItem}>
             <h3 className={styles.gridTitle}>Checklist</h3>
             <div className={styles.checklists}>
-                {user.getChecklist().map(checklist => <Checklist key={`checklistItem-${lastDate}-${checklist.id}`} checklist={checklist} />)}
+                {user.getChecklists().map(checklist => <Checklist key={`checklistItem-${lastDate}-${checklist.id}`} checklist={checklist} />)}
             </div>
         </div>
     )

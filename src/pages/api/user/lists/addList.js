@@ -39,7 +39,7 @@ async function Route(req, res) {
                 ],
                 id: generateId(user)
             })
-
+            console.log("doing the ting")
             await user.save()
             res.status(200).json(user)
         },

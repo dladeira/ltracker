@@ -47,6 +47,17 @@ const userSchema = new mongoose.Schema({
             id: String
         }],
         default: []
+    },
+    friends: {
+        type: [String],
+        default: []
+    },
+    friendRequests: {
+        type: [{
+            target: String,
+            sent: Boolean
+        }],
+        default: []
     }
 })
 
