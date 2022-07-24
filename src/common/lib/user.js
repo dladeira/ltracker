@@ -3,6 +3,46 @@ export default class User {
         this.data = user
     }
 
+    getTaskPairs(task) {
+        const pairs = []
+        for (var friend of this.data.friends) {
+            const pair = friend.pairedTasks.find(pair => pair.this == task)
+            if (pair)
+                pairs.push({
+                    friend: friend.id,
+                    that: pair.that
+                })
+        }
+
+        return pairs
+    }
+
+    getAllTaskPairs() {
+        const tasks = []
+        for (var task of this.getTasks()) {
+            const pairs = this.getTaskPairs(task.id)
+            if (pairs.length > 0)
+                tasks.push({
+                    task: task,
+                    pairs: pairs
+                })
+        }
+
+        return tasks
+    }
+
+    getAllPairs() {
+        const tasks = []
+        for (var task of this.getTasks()) {
+            const pairs = this.getTaskPairs(task.id)
+            for (var pair of pairs) {
+                tasks.push(pair)
+            }
+        }
+
+        return tasks
+    }
+
     getAllRequests() {
         if (!this.data.friendRequests)
             return []
@@ -97,20 +137,30 @@ export default class User {
         return []
     }
 
-    getHoursForDay(weekDay, week, year) {
+    getHoursForDay(weekDay, week, year, withPlan = false) {
         var totalHours = 0
 
-        for (var task of this.getEventsForDay(weekDay, week, year)) {
+        for (var task of this.getEventsForDay(weekDay, week, year).filter(e => e.plan == withPlan)) {
             totalHours += (task.quarterEnd - task.quarterStart + 1) * 0.25
         }
 
         return totalHours
     }
 
-    getHoursForWeek(week, year) {
+    getTaskHoursForDay(weekDay, week, year, task) {
         var totalHours = 0
 
-        for (var task of this.getEventsForWeek(week, year)) {
+        for (var task of this.getEventsForDay(weekDay, week, year).filter(e => e.task == task)) {
+            totalHours += (task.quarterEnd - task.quarterStart + 1) * 0.25
+        }
+
+        return totalHours
+    }
+
+    getHoursForWeek(week, year, withPlan = false) {
+        var totalHours = 0
+
+        for (var task of this.getEventsForWeek(week, year).filter(e => e.plan == withPlan)) {
             totalHours += (task.quarterEnd - task.quarterStart + 1) * 0.25
         }
 
@@ -155,7 +205,7 @@ export default class User {
         for (var i = 0; i <= 6; i++) {
             const day = this.getDay(i, week, year)
             for (var checkItem of this.data.checklist) {
-                if (day.checklist)
+                if (day && day.checklist)
                     info[day.checklist.includes(checkItem.id) ? 0 : 1]++
             }
         }

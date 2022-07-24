@@ -24,14 +24,26 @@ async function Route(req, res) {
                 user.friendRequests.splice(indexInUser, 1)
                 target.friendRequests.splice(indexInTarget, 1)
 
+                const fIndexInUser = user.friends.findIndex(loopUser => loopUser.target == user._id || loopUser.target == target._id)
+                const fIndexInTarget = target.friends.findIndex(loopUser => loopUser.target == user._id || loopUser.target == target._id)
+
+                if (fIndexInUser != -1 || fIndexInTarget != -1)
+                    return res.status(400).json(user)
+
 
                 if (!user.friends)
                     user.friends = []
                 if (!target.friends)
                     target.friends = []
 
-                user.friends.push(target._id)
-                target.friends.push(user._id)
+                user.friends.push({
+                    id: target._id,
+                    pairedTasks: []
+                })
+                target.friends.push({
+                    id: user._id,
+                    pairedTasks: []
+                })
 
                 await user.save()
                 await target.save()

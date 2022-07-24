@@ -29,10 +29,6 @@ function Component() {
         }
     }, [context])
 
-    useEffect(() => {
-        setSleep(user.getSleepForDay(context.day, context.week, context.year))
-    }, [user])
-
     async function saveSleep() {
         const res = await fetch("/api/user/setSleep", {
             method: "POST",

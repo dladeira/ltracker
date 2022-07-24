@@ -49,7 +49,13 @@ const userSchema = new mongoose.Schema({
         default: []
     },
     friends: {
-        type: [String],
+        type: [{
+            id: String,
+            pairedTasks: [{
+                this: String,
+                that: String
+            }]
+        }],
         default: []
     },
     friendRequests: {

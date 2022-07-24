@@ -7,17 +7,15 @@ import styles from './manageFriends.module.scss'
 export function ManageFriends() {
     const [panelOpen, setPanelOpen] = useState(false)
     const [users, setUsers] = useState()
-    const [user,,updateUser] = useUser()
+    const [user, , updateUser] = useUser()
+
+    useEffect(() => {
+        fetch("/api/getAllUsers", {
+            method: "POST"
+        }).then(res => res.json().then(setUsers))
+    }, [])
 
     async function togglePanel() {
-        if (!users) {
-            const res = await fetch("/api/getAllUsers", {
-                method: "POST"
-            })
-            const data = await res.json()
-            setUsers(data)
-        }
-
         // Update user
         await updateUser()
 
@@ -32,13 +30,13 @@ export function ManageFriends() {
                 </div>
             </div>
             <h3 className="text-lg font-medium">Friends</h3>
-            {panelOpen ? <AddFriends togglePanel={togglePanel} users={users} /> : ""}
+            {panelOpen && users ? <AddFriends togglePanel={togglePanel} users={users} /> : ""}
 
-            <div className={styles.friendsList}>
+            {users ? <div className={styles.friendsList}>
                 {user.getFriends().map(friend => {
-                    return <Friend key={friend} targetUser={users.find(loopUser => loopUser.id == friend)} />
+                    return <Friend key={friend.id} targetUser={users.find(loopUser => loopUser.id == friend.id)} />
                 })}
-            </div>
+            </div> : ""}
         </div>
     )
 }
@@ -124,7 +122,7 @@ function AddFriends({ users, togglePanel }) {
                     })}
                     <div className={styles.panelHeader}>Available:</div>
                     {users.map(loopUser => {
-                        if (user.getId() != loopUser.id && !user.getFriends().includes(loopUser.id) && !user.getAllRequests().includes(loopUser.id))
+                        if (user.getId() != loopUser.id && user.getFriends().findIndex(loop => loop.id == loopUser.id) == -1 && !user.getAllRequests().includes(loopUser.id))
                             return <FriendAdd key={loopUser.id} targetUser={loopUser} />
                     })}
                 </div>

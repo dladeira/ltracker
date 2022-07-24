@@ -1,5 +1,5 @@
-import User from '../../../../common/models/User'
-import { getUser } from '../index'
+import User from '../../../../../common/models/User'
+import { getUser } from '../../index'
 
 async function Route(req, res) {
     await getUser(req, {
@@ -8,23 +8,34 @@ async function Route(req, res) {
 
             const target = await User.findOne({ _id: req.body.id })
 
+            const thisTask = req.body.this
+            const thatTask = req.body.that
+
             if (target != null) {
                 if (!user.friends)
                     return res.status(500).json(user)
                 if (!target.friends)
                     return res.status(500).json(user)
 
-                const indexInUser = user.friends.findIndex(loop => loop.id ==target._id)
+                const indexInUser = user.friends.findIndex(loop => loop.id == target._id)
                 const indexInTarget = target.friends.findIndex(loop => loop.id == user._id)
                 if (indexInUser == -1 || indexInTarget == -1)
                     return res.status(500).json(user)
 
+                const pairedTasks = user.friends[indexInUser].pairedTasks
+                
+                const taskIndex = pairedTasks.findIndex(task => task.this == thisTask)
+                const targetTaskIndex = pairedTasks.findIndex(task => task.that == thatTask)
 
-                user.friends.splice(indexInUser, 1)
-                target.friends.splice(indexInTarget, 1)
+                if (taskIndex != -1 || targetTaskIndex != -1)
+                    return res.status(500).json(user)
+
+                user.friends[indexInUser].pairedTasks.push({
+                    this: thisTask,
+                    that: thatTask
+                })
 
                 await user.save()
-                await target.save()
 
                 return res.status(200).json(user)
             }

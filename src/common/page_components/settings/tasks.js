@@ -88,12 +88,14 @@ function Task({ task }) {
         var newTask = user.getTask(task.id)
         setName(newTask.name)
         setColor(newTask.color)
-        setPub(newTask.pub)
+        setPub(newTask.public)
     }, [user])
 
     async function save() {
         var tasks = [...user.getTasks()]
         var index = tasks.findIndex(loopTask => loopTask.id == task.id)
+
+        console.log(pub)
 
         tasks[index].name = name
         tasks[index].public = pub
