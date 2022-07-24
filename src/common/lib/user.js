@@ -3,6 +3,10 @@ export default class User {
         this.data = user
     }
 
+    getAccountPublic() {
+        return this.data.public == true
+    }
+
     getTaskPairs(task) {
         const pairs = []
         for (var friend of this.data.friends) {
@@ -90,7 +94,7 @@ export default class User {
     }
 
     getUsername() {
-        return this.data.lastName
+        return this.data.username ? this.data.username : this.data.lastName
     }
 
     getEmail() {

@@ -1,0 +1,80 @@
+.grid {
+    display: grid;
+    gap: 20px;
+    grid-template-rows: 250px 250px 250px;
+    grid-template-columns: repeat(4, 370px);
+}
+
+.gridItem {
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+    width: 100%;
+
+    padding-top: 5px;
+
+    background-color: white;
+
+    border-radius: 10px;
+}
+
+.itemTasks {
+    grid-column: span 1;
+    grid-row: span 2;
+}
+
+.itemHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 15px;
+}
+
+.addButton {
+    padding: 0px 15px;
+
+    border-radius: 5px;
+
+    font-size: 2rem;
+    line-height: 2rem;
+    background-color: #008BFF;
+    color: white;
+
+    &:hover {
+        background-color: darken(#008BFF, 3);
+
+        cursor: pointer;
+    }
+}
+
+.itemTitle {
+    width: fit-content;
+
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.entry {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 95%;
+
+    margin: 0 auto;
+}
+
+.key {
+    width: fit-content;
+
+    margin-bottom: 2px;
+
+    font-size: 0.75;
+    font-variant: small-caps;
+    font-weight: 600;
+    color: #7D7D7D;
+}

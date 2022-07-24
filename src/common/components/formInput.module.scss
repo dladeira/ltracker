@@ -1,0 +1,36 @@
+.text {
+    margin: 10px 0;
+
+    width: 150px;
+
+    padding: 0 3px;
+
+    font-size: 1rem;
+
+    border: none;
+    border-bottom: 1px solid #CDCDCD;
+    outline: none;
+
+    &Modified {
+        @extend .text;
+
+        border-bottom: 1px solid #F6F6F6;
+    }
+}
+
+.checkbox {
+    margin: 10px 0;
+
+    padding: 0 3px;
+
+    font-size: 1rem;
+
+    border: none;
+    outline: none;
+
+    &Modified {
+        @extend .checkbox;
+
+        opacity: 0.7;
+    }
+}

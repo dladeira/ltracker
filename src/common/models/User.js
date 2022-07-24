@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 const userSchema = new mongoose.Schema({
     firstName: String,
     lastName: String,
+    username: String,
     email: String,
     tasks: {
         type: Array,
@@ -64,6 +65,10 @@ const userSchema = new mongoose.Schema({
             sent: Boolean
         }],
         default: []
+    },
+    public: {
+        type: Boolean,
+        default: false
     }
 })
 
