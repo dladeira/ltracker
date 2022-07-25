@@ -58,8 +58,8 @@ function Task({ task }) {
     return (
         <div className={styles.task}>
             <div className={styles.taskName}>{task.name}</div>
-            <div className={styles.taskTotal}>{total}</div>
-            <div className={styles.taskWeek}>{thisWeek}</div>
+            <div className={styles.taskTotal}>{total}h</div>
+            <div className={styles.taskWeek}>{thisWeek}h</div>
             <div className={styles.task7d + " " + (task7d > 0 ? styles.positive : task7d < 0 ? styles.negative : "")}>{task7d}%</div>
             <div className={styles.task4w + " " + (task4w > 0 ? styles.positive : task4w < 0 ? styles.negative : "")}>{task4w}%</div>
         </div>
