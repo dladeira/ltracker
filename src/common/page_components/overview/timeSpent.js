@@ -54,7 +54,7 @@ export function TimeSpent() {
 
 function getChartData() {
     const [context] = useAppContext()
-    const [lastWeek, lastYear] = getIncrementInfo(context.week, context.year, false)
+    const [lastWeek, lastYear] = getIncrementInfo(context.week, context.year, -1)
 
     const data = []
     data.push(getDailyHoursArray(context.week, context.year))

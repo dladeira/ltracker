@@ -67,5 +67,11 @@ export default function FormInput({ defaultValue, type, onSave, contextKey }) {
                     <input className={getData("valueSaved") == getData("value") ? styles.checkbox : styles.checkboxModified} type="checkbox" checked={thisValue} onChange={e => handleChange(!thisValue)} />
                 </div>
             )
+        case "number":
+            return (
+                <div>
+                    <input className={getData("valueSaved") == getData("value") ? styles.text : styles.textModified} type="number" value={getData("value") ? getData("value") : defaultValue} onChange={e => handleChange(e.target.value)} />
+                </div>
+            )
     }
 }

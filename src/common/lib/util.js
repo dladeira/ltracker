@@ -70,18 +70,40 @@ export function getDaysInWeek(year, week) {
     return days
 }
 
+export function getPastDays(startDay, startWeek, startYear, dayCount) {
+    const pastDays = []
+    var currentWeekDay = startDay
+    var currentWeek = startWeek
+    var currentYear = startYear
+    for (var i = 0; i < dayCount; i++) {
+        currentWeekDay--
+        if (currentWeekDay < 0) {
+            currentWeekDay = 6
+            currentWeek = getIncrementInfo(currentWeek, currentYear, -1)[0]
+            currentYear = getIncrementInfo(currentWeek, currentYear, -1)[1]
+        }
+        pastDays.push({
+            weekDay: currentWeekDay,
+            week: currentWeek,
+            year: currentYear
+        })
+    }
+
+    return pastDays
+}
+
 export function getIncrementInfo(week, year, increment) {
-    if (increment) {
-        if (week + 1 > getWeeksInYear(year)) {
+    if (increment > 0) {
+        if (week + increment > getWeeksInYear(year)) {
             return [1, year + 1]
         } else {
-            return [week + 1, year]
+            return [week + increment, year]
         }
     } else {
-        if (week - 1 <= 0) {
-            return [1, year - 1]
+        if (week + increment <= 0) {
+            return [getWeeksInYear(year) - (week + increment), year - 1]
         } else {
-            return [week - 1, year]
+            return [week + increment, year]
         }
     }
 }

@@ -9,7 +9,7 @@ import styles from './productivity.module.scss'
 function Component() {
     const [context] = useAppContext()
     const [user] = useUser({ userOnly: true })
-    const [lastWeek, lastYear] = getIncrementInfo(context.week, context.year, false)
+    const [lastWeek, lastYear] = getIncrementInfo(context.week, context.year, -1)
 
     var batteryRatio = Math.round(user.getHoursForWeek(context.week, context.year) / user.getWeeklyHourGoal() * 100)
     batteryRatio = batteryRatio > 100 ? 100 : batteryRatio

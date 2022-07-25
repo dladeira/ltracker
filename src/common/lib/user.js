@@ -1,3 +1,5 @@
+import { getWeeksInYear } from "./util"
+
 export default class User {
     constructor(user) {
         this.data = user
@@ -156,6 +158,39 @@ export default class User {
 
         for (var task of this.getEventsForDay(weekDay, week, year).filter(e => e.task == task)) {
             totalHours += (task.quarterEnd - task.quarterStart + 1) * 0.25
+        }
+
+        return totalHours
+    }
+
+    getTaskHoursForYear(year, task) {
+        var totalHours = 0
+
+        for (var i = 1; i <= getWeeksInYear(year); i++) {
+            totalHours += this.getTaskHoursForWeek(i, year, task)
+        }
+
+        return totalHours
+    }
+
+    getTaskHoursTotal(task) {
+        var totalHours = 0
+
+        for (var day of this.data.days) {
+            for (var event of day.events) {
+                if (event.task == task)
+                    totalHours += (event.quarterEnd - event.quarterStart + 1) * 0.25
+            }
+        }
+
+        return totalHours
+    }
+
+    getTaskHoursForWeek(week, year, task) {
+        var totalHours = 0
+
+        for (var i = 0; i <= 6; i++) {
+            totalHours += this.getTaskHoursForDay(i, week, year, task)
         }
 
         return totalHours

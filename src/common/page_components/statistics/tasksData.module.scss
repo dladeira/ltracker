@@ -1,0 +1,75 @@
+.tasks {
+    height: 100%;
+
+    overflow-y: scroll;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    font-variant: small-caps;
+    font-weight: 700;
+    color: #7D7D7D;
+
+    margin-bottom: 15px;
+
+    &Name {
+        width: 225px;
+    }
+
+    &Total {
+        width: 125px;
+    }
+
+    &Week {
+        width: 175px;
+    }
+
+    &7d {
+        width: 150px;
+    }
+
+    &4w {
+        width: 100px;
+    }
+}
+
+.task {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    margin-bottom: 15px;
+
+    &Name {
+        width: 225px;
+    }
+
+    &Total {
+        width: 125px;
+    }
+
+    &Week {
+        width: 175px;
+    }
+
+    &7d {
+        width: 150px;
+    }
+
+    &4w {
+        width: 100px;
+    }
+}
+
+.positive {
+    color: #8AC52A;
+}
+
+.negative {
+    color: #E15554;
+}

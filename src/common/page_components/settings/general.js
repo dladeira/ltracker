@@ -11,10 +11,10 @@ export function General() {
     const [user] = useUser({ userOnly: true })
     const [context, setContext] = useAppContext()
 
-    async function saveUsername(username) {
+    async function saveUsername(value) {
         const res = await fetch(window.origin + "/api/user/setUsername", {
             body: JSON.stringify({
-                username: username
+                username: value
             }),
             method: "POST"
         })
@@ -37,6 +37,19 @@ export function General() {
         setContext({ ...context })
     }
 
+    async function saveWeeklyHourGoal(value) {
+        const res = await fetch(window.origin + "/api/user/setWeeklyHourGoal", {
+            body: JSON.stringify({
+                goal: value
+            }),
+            method: "POST"
+        })
+        const newUser = await res.json()
+        context.data["settings.weeklyHourGoal"].value = newUser.weeklyHourGoal
+        context.user = newUser
+        setContext({ ...context })
+    }
+
     return (
         <div className="h-full w-full bg-white rounded-lg p-3.5 pt-1">
             <h3 className="text-lg font-medium">General</h3>
@@ -45,6 +58,13 @@ export function General() {
                 <div className={styles.key}>username</div>
                 <div className={styles.value}>
                     <FormInput type="text" defaultValue={user.getUsername()} onSave={saveUsername} contextKey="settings.username" />
+                </div>
+            </div>
+
+            <div className={styles.entry}>
+                <div className={styles.key}>weekly hour goal</div>
+                <div className={styles.value}>
+                    <FormInput type="number" defaultValue={user.getWeeklyHourGoal()} onSave={saveWeeklyHourGoal} contextKey="settings.weeklyHourGoal" />
                 </div>
             </div>
 

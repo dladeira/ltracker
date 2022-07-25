@@ -7,7 +7,7 @@ import styles from './sleep.module.scss'
 export function Sleep() {
     const [context] = useAppContext()
     const [user] = useUser({ userOnly: true })
-    const [lastWeek, lastYear] = getIncrementInfo(context.week, context.year, false)
+    const [lastWeek, lastYear] = getIncrementInfo(context.week, context.year, -1)
 
     return (
         <div className="h-full w-full bg-white rounded-lg p-3.5 pt-1">
