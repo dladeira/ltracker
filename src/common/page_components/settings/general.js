@@ -57,14 +57,14 @@ export function General() {
             <div className={styles.entry}>
                 <div className={styles.key}>username</div>
                 <div className={styles.value}>
-                    <FormInput type="text" defaultValue={user.getUsername()} onSave={saveUsername} contextKey="settings.username" />
+                    <FormInput width={"120px"} type="text" defaultValue={user.getUsername()} onSave={saveUsername} contextKey="settings.username" />
                 </div>
             </div>
 
             <div className={styles.entry}>
                 <div className={styles.key}>weekly hour goal</div>
                 <div className={styles.value}>
-                    <FormInput type="number" defaultValue={user.getWeeklyHourGoal()} onSave={saveWeeklyHourGoal} contextKey="settings.weeklyHourGoal" />
+                    <FormInput width={"120px"} type="number" defaultValue={user.getWeeklyHourGoal()} onSave={saveWeeklyHourGoal} contextKey="settings.weeklyHourGoal" />
                 </div>
             </div>
 

@@ -6,7 +6,7 @@ const AppContext = createContext();
 
 export function AppWrapper({ children }) {
     var date = new Date()
-    const [state, setState] = useState({ day: getWeekDay(new Date()), week: date.getCurrentWeek(), year: date.getFullYear(), lastMouseUp: 0 })
+    const [state, setState] = useState({ day: getWeekDay(new Date()), week: date.getCurrentWeek(), year: date.getFullYear(), lastMouseUp: 0, userbarOpen: true })
 
     return (
         <AppContext.Provider value={[state, setState]}>

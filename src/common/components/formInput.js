@@ -3,7 +3,7 @@ import { useAppContext } from '../lib/context'
 
 import styles from './formInput.module.scss'
 
-export default function FormInput({ defaultValue, type, onSave, contextKey }) {
+export default function FormInput({ defaultValue, type, onSave, contextKey, width }) {
     const [context, setContext] = useAppContext()
     const [lastValue, setLastValue] = useState(defaultValue)
     const [value, setValue] = useState(defaultValue)
@@ -57,20 +57,20 @@ export default function FormInput({ defaultValue, type, onSave, contextKey }) {
         case "text":
             return (
                 <div>
-                    <input className={getData("valueSaved") == getData("value") ? styles.text : styles.textModified} type="text" value={getData("value") ? getData("value") : defaultValue} onChange={e => handleChange(e.target.value)} />
+                    <input className={getData("valueSaved") == getData("value") ? styles.text : styles.textModified} style={{ width: width }} type="text" value={getData("value") ? getData("value") : defaultValue} onChange={e => handleChange(e.target.value)} />
                 </div>
             )
         case "checkbox":
             const thisValue = getData("value") !== undefined ? getData("value") : defaultValue
             return (
                 <div>
-                    <input className={getData("valueSaved") == getData("value") ? styles.checkbox : styles.checkboxModified} type="checkbox" checked={thisValue} onChange={e => handleChange(!thisValue)} />
+                    <input className={getData("valueSaved") == getData("value") ? styles.checkbox : styles.checkboxModified} style={{ width: width }} type="checkbox" checked={thisValue} onChange={e => handleChange(!thisValue)} />
                 </div>
             )
         case "number":
             return (
                 <div>
-                    <input className={getData("valueSaved") == getData("value") ? styles.text : styles.textModified} type="number" value={getData("value") ? getData("value") : defaultValue} onChange={e => handleChange(e.target.value)} />
+                    <input className={getData("valueSaved") == getData("value") ? styles.text : styles.textModified} style={{ width: width }} type="number" value={getData("value") ? getData("value") : defaultValue} onChange={e => handleChange(e.target.value)} />
                 </div>
             )
     }

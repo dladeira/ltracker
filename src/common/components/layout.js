@@ -24,10 +24,18 @@ function Component({ children }) {
         setContext({ ...context })
     }
 
+    function toggleSidebar() {
+        context.userbarOpen = !context.userbarOpen
+        setContext({ ...context })
+    }
+
     return (user ?
         (
-            <div className={styles.outerLoggedInContainer} onMouseUp={mouseUpEvent}>
+            <div className={styles.outerLoggedInContainer} onMouseUp={mouseUpEvent} style={{marginLeft: context.userbarOpen ? "230px" : "50px"}}>
                 <div className={styles.loggedInContainer}>
+                    <div className={context.userbarOpen ? styles.buttonClose : styles.buttonOpen} onClick={toggleSidebar}>
+                        <div className={styles.buttonText}>{context.userbarOpen ? "<" : ">"}</div>
+                    </div>
                     <Userbar />
                     <div className={styles.controlContainer}>
                         <PageTitle />

@@ -13,18 +13,22 @@ function Page() {
     }
 
     return (
-        <div className="flex flex-col">
+        <div>
 
-            <nav className={`${styles.navbar} flex flex-row justify-between items-center`}>
+            <nav className={styles.navbarWrapper}>
+                <div className={`${styles.navbar} flex flex-row justify-between items-center`}>
 
-                <div className="text-3xl font-semibold text-primary">
-                    LadeiraTracker
+                    <div className={styles.brand}>
+                        LadeiraTracker
+                    </div>
+
+                    <Link href="/api/login">
+                        <a className={styles.login}>
+                            Login
+                        </a>
+                    </Link>
+
                 </div>
-
-                <Link href="/api/login"><a className={styles.login}>
-                    Login
-                </a></Link>
-
             </nav>
 
 
@@ -32,11 +36,11 @@ function Page() {
                 <header className={styles.header}>
 
                     <h1 className={styles.title}>
-                        The only time tracking app you need
+                        A time tracking app
                     </h1>
 
                     <h2 className={styles.subtitle}>
-                        Manage your busy life and see what you spend your time on
+                        It's like Steam playtime but for productivity
                     </h2>
 
                     <Link href="/api/login"><button className={styles.cta}>
@@ -63,9 +67,59 @@ function Page() {
 
             </section>
 
-
             <section className={styles.sectionSecondary}>
+                <h3 className={styles.cardsTitle}>Features list</h3>
+                <section className={styles.sectionCards}>
+                    <article className={styles.card}>
+                        <h3 className={styles.cardTitle}>Keep track of weekly productivity</h3>
+                    </article>
 
+
+                    <article className={styles.card}>
+                        <h3 className={styles.cardTitle}>See what you spend your time on</h3>
+                    </article>
+
+
+                    <article className={styles.card}>
+                        <h3 className={styles.cardTitle}>Organize yourself with a schedule</h3>
+                    </article>
+
+
+                    <article className={styles.card}>
+                        <h3 className={styles.cardTitle}>Check off daily TODO items</h3>
+                    </article>
+
+
+                    <article className={styles.card}>
+                        <h3 className={styles.cardTitle}>Record your energy and sleep</h3>
+                    </article>
+
+
+                    <article className={styles.card}>
+                        <h3 className={styles.cardTitle}>Compare against friends</h3>
+                    </article>
+
+
+                    <article className={styles.card}>
+                        <h3 className={styles.cardTitle}>A built-in diary</h3>
+                    </article>
+
+
+                    <article className={styles.card}>
+                        <h3 className={styles.cardTitle}>And a bulit-in packing list</h3>
+                    </article>
+
+
+                    <article className={styles.card}>
+                        <h3 className={styles.cardTitle}>Track your workouts and muscle impact</h3>
+                    </article>
+
+
+                    <article className={styles.card}>
+                        <h3 className={styles.cardTitle}>Set goals and push yourself</h3>
+                    </article>
+
+                </section>
             </section>
         </div>
     )

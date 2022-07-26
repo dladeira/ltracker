@@ -1,15 +1,17 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import { useAppContext } from "../lib/context"
 import { useUser } from '../lib/hooks'
 
 import styles from "./userbar.module.scss"
 
 function Component() {
+    const [context, setContext] = useAppContext()
     const [user] = useUser({ userOnly: true })
 
     return (
-        <div className={styles.container}>
+        <div className={styles.container} style={{ width: context.userbarOpen ? "180px" : "0px" }}>
             <div className={styles.pfp}>
                 <Image src="/ladeira.jpg" layout="fill" />
             </div>

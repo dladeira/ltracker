@@ -1,5 +1,54 @@
+.button {
+    position: absolute;
+    top: 50%;
+    height: 60px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-left: auto;
+
+    border: 2px solid #CDCDCD;
+
+    background-color: white;
+    user-select: none;
+    z-index: 30;
+
+    &Close {
+        @extend .button;
+        right: calc(100vw - 180px);
+        border-right: 0;
+        border-radius: 10px 0 0 10px;
+    }
+
+    &Open {
+        @extend .button;
+        left: 0;
+        border-left: 0;
+        border-radius: 0 10px 10px 0;
+    }
+
+    &:hover {
+        cursor: pointer;
+        background-color: darken(white, 1);
+    }
+}
+
+.buttonText {
+    padding-bottom: 4px;
+
+    font-size: 2rem;
+    font-weight: 700;
+    color: #CDCDCD;
+}
+
+// ==========
+// ACTUAL LAYOUT
+// ==========
+
 .outerLoggedInContainer {
-    margin-left: 230px;
+    
 }
 
 .loggedInContainer {
@@ -43,7 +92,7 @@
     border-radius: 500px;
     overflow: hidden;
 
-    transition: background-color 500ms cubic-bezier(.08,.82,.17,1);
+    transition: background-color 500ms cubic-bezier(.08, .82, .17, 1);
 
     &:hover {
         cursor: pointer;
