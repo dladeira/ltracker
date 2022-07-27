@@ -1,17 +1,20 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import { useMediaQuery } from "react-responsive"
 import { useAppContext } from "../lib/context"
 import { useUser } from '../lib/hooks'
+import DateControl from "./dateControl"
 
 import styles from "./userbar.module.scss"
 
 function Component() {
     const [context, setContext] = useAppContext()
     const [user] = useUser({ userOnly: true })
+    const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
 
     return (
-        <div className={styles.container} style={{ width: context.userbarOpen ? "180px" : "0px" }}>
+        <div className={context.userbarOpen ? styles.containerOpen : styles.containerClosed}>
             <div className={styles.pfp}>
                 <Image src="/ladeira.jpg" layout="fill" />
             </div>
@@ -28,6 +31,8 @@ function Component() {
             <PageLink text="Statistics" url="/statistics" icon="/statistics-icon.svg" />
             <PageLink text="Friends" url="/friends" icon="/friends-icon.svg" />
             <PageLink text="Lists" url="/lists" icon="/lists-icon.svg" />
+
+            {isMobile ? <DateControl /> : ""}
             <div className={styles.bottomLinks}>
                 <PageLink text="Settings" url="/settings" icon="/settings-icon.svg" />
                 <PageLink text="Logout" url="/api/logout" icon="/logout-icon.svg" />

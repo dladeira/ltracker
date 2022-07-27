@@ -74,14 +74,18 @@
 .listHeader {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
 
+    width: 100%;
+
     margin-bottom: 5px;
+    padding-right: 10px;
 
     font-variant: small-caps;
     font-size: 12px;
     font-weight: bold;
+    text-align: center;
     letter-spacing: 1px;
     color: #C4C4C4;
 }
@@ -92,7 +96,7 @@ $margin: 15px;
 .task {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
 
     height: fit-content;
@@ -116,123 +120,6 @@ $margin: 15px;
     &:hover,
     &:focus {
         border-bottom: 1px solid #CDCDCD;
-    }
-}
-
-.taskColor {
-    flex-shrink: 0;
-
-    height: 20px;
-    width: 20px;
-
-    margin: 0 $margin;
-    padding: 0;
-
-    border-radius: 5px;
-
-    &:hover {
-        cursor: pointer;
-    }
-}
-
-.pickerWrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    height: 100%;
-    width: 100%;
-
-    background-color: rgba(0, 0, 0, 0.205);
-
-    z-index: 1;
-}
-
-.taskPicker {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-
-    height: fit-content;
-    width: fit-content;
-
-    padding: 15px;
-
-    border-radius: 5px;
-
-    background-color: white;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
-
-    z-index: 2;
-}
-
-.pickerControl {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-
-    width: 90%;
-
-    margin: 0 auto;
-
-    color: black;
-    z-index: 2;
-}
-
-.pickerTitle {
-    letter-spacing: 1px;
-    font-weight: 500;
-    color: black;
-    z-index: 3;
-}
-
-.pickerExit:hover {
-    cursor: pointer;
-}
-
-.pickerGrid {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
-    flex-wrap: wrap;
-
-    height: 390px;
-    width: 390px;
-}
-
-.pickerColor {
-    height: 70px;
-    width: 70px;
-    margin: 4px;
-
-    border-radius: 5px;
-
-    &:hover {
-        cursor: pointer;
-    }
-}
-
-.pub {
-    flex-shrink: 0;
-
-    height: 100%;
-    width: 26px;
-
-    margin: 0 $margin;
-
-    padding: calc($taskHeight / 2) 5px;
-
-    &:hover {
-        cursor: pointer;
-        filter: none;
-    }
-
-    &False {
-        @extend .pub;
-        filter: invert(97%) sepia(0%) saturate(0%) hue-rotate(155deg) brightness(82%) contrast(91%);
     }
 }
 

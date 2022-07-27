@@ -32,3 +32,101 @@
         opacity: 0.7;
     }
 }
+
+// ==========
+// COLOR PICKER
+// ==========
+
+.taskColor {
+    height: 20px;
+    width: 20px;
+
+    margin: 0;
+    padding: 0;
+
+    border-radius: 5px;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.pickerWrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    height: 100%;
+    width: 100%;
+
+    background-color: rgba(0, 0, 0, 0.205);
+
+    z-index: 110;
+}
+
+.taskPicker {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    height: fit-content;
+    width: fit-content;
+
+    padding: 15px;
+
+    border-radius: 5px;
+
+    background-color: white;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
+
+    z-index: 2;
+}
+
+.pickerGrid {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+
+    height: 390px;
+    width: 390px;
+}
+
+.pickerColor {
+    height: 70px;
+    width: 70px;
+    margin: 4px;
+
+    border-radius: 5px;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+// ==========
+// END PICKER
+// ==========
+
+.public {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    height: 100%;
+    width: 26px;
+
+    margin: 0;
+
+    &:hover {
+        cursor: pointer;
+        filter: none;
+    }
+
+    &False {
+        @extend .public;
+        filter: invert(97%) sepia(0%) saturate(0%) hue-rotate(155deg) brightness(82%) contrast(91%);
+    }
+}

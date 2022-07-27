@@ -1,3 +1,9 @@
+@mixin phone-only {
+    @media (max-width: 599px) {
+        @content;
+    }
+}
+
 .container {
     position: fixed;
     top: 0;
@@ -9,12 +15,27 @@
     align-items: center;
 
     height: 100%;
-    width: 180px;
 
     padding: 10px 0;
 
     background-color: white;
     overflow: hidden;
+
+    z-index: 30;
+
+    &Open {
+        @extend .container;
+        width: 180px;
+
+        @include phone-only {
+            width: 100vw;
+        }
+    }
+
+    &Closed {
+        @extend .container;
+        width: 0;
+    }
 }
 
 .pfp {
@@ -30,6 +51,7 @@
     border-radius: 1000px;
 
     overflow: hidden;
+    z-index: 31
 }
 
 .username {

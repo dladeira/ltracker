@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { useUser } from '../../lib/hooks'
-
+import FormInput from '../../components/formInput'
 
 import styles from './tasks.module.scss'
+import { useAppContext } from '../../lib/context'
 
 export function Tasks() {
     const [user, setUser] = useUser({ userOnly: true })
@@ -49,14 +50,17 @@ export function Tasks() {
             </div>
             <div className={styles.itemList}>
                 <div className={styles.listHeader}>
-                    <div style={{ marginRight: "114%" }}>
+                    <div style={{ width: "44%", textAlign: "left" }}>
                         NAME
                     </div>
-                    <div style={{ marginRight: "5%" }}>
+                    <div style={{ width: "20px" }}>
                         COLOR
                     </div>
-                    <div>
+                    <div style={{width: "20px"}}>
                         PUBLIC
+                    </div>
+                    <div style={{height: "100%", width: "20px", marginLeft: "15px"}}>
+                        
                     </div>
                 </div>
 
@@ -70,6 +74,7 @@ export function Tasks() {
 }
 
 function Task({ task }) {
+    const [context, setContext] = useAppContext()
     const [user, setUser] = useUser({ userOnly: true })
     const [name, setName] = useState(task.name)
     const [color, setColor] = useState(task.color)
@@ -125,46 +130,42 @@ function Task({ task }) {
         setUser({ ...newUser })
     }
 
+    async function saveTask() {
+        var tasks = [...user.getTasks()]
+        var index = tasks.findIndex(loopTask => loopTask.id == task.id)
+
+        if (context.data[`settings.task-${task.id}.name`] && context.data[`settings.task-${task.id}.name`].value)
+            tasks[index].name = context.data[`settings.task-${task.id}.name`].value
+
+        if (context.data[`settings.task-${task.id}.color`] && context.data[`settings.task-${task.id}.color`].value)
+            tasks[index].color = context.data[`settings.task-${task.id}.color`].value
+
+        if (context.data[`settings.task-${task.id}.public`] && context.data[`settings.task-${task.id}.public`].value)
+            tasks[index].color = context.data[`settings.task-${task.id}.public`].value
+
+        const res = await fetch(window.origin + "/api/user/setTasks", {
+            body: JSON.stringify({
+                tasks: tasks
+            }),
+            method: "POST"
+        })
+        const newUser = await res.json()
+        setUser({ ...newUser })
+    }
+
     return (
         <div className={styles.task}>
-            <input className={styles.taskName} type="text" value={name} onChange={e => { setName(e.target.value) }} />
-            <div className={styles.taskColor} style={{ backgroundColor: color }} onClick={e => { setPicker(!picker) }} />
-            {picker ? (
-                <div className={styles.pickerWrapper} onClick={e => { setPicker(false) }}>
-                    <div className={styles.taskPicker}>
-                        <div className={styles.pickerGrid}>
-                            <div className={styles.pickerColor} style={{ backgroundColor: "#99C1F1" }} onClick={e => { setColor("#99C1F1"), setPicker(false) }} />
-                            <div className={styles.pickerColor} style={{ backgroundColor: "#A7D35F" }} onClick={e => { setColor("#A7D35F"), setPicker(false) }} />
-                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
-                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
-                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
-                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
-                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
-                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
-                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
-                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
-                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
-                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
-                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
-                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
-                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
-                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
-                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
-                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
-                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
-                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
-                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
-                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
-                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
-                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
-                            <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { setColor("#E9807F"), setPicker(false) }} />
-                        </div>
-                    </div>
-                </div>
-            ) : <div />}
-            <div className={pub ? styles.pub : styles.pubFalse} onClick={() => { setPub(!pub) }}>
-                <Image src={"/public-icon.svg"} height={16} width={16} />
-            </div>
+
+
+            <FormInput width={"50%"} type="text" defaultValue={task.name} onSave={saveTask} contextKey={`settings.task-${task.id}.name`} />
+
+
+            <FormInput width={"20px"} type="color" defaultValue={task.color ? task.color : "#E9807F"} onSave={saveTask} contextKey={`settings.task-${task.id}.color`} />
+
+
+            <FormInput width={"20px"} type="public" defaultValue={task.public} onSave={saveTask} contextKey={`settings.task-${task.id}.public`} />
+
+
             <div className={styles.taskDelete} type="button" onClick={onDeletePress}>
                 <Image src={"/trash-icon.svg"} height={20} width={20} />
             </div>

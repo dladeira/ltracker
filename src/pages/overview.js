@@ -1,9 +1,9 @@
 import { useUser } from '../common/lib/hooks'
 
-import Grid from '../common/components/grid'
-import { Tasks, Checklist, Sleep, TimeSpent} from '../common/page_components/overview/index'
 
-import styles from '../styles/overview.module.scss'
+import Grid from '../common/components/grid'
+import GridItem from '../common/components/gridItem'
+import { Tasks, Checklist, Sleep, TimeSpent } from '../common/page_components/overview/index'
 
 function Page() {
     useUser({ userOnly: true })
@@ -16,19 +16,15 @@ function Page() {
 
             <Checklist />
 
-            <div className={`${styles.gridItem} ${styles.gridItemPhysical}`}>
-                <h3 className={styles.gridTitle}>Physical Activity</h3>
-            </div>
+            <GridItem title="Physical Activity" />
 
             <TimeSpent />
 
-            <div className={`${styles.gridItem} ${styles.gridItemFriends}`}>
-                <h3 className={styles.gridTitle}>Friends Recent</h3>
-            </div>
+            <GridItem colSpan="1" rowSpan="2" title="Friends Recent" />
 
-            <div className={`${styles.gridItem} ${styles.gridItemMuscle}`}>
-                <h3 className={styles.gridTitle}>Muscle Impact</h3>
-            </div>
+
+            <GridItem colSpan="1" rowSpan="2" title="Muscle Impact" />
+
         </Grid>
     )
 }

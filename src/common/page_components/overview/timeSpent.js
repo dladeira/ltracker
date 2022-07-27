@@ -1,5 +1,7 @@
 import { Chart } from 'chart.js/auto';
 import { Line } from 'react-chartjs-2';
+import { useMediaQuery } from 'react-responsive';
+import GridItem from '../../components/gridItem'
 
 import { useAppContext } from '../../lib/context'
 import { useUser } from '../../lib/hooks'
@@ -8,6 +10,8 @@ import { getIncrementInfo } from '../../lib/util'
 import styles from './timeSpent.module.scss'
 
 export function TimeSpent() {
+    const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
+
     const data = {
         labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
         datasets: [
@@ -31,7 +35,7 @@ export function TimeSpent() {
     }
 
     const options = {
-        maintainAspectRatio: false,
+        maintainAspectRatio: isMobile ? true : false,
         scales: {
             y:
             {
@@ -43,12 +47,11 @@ export function TimeSpent() {
     }
 
     return (
-        <div className="h-full w-full bg-white rounded-lg p-3.5 pt-1 row-span-2 col-span-2">
-            <h3 className="text-lg font-medium">Time Spent</h3>
+        <GridItem colSpan="2" rowSpan="2" title="Time Spent">
             <div className={styles.chartContainer}>
                 <Line data={data} options={options} />
             </div>
-        </div>
+        </GridItem >
     )
 }
 

@@ -53,26 +53,20 @@ export function General() {
     return (
         <div className="h-full w-full bg-white rounded-lg p-3.5 pt-1">
             <h3 className="text-lg font-medium">General</h3>
-            
+
             <div className={styles.entry}>
                 <div className={styles.key}>username</div>
-                <div className={styles.value}>
-                    <FormInput width={"120px"} type="text" defaultValue={user.getUsername()} onSave={saveUsername} contextKey="settings.username" />
-                </div>
+                <FormInput width={"40%"} type="text" defaultValue={user.getUsername()} onSave={saveUsername} contextKey="settings.username" />
             </div>
 
             <div className={styles.entry}>
                 <div className={styles.key}>weekly hour goal</div>
-                <div className={styles.value}>
-                    <FormInput width={"120px"} type="number" defaultValue={user.getWeeklyHourGoal()} onSave={saveWeeklyHourGoal} contextKey="settings.weeklyHourGoal" />
-                </div>
+                <FormInput width={"40%"} type="number" defaultValue={user.getWeeklyHourGoal()} onSave={saveWeeklyHourGoal} contextKey="settings.weeklyHourGoal" />
             </div>
 
             <div className={styles.entry}>
                 <div className={styles.key}>account public</div>
-                <div className={styles.value}>
-                    <FormInput type="checkbox" defaultValue={user.getAccountPublic()} onSave={saveAccountPublic} contextKey="settings.accountPublic" />
-                </div>
+                <FormInput type="checkbox" defaultValue={user.getAccountPublic()} onSave={saveAccountPublic} contextKey="settings.accountPublic" />
             </div>
         </div>
     )

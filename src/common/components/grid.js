@@ -1,9 +1,21 @@
+import { useMediaQuery } from "react-responsive"
+
 function Component({ children }) {
+    const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
+
     const style = {
         display: "grid",
         gap: "20px",
-        gridTemplateRows: "250px 250px 250px",
-        gridTemplateColumns: "repeat(4, 370px)"
+        gridTemplateRows: "repeat(3, 1fr)",
+        gridTemplateColumns: "repeat(4, 1fr)",
+        width: "100%",
+        height: "88%"
+    }
+
+    if (isMobile) {
+        style.gridTemplateRows = "repeat(auto-fill, 250px)"
+        style.gridTemplateColumns = "1fr"
+        style.height = "100%"
     }
 
     return (

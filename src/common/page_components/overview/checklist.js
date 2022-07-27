@@ -1,5 +1,7 @@
 import { useAppContext } from '../../lib/context'
 import { useUser } from '../../lib/hooks'
+import GridItem from '../../components/gridItem'
+
 
 import styles from './checklist.module.scss'
 
@@ -8,8 +10,7 @@ export function Checklist() {
     const [user] = useUser({ userOnly: true })
 
     return (
-        <div className="h-full w-full bg-white rounded-lg p-3.5 pt-1">
-            <h3 className="text-lg font-medium">Checklist</h3>
+        <GridItem title="Checklist">
 
             <div className={styles.header}>
 
@@ -37,6 +38,6 @@ export function Checklist() {
                 </div>
 
             </div>
-        </div>
+        </GridItem>
     )
 }

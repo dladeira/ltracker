@@ -1,6 +1,8 @@
 import { useAppContext } from '../../lib/context'
 import { useUser } from '../../lib/hooks'
 import { getIncrementInfo } from '../../lib/util'
+import GridItem from '../../components/gridItem'
+
 
 import styles from './tasks.module.scss'
 
@@ -10,8 +12,7 @@ export function Tasks() {
     const [lastWeek, lastYear] = getIncrementInfo(context.week, context.year, -1)
 
     return (
-        <div className="h-full w-full bg-white rounded-lg p-3.5 pt-1">
-            <h3 className="text-lg font-medium">Tasks</h3>
+        <GridItem title="Tasks">
 
             <div className={styles.header}>
 
@@ -39,6 +40,6 @@ export function Tasks() {
                 </div>
 
             </div>
-        </div>
+        </GridItem>
     )
 }

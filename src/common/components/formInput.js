@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { useAppContext } from '../lib/context'
 
@@ -56,22 +57,66 @@ export default function FormInput({ defaultValue, type, onSave, contextKey, widt
     switch (type) {
         case "text":
             return (
-                <div>
-                    <input className={getData("valueSaved") == getData("value") ? styles.text : styles.textModified} style={{ width: width }} type="text" value={getData("value") ? getData("value") : defaultValue} onChange={e => handleChange(e.target.value)} />
-                </div>
+                <input className={getData("valueSaved") == getData("value") ? styles.text : styles.textModified} style={{ width: width }} type="text" value={getData("value") ? getData("value") : defaultValue} onChange={e => handleChange(e.target.value)} />
             )
         case "checkbox":
-            const thisValue = getData("value") !== undefined ? getData("value") : defaultValue
+            var thisValue = getData("value") !== undefined ? getData("value") : defaultValue
             return (
-                <div>
-                    <input className={getData("valueSaved") == getData("value") ? styles.checkbox : styles.checkboxModified} style={{ width: width }} type="checkbox" checked={thisValue} onChange={e => handleChange(!thisValue)} />
-                </div>
+                <input className={getData("valueSaved") == getData("value") ? styles.checkbox : styles.checkboxModified} style={{ width: width }} type="checkbox" checked={thisValue} onChange={e => handleChange(!thisValue)} />
             )
         case "number":
             return (
-                <div>
-                    <input className={getData("valueSaved") == getData("value") ? styles.text : styles.textModified} style={{ width: width }} type="number" value={getData("value") ? getData("value") : defaultValue} onChange={e => handleChange(e.target.value)} />
-                </div>
+                <input className={getData("valueSaved") == getData("value") ? styles.text : styles.textModified} style={{ width: width }} type="number" value={getData("value") ? getData("value") : defaultValue} onChange={e => handleChange(e.target.value)} />
+            )
+        case "color":
+            const [picker, setPicker] = useState(false)
+
+            return (
+                <>
+                    <div className={styles.taskColor} style={{ backgroundColor: getData("value") ? getData("value") : defaultValue, width: width }} onClick={e => { setPicker(!picker) }} />
+                    {picker ? (
+                        <div className={styles.pickerWrapper} onClick={e => { setPicker(false) }}>
+                            <div className={styles.taskPicker}>
+                                <div className={styles.pickerGrid}>
+                                    <div className={styles.pickerColor} style={{ backgroundColor: "#99C1F1" }} onClick={e => { handleChange("#99C1F1"), setPicker(false) }} />
+                                    <div className={styles.pickerColor} style={{ backgroundColor: "#A7D35F" }} onClick={e => { handleChange("#A7D35F"), setPicker(false) }} />
+                                    <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { handleChange("#E9807F"), setPicker(false) }} />
+                                    <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { handleChange("#E9807F"), setPicker(false) }} />
+                                    <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { handleChange("#E9807F"), setPicker(false) }} />
+                                    <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { handleChange("#E9807F"), setPicker(false) }} />
+                                    <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { handleChange("#E9807F"), setPicker(false) }} />
+                                    <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { handleChange("#E9807F"), setPicker(false) }} />
+                                    <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { handleChange("#E9807F"), setPicker(false) }} />
+                                    <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { handleChange("#E9807F"), setPicker(false) }} />
+                                    <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { handleChange("#E9807F"), setPicker(false) }} />
+                                    <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { handleChange("#E9807F"), setPicker(false) }} />
+                                    <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { handleChange("#E9807F"), setPicker(false) }} />
+                                    <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { handleChange("#E9807F"), setPicker(false) }} />
+                                    <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { handleChange("#E9807F"), setPicker(false) }} />
+                                    <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { handleChange("#E9807F"), setPicker(false) }} />
+                                    <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { handleChange("#E9807F"), setPicker(false) }} />
+                                    <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { handleChange("#E9807F"), setPicker(false) }} />
+                                    <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { handleChange("#E9807F"), setPicker(false) }} />
+                                    <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { handleChange("#E9807F"), setPicker(false) }} />
+                                    <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { handleChange("#E9807F"), setPicker(false) }} />
+                                    <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { handleChange("#E9807F"), setPicker(false) }} />
+                                    <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { handleChange("#E9807F"), setPicker(false) }} />
+                                    <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { handleChange("#E9807F"), setPicker(false) }} />
+                                    <div className={styles.pickerColor} style={{ backgroundColor: "#E9807F" }} onClick={e => { handleChange("#E9807F"), setPicker(false) }} />
+                                </div>
+                            </div>
+                        </div>
+                    ) : ""}
+                </>
+            )
+        case "public":
+            var thisValue = getData("value") !== undefined ? getData("value") : defaultValue
+            return (
+                <>
+                    <div className={thisValue ? styles.public : styles.publicFalse} style={{ width: width }} onClick={() => { handleChange(!thisValue)}}>
+                        <Image src={"/public-icon.svg"} height={20} width={20} />
+                    </div>
+                </>
             )
     }
 }
