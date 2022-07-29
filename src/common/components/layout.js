@@ -28,7 +28,7 @@ function Component({ children }) {
 
     var style = {}
     if (!isMobile) {
-        style.paddingLeft = context.userbarOpen ? "230px" : "70px"
+        style.paddingLeft = context.userbarOpen ? "210px" : "50px"
     }
 
     return (user ?

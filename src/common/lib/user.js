@@ -11,8 +11,8 @@ export default class User {
 
     getProfilePicture() {
         if (this.data.profilePicture)
+            // '/uploads/' + this.getId() + "_pfp.jpg"
             return this.data.profilePicture
-            // return '/uploads/' + this.getId() + "_pfp.jpg"
 
         return '/ladeira.jpg'
     }

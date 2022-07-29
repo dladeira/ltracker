@@ -5,8 +5,10 @@ import { useAppContext } from '../common/lib/context'
 
 import styles from '../styles/schedule.module.scss'
 import { useUser } from '../common/lib/hooks'
+import { useMediaQuery } from 'react-responsive'
 
 function Page() {
+    const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
     useUser({ userOnly: true })
 
     const hours = ["12 AM", "1 AM", "2 AM", "3 AM", "4 AM", "5 AM", "6 AM", "7 AM", "8 AM", "9 AM", "10 AM", "11 AM", "12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM", "9 PM", "10 PM", "11 PM", "12 AM"]
@@ -42,6 +44,8 @@ function Day({ index, name, first }) {
     const [yOnMouseDown, setYOnMouseDown] = useState(0)
     const [clickTime, setClickTime] = useState(0)
     const [lastMouseUp, setLastMouseUp] = useState(0)
+
+    const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
 
     const placeHolderEvent = useState({
         quarterStart: 0,
@@ -117,7 +121,7 @@ function Day({ index, name, first }) {
         setDragging(false)
     }
 
-    async function mouseUpHandler() {
+    async function mouseUpHandler(e) {
         if (dragging && quarterData.first != 0 && quarterData.last != 0) {
             const res = await fetch("/api/user/events/addEvent", {
                 method: "POST",
@@ -136,12 +140,29 @@ function Day({ index, name, first }) {
         }
     }
 
-    function mouseDownHandler(e, quarter) {
-        setYOnMouseDown(e.clientY)
-        setDragging(true)
-        quarterData.first = quarter
-        setQuarterData(quarterData)
-        setClickTime(new Date().getTime())
+    async function mouseDownHandler(e, quarter) {
+        if (isMobile) {
+            const res = await fetch("/api/user/events/addEvent", {
+                method: "POST",
+                body: JSON.stringify({
+                    day: index,
+                    week: context.week,
+                    year: context.year,
+                    firstQuarter: quarter,
+                    lastQuarter: quarter,
+                    task: user.getTasks()[0].id
+                })
+            })
+            const newUser = await res.json()
+            setUser({ ...newUser })
+        } else {
+            setYOnMouseDown(e.clientY)
+            setDragging(true)
+            quarterData.first = quarter
+            setQuarterData(quarterData)
+            setClickTime(new Date().getTime())
+        }
+
     }
 
     return (
@@ -198,6 +219,8 @@ function Event({ event, quarterHeight, index }) {
     const [initial, setInitial] = useState(true)
     const [lastMouseUp, setLastMouseUp] = useState(0)
 
+    const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
+
     const [panelData, setPanelData] = useState({
         task: task,
         from: quarterStart,
@@ -223,7 +246,7 @@ function Event({ event, quarterHeight, index }) {
     }
 
     useEffect(() => {
-        if (Math.abs(context.lastMouseUp - lastMouseUp) > 200 && panel) {
+        if (Math.abs(context.lastMouseUp - lastMouseUp) > 200 && panel && !isMobile) {
             setLastMouseUp(context.lastMouseUp)
             setPanel(false)
         }
@@ -362,12 +385,12 @@ function Event({ event, quarterHeight, index }) {
 
     return (
         <div className={styles.eventWrapper} style={wrapperStyle} onMouseUp={onClick}>
-            <div className={(quarterEnd - quarterStart + 1 > 2 ? styles.event : styles.eventSmall) + (panelData.plan ? " " + styles.eventPlan : "")} style={{ backgroundColor: color }} onClick={() => { setPanel(true) }} onContextMenu={e => { onDeletePress(); e.preventDefault(); }}>
+            <div className={(quarterEnd - quarterStart + 1 > 2 ? styles.event : styles.eventSmall) + (panelData.plan ? " " + styles.eventPlan : "")} style={{ backgroundColor: color }} onClick={() => { setPanel(!panel) }} onContextMenu={e => { onDeletePress(); e.preventDefault(); }}>
                 <div className={styles.eventTime}>{formatMinutes((quarterEnd - quarterStart + 1) * 15)}</div>
                 <div className={styles.eventName}>{name}</div>
             </div>
             {panel ? (
-                <div className={styles.panel + (index > 4 ? " " + styles.panelLeft : "")}>
+                <div className={isMobile ? styles.panelMobile : styles.panel + (index > 4 ? " " + styles.panelLeft : "")}>
                     <div className={styles.panelControl}>
                         <select className={styles.panelType} defaultValue={"Task"}>
                             <option value="Task">Task</option>

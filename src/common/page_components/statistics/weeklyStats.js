@@ -35,7 +35,7 @@ export function WeeklyStats() {
             case "sleep":
                 label = "Average Daily Sleep"
                 for (var i = 1; i <= weekCount; i++) {
-                    data.push(Math.round(user.getHoursForWeek(i, context.year) / 7 * 2) / 2)
+                    data.push(Math.round(user.getSleepForWeek(i, context.year) / 7 * 2) / 2)
                 }
                 break;
             case "checklist":
