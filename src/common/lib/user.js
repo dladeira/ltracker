@@ -9,6 +9,14 @@ export default class User {
         return this.data.public == true
     }
 
+    getProfilePicture() {
+        if (this.data.profilePicture)
+            return this.data.profilePicture
+            // return '/uploads/' + this.getId() + "_pfp.jpg"
+
+        return '/ladeira.jpg'
+    }
+
     getTaskPairs(task) {
         const pairs = []
         for (var friend of this.data.friends) {

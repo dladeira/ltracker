@@ -50,6 +50,18 @@ export function General() {
         setContext({ ...context })
     }
 
+    async function saveProfilePicture(value) {
+        const res = await fetch(window.origin + "/api/user/setProfilePicture", {
+            body: JSON.stringify({
+                image: value
+            }),
+            method: "POST"
+        })
+        const newUser = await res.json()
+        context.user = newUser
+        setContext({ ...context })
+    }
+
     return (
         <div className="h-full w-full bg-white rounded-lg p-3.5 pt-1">
             <h3 className="text-lg font-medium">General</h3>
@@ -67,6 +79,11 @@ export function General() {
             <div className={styles.entry}>
                 <div className={styles.key}>account public</div>
                 <FormInput type="checkbox" defaultValue={user.getAccountPublic()} onSave={saveAccountPublic} contextKey="settings.accountPublic" />
+            </div>
+
+            <div className={styles.entry}>
+                <div className={styles.key}>profile picture</div>
+                <FormInput width={"40%"} type="file" defaultValue={user.getProfilePicture()} onSave={saveProfilePicture} contextKey="settings.profilePicture" />
             </div>
         </div>
     )

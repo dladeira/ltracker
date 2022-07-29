@@ -12,6 +12,7 @@
     "@hapi/iron": "^7.0.0",
     "chart.js": "^3.8.0",
     "cookie": "^0.5.0",
+    "fs": "^0.0.1-security",
     "mongoose": "^6.4.1",
     "next": "12.1.6",
     "next-connect": "^0.12.2",

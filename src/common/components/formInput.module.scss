@@ -130,3 +130,12 @@
         filter: invert(97%) sepia(0%) saturate(0%) hue-rotate(155deg) brightness(82%) contrast(91%);
     }
 }
+
+// ==========
+// IMAGE
+// ==========
+
+.image {
+    @extend .text;
+    padding-bottom: 5px;
+}

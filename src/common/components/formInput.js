@@ -53,6 +53,13 @@ export default function FormInput({ defaultValue, type, onSave, contextKey, widt
         setData("value", value)
     }
 
+    async function directSave(value) {
+        var reader = new FileReader();
+        reader.addEventListener("load", () => {
+            onSave(reader.result)
+        }, false);
+        reader.readAsDataURL(value.files[0])
+    }
 
     switch (type) {
         case "text":
@@ -113,10 +120,14 @@ export default function FormInput({ defaultValue, type, onSave, contextKey, widt
             var thisValue = getData("value") !== undefined ? getData("value") : defaultValue
             return (
                 <>
-                    <div className={thisValue ? styles.public : styles.publicFalse} style={{ width: width }} onClick={() => { handleChange(!thisValue)}}>
+                    <div className={thisValue ? styles.public : styles.publicFalse} style={{ width: width }} onClick={() => { handleChange(!thisValue) }}>
                         <Image src={"/public-icon.svg"} height={20} width={20} />
                     </div>
                 </>
+            )
+        case "file":
+            return (
+                <input className={styles.image} style={{ width: width }} type="file" accept="image/jpeg" onChange={e => directSave(e.target)} />
             )
     }
 }

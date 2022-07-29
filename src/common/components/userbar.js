@@ -16,7 +16,7 @@ function Component() {
     return (
         <div className={context.userbarOpen ? styles.containerOpen : styles.containerClosed}>
             <div className={styles.pfp}>
-                <Image src="/ladeira.jpg" layout="fill" />
+                <Image src={user.getProfilePicture()} layout="fill" />
             </div>
 
             <div className={styles.username}>{user.getUsername()}</div>

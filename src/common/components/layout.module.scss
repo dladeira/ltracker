@@ -40,7 +40,6 @@
     &Close {
         @extend .button;
         right: calc(100vw - 180px);
-        border-right: 0;
         border-radius: 10px 0 0 10px;
     }
 
