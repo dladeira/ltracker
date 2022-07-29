@@ -1,12 +1,16 @@
 {
   "name": "ladeira-tracker",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "private": false,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dladeira/ladeira-tracker"
   },
   "dependencies": {
     "@hapi/iron": "^7.0.0",
