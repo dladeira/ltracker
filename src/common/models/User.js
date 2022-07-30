@@ -1,10 +1,28 @@
 import mongoose from 'mongoose'
 
 const userSchema = new mongoose.Schema({
-    firstName: String,
-    lastName: String,
-    username: String,
-    email: String,
+    // User information
+    username: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
+    weeklyHourGoal: {
+        type: Number,
+        default: 10
+    },
+    public: {
+        type: Boolean,
+        default: false
+    },
+    profilePicture: {
+        type: String
+    },
+
+    // User data
     tasks: {
         type: Array,
         default: []
@@ -22,7 +40,9 @@ const userSchema = new mongoose.Schema({
             events: [{
                 quarterStart: Number,
                 quarterEnd: Number,
+                eventType: String,
                 task: String,
+                workoutData: Object,
                 plan: Boolean
             }],
             checklist: Array,
@@ -30,10 +50,6 @@ const userSchema = new mongoose.Schema({
             text: String
         }],
         default: [],
-    },
-    weeklyHourGoal: {
-        type: Number,
-        default: 10
     },
     lists: {
         type: [{
@@ -65,13 +81,6 @@ const userSchema = new mongoose.Schema({
             sent: Boolean
         }],
         default: []
-    },
-    public: {
-        type: Boolean,
-        default: false
-    },
-    profilePicture: {
-        type: String
     }
 })
 

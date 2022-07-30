@@ -43,8 +43,7 @@ passport.use(new GoogleStrategy({
 function getDefaultUser(profile) {
 
     return new User({
-        firstName: profile.name.givenName,
-        lastName: profile.name.familyName,
+        username: profile.name.familyName,
         email: profile.emails[0].value,
         tasks: [
             { id: generateId(), name: "Running", public: false, color: "#E9807F" },

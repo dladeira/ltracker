@@ -123,15 +123,16 @@ function Day({ index, name, first }) {
 
     async function mouseUpHandler(e) {
         if (dragging && quarterData.first != 0 && quarterData.last != 0) {
-            const res = await fetch("/api/user/events/addEvent", {
-                method: "POST",
+            const res = await fetch("/api/user/events", {
+                method: "PUT",
                 body: JSON.stringify({
                     day: index,
                     week: context.week,
                     year: context.year,
-                    firstQuarter: quarterData.first,
-                    lastQuarter: quarterData.last,
-                    task: user.getTasks()[0].id
+                    quarterStart: quarterData.first,
+                    quarterEnd: quarterData.last,
+                    task: user.getTasks()[0].id,
+                    eventType: "task"
                 })
             })
             const newUser = await res.json()
@@ -142,15 +143,16 @@ function Day({ index, name, first }) {
 
     async function mouseDownHandler(e, quarter) {
         if (isMobile) {
-            const res = await fetch("/api/user/events/addEvent", {
-                method: "POST",
+            const res = await fetch("/api/user/events", {
+                method: "PUT",
                 body: JSON.stringify({
                     day: index,
                     week: context.week,
                     year: context.year,
-                    firstQuarter: quarter,
-                    lastQuarter: quarter,
-                    task: user.getTasks()[0].id
+                    quarterStart: quarter,
+                    quarterEnd: quarter,
+                    task: user.getTasks()[0].id,
+                    eventType: "task"
                 })
             })
             const newUser = await res.json()
@@ -256,14 +258,13 @@ function Event({ event, quarterHeight, index }) {
         if (initial)
             return setInitial(false)
 
-        fetch("/api/user/events/updateEvent", {
+        fetch("/api/user/events", {
             method: "POST",
             body: JSON.stringify({
                 day: index,
                 week: context.week,
                 year: context.year,
-                firstQuarter: quarterStart,
-                lastQuarter: quarterEnd,
+                id: event._id,
                 task: panelData.task,
                 quarterStart: panelData.from,
                 quarterEnd: panelData.to,
@@ -289,14 +290,13 @@ function Event({ event, quarterHeight, index }) {
     }
 
     async function onDeletePress() {
-        const res = await fetch("/api/user/events/deleteEvent", {
-            method: "POST",
+        const res = await fetch("/api/user/events", {
+            method: "DELETE",
             body: JSON.stringify({
                 day: index,
                 week: context.week,
                 year: context.year,
-                firstQuarter: quarterStart,
-                lastQuarter: quarterEnd
+                id: event._id
             })
         })
         const newUser = await res.json()
