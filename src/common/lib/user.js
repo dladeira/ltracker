@@ -271,6 +271,22 @@ export default class User {
         }
     }
 
+    getMuscleImpact(type, week, year) {
+        var totalImpact = 0
+
+        for (var i = 0; i <= 6; i++) {
+
+            for (var event of this.getEventsForDay(i, week, year)) {
+
+                if (event.eventType == "workout" && event.workoutData[type]) {
+                    totalImpact += event.workoutData[type]
+                }
+            }
+        }
+
+        return Math.round(totalImpact / 7)
+    }
+
     getTasks() {
         return this.data.tasks
     }
