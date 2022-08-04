@@ -1,0 +1,126 @@
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.headerThis,
+.headerLast {
+    font-variant: small-caps;
+    color: #7D7D7D;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+
+    margin-top: 10px;
+    padding-left: 50px;
+}
+
+.headerThis,
+.headerLast {
+    font-variant: small-caps;
+    color: #7D7D7D;
+}
+
+.hours {
+    @extend .header;
+    justify-content: space-evenly;
+
+    width: 100%;
+
+    margin: 0 auto;
+    padding: 0;
+}
+
+.hoursThis {
+    width: 100%;
+
+    margin-bottom: 30px;
+
+    font-size: 4.5rem;
+    font-weight: bold;
+    text-align: right;
+    color: #008BFF;
+}
+
+.slash {
+    font-size: 8rem;
+    font-weight: 300;
+    color: #CDCDCD;
+}
+
+.hoursLast {
+    width: 60%;
+
+    margin-top: 40px;
+
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #CDCDCD;
+}
+
+.batterySection {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+
+    margin-top: auto;
+}
+
+.battery {
+    position: relative;
+
+    overflow: hidden;
+
+    font-size: 0;
+}
+
+.batteryBackground {
+    position: absolute;
+}
+
+.batteryMeter {
+    position: absolute;
+
+    height: 200px;
+    width: 120px;
+
+    background-color: #92D624;
+    box-shadow: 0 4px 20px 0 rgba(158, 255, 0, 1);
+
+}
+
+.goal {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.goalTitle {
+    margin: 0;
+    margin-bottom: 10px;
+
+    font-size: 1.5rem;
+    color: #7D7D7D;
+}
+
+.goalText {
+    margin: 0;
+
+    font-size: 1.25rem;
+    color: #7D7D7D;
+}
+
+.goalSubText {
+    margin-top: 10px;
+
+    font-size: 1rem;
+    color: #7D7D7D;
+}

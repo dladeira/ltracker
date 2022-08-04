@@ -204,6 +204,16 @@ export default class User {
         return totalHours
     }
 
+    getPhysicalForWeek(week, year) {
+        var totalHours = 0
+
+        for (var task of this.getEventsForWeek(week, year).filter(e => e.plan == false && e.eventType == "workout")) {
+            totalHours += (task.quarterEnd - task.quarterStart + 1) * 0.25
+        }
+
+        return totalHours
+    }
+
     getHoursForWeek(week, year, withPlan = false) {
         var totalHours = 0
 
