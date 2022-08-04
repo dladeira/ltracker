@@ -27,6 +27,10 @@ const userSchema = new mongoose.Schema({
         type: Array,
         default: []
     },
+    specialTasks: {
+        type: Array,
+        default: []
+    },
     checklist: {
         type: Array,
         default: []

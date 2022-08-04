@@ -215,7 +215,7 @@ function Day({ index, name, first }) {
 function Event({ event, quarterHeight, index }) {
     const [context] = useAppContext()
     const [user, setUser] = useUser({ userOnly: true })
-    const { quarterStart, quarterEnd, task, plan, eventType } = event
+    const { quarterStart, quarterEnd, task, plan, eventType, workoutData } = event
     const { name, color } = user.getTask(task) ? user.getTask(task) : { name: "ERROR", color: "#000000" }
     const [panel, setPanel] = useState(false)
     const [initial, setInitial] = useState(true)
@@ -229,7 +229,7 @@ function Event({ event, quarterHeight, index }) {
         to: quarterEnd,
         plan: plan,
         type: eventType,
-        workoutData: {
+        workoutData: workoutData != undefined && workoutData != {} ? workoutData : {
             shoulders: 0,
             chest: 0,
             biceps: 0,
@@ -274,6 +274,8 @@ function Event({ event, quarterHeight, index }) {
         if (initial)
             return setInitial(false)
 
+        console.log("saving workout data")
+
         fetch("/api/user/events", {
             method: "POST",
             body: JSON.stringify({
@@ -284,7 +286,9 @@ function Event({ event, quarterHeight, index }) {
                 task: panelData.task,
                 quarterStart: panelData.from,
                 quarterEnd: panelData.to,
-                plan: panelData.plan
+                plan: panelData.plan,
+                eventType: panelData.type,
+                workoutData: panelData.workoutData
             })
         }).then(res => res.json().then(newUser => setUser({ ...newUser })))
 
@@ -411,8 +415,6 @@ function Event({ event, quarterHeight, index }) {
             panelData.workoutData[type] = 0
         }
 
-        console.log("Clicked on muscle " + type + " and now the value is: " + panelData.workoutData[type])
-
         setPanelData({ ...panelData })
     }
 
@@ -431,14 +433,14 @@ function Event({ event, quarterHeight, index }) {
 
     return (
         <div className={styles.eventWrapper} style={wrapperStyle} onMouseUp={onClick}>
-            <div className={(quarterEnd - quarterStart + 1 > 2 ? styles.event : styles.eventSmall) + (panelData.plan ? " " + styles.eventPlan : "")} style={{ backgroundColor: color }} onClick={() => { setPanel(!panel) }} onContextMenu={e => { onDeletePress(); e.preventDefault(); }}>
+            <div className={(quarterEnd - quarterStart + 1 > 2 ? styles.event : styles.eventSmall) + (panelData.plan ? " " + styles.eventPlan : "")} style={{ backgroundColor: eventType == "task" ? color : user.getSpecialTask("workout").color }} onClick={() => { setPanel(!panel) }} onContextMenu={e => { onDeletePress(); e.preventDefault(); }}>
                 <div className={styles.eventTime}>{formatMinutes((quarterEnd - quarterStart + 1) * 15)}</div>
-                <div className={styles.eventName}>{name}</div>
+                <div className={styles.eventName}>{eventType == "task" ? name : "Workout"}</div>
             </div>
             {panel ? (
                 <div className={isMobile ? styles.panelMobile : styles.panel + (index > 4 ? " " + styles.panelLeft : "")}>
                     <div className={styles.panelControl}>
-                        <select className={styles.panelType} value={panelData.type} onChange={e => setTaskType(e.target.value)} defaultValue={panelData.type}>
+                        <select className={styles.panelType} value={panelData.type} onChange={e => setTaskType(e.target.value)} >
                             <option value="task">Task</option>
                             <option value="workout">Workout</option>
                         </select>
@@ -473,7 +475,6 @@ function Event({ event, quarterHeight, index }) {
                         </div>
                     ) : (
                         <div className={styles.eventBody}>
-                            {/* {JSON.stringify(panelData.workoutData)} */}
                             <svg id="e1rWyE6pdS51" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 800 525" shapeRendering="geometricPrecision" textRendering="geometricPrecision">
                                 <g transform="matrix(1 0 0 1.020455-151.693085-251.94997)">
                                     <rect onClick={e => onClickMuscle("biceps")} fill={getMuscleFill("biceps")} width="61.007434" height="168.182657" rx="0" ry="0" transform="matrix(.937262 0.348627-.348627 0.937262 210.326109 287.05409)" strokeWidth="0" />

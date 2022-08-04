@@ -47,6 +47,7 @@ async function Route(req, res) {
                     event.task = req.body.task ? req.body.task : event.task
                     event.eventType = req.body.eventType ? req.body.eventType : event.eventType
                     event.plan = req.body.plan !== undefined ? req.body.plan : event.plan
+                    event.workoutData = req.body.workoutData !== undefined ? req.body.workoutData : event.workoutData
 
                     event.quarterStart = req.body.quarterStart && event.quarterEnd >= req.body.quarterStart ? req.body.quarterStart : event.quarterStart
                     event.quarterEnd = req.body.quarterEnd && event.quarterStart <= req.body.quarterEnd ? req.body.quarterEnd : event.quarterEnd

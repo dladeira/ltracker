@@ -47,7 +47,6 @@ function getDefaultUser(profile) {
         email: profile.emails[0].value,
         tasks: [
             { id: generateId(), name: "Running", public: false, color: "#E9807F" },
-            { id: generateId(), name: "Work out", public: false, color: "#E9807F" },
             { id: generateId(), name: "Swimming", public: false, color: "#E9807F" },
             { id: generateId(), name: "WebDev", public: false, color: "#99C1F1" },
             { id: generateId(), name: "SysAdmin", public: false, color: "#99C1F1" },
@@ -55,6 +54,9 @@ function getDefaultUser(profile) {
             { id: generateId(), name: "Cooking", public: false, color: "#A7D35F" },
             { id: generateId(), name: "Math", public: false, color: "#A7D35F" },
             { id: generateId(), name: "Guitar", public: false, color: "#A7D35F" }
+        ],
+        specialTasks: [
+            { id: "workout", name: "Workout", public: false, color: "#E9807F" },
         ],
         checklist: [
             { id: generateId(), name: "6am sigma grindset" },

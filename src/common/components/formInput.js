@@ -4,7 +4,7 @@ import { useAppContext } from '../lib/context'
 
 import styles from './formInput.module.scss'
 
-export default function FormInput({ defaultValue, type, onSave, contextKey, width }) {
+export default function FormInput({ defaultValue, type, onSave, contextKey, width, disabled }) {
     const [context, setContext] = useAppContext()
     const [lastValue, setLastValue] = useState(defaultValue)
     const [value, setValue] = useState(defaultValue)
@@ -64,16 +64,16 @@ export default function FormInput({ defaultValue, type, onSave, contextKey, widt
     switch (type) {
         case "text":
             return (
-                <input className={getData("valueSaved") == getData("value") ? styles.text : styles.textModified} style={{ width: width }} type="text" value={getData("value") ? getData("value") : defaultValue} onChange={e => handleChange(e.target.value)} />
+                <input className={getData("valueSaved") == getData("value") ? styles.text : styles.textModified} style={{ width: width }} disabled={disabled} type="text" value={getData("value") ? getData("value") : defaultValue} onChange={e => handleChange(e.target.value)} />
             )
         case "checkbox":
             var thisValue = getData("value") !== undefined ? getData("value") : defaultValue
             return (
-                <input className={getData("valueSaved") == getData("value") ? styles.checkbox : styles.checkboxModified} style={{ width: width }} type="checkbox" checked={thisValue} onChange={e => handleChange(!thisValue)} />
+                <input className={getData("valueSaved") == getData("value") ? styles.checkbox : styles.checkboxModified} style={{ width: width }} disabled={disabled} type="checkbox" checked={thisValue} onChange={e => handleChange(!thisValue)} />
             )
         case "number":
             return (
-                <input className={getData("valueSaved") == getData("value") ? styles.text : styles.textModified} style={{ width: width }} type="number" value={getData("value") ? getData("value") : defaultValue} onChange={e => handleChange(e.target.value)} />
+                <input className={getData("valueSaved") == getData("value") ? styles.text : styles.textModified} style={{ width: width }} disabled={disabled} type="number" value={getData("value") ? getData("value") : defaultValue} onChange={e => handleChange(e.target.value)} />
             )
         case "color":
             const [picker, setPicker] = useState(false)

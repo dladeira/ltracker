@@ -260,6 +260,17 @@ export default class User {
         return info
     }
 
+    getSpecialTasks() {
+        return this.data.specialTasks ? this.data.specialTasks : []
+    }
+
+    getSpecialTask(id) {
+        for (var task of this.getSpecialTasks()) {
+            if (task.id == id)
+                return task
+        }
+    }
+
     getTasks() {
         return this.data.tasks
     }
