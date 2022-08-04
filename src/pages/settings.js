@@ -1,5 +1,5 @@
 import Grid from '../common/components/grid'
-import { Tasks, Checklists, General } from '../common/page_components/settings/index'
+import { Tasks, Checklists, General, SpecialTasks } from '../common/page_components/settings/index'
 
 function Page() {
 
@@ -8,6 +8,7 @@ function Page() {
             <General />
             <Tasks />
             <Checklists />
+            <SpecialTasks />
         </Grid>
     )
 }

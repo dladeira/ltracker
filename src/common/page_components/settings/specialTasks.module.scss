@@ -1,0 +1,136 @@
+.grid {
+    display: grid;
+    gap: 20px;
+    grid-template-rows: 250px 250px 250px;
+    grid-template-columns: repeat(4, 370px);
+}
+
+.gridItem {
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+    width: 100%;
+
+    padding: 15px;
+    padding-top: 5px;
+    padding-right: 0;
+
+    background-color: white;
+
+    border-radius: 10px;
+}
+
+.itemTasks {
+    grid-column: 3 / span 1;
+    grid-row: 1 / 2;
+
+    overflow-y: scroll;
+}
+
+.itemHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    padding-right: 15px;
+}
+
+.addButton {
+    padding: 0px 15px;
+
+    border-radius: 5px;
+
+    font-size: 2rem;
+    line-height: 2rem;
+    background-color: #008BFF;
+    color: white;
+
+    &:hover {
+        background-color: darken(#008BFF, 3);
+
+        cursor: pointer;
+    }
+}
+
+.itemTitle {
+    width: fit-content;
+
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.itemList {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    margin-top: 10px;
+    padding-right: 10px;
+
+    overflow-y: scroll;
+}
+
+.listHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
+
+    margin-bottom: 5px;
+    padding-right: 10px;
+
+    font-variant: small-caps;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 1px;
+    color: #C4C4C4;
+}
+
+$taskHeight: 13px;
+$margin: 15px;
+
+.task {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    height: fit-content;
+    width: 100%;
+
+    padding-right: 10px;
+}
+
+.taskName {
+    width: 60%;
+
+    margin-right: $margin;
+    padding: calc($taskHeight / 2 - 0.5px) 0;
+
+    font-size: 1rem;
+
+    border: none;
+    border-bottom: 1px solid transparent;
+    outline: none;
+
+    &:hover,
+    &:focus {
+        border-bottom: 1px solid #CDCDCD;
+    }
+}
+
+.taskDelete {
+    flex-shrink: 0;
+
+    width: 20px;
+
+    margin-left: $margin;
+
+    padding: calc($taskHeight / 2 - 1.5px) 0;
+}

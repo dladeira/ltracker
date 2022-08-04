@@ -204,6 +204,16 @@ export default class User {
         return totalHours
     }
 
+    getPhysicalForWeek(week, year) {
+        var totalHours = 0
+
+        for (var task of this.getEventsForWeek(week, year).filter(e => e.plan == false && e.eventType == "workout")) {
+            totalHours += (task.quarterEnd - task.quarterStart + 1) * 0.25
+        }
+
+        return totalHours
+    }
+
     getHoursForWeek(week, year, withPlan = false) {
         var totalHours = 0
 
@@ -258,6 +268,33 @@ export default class User {
         }
 
         return info
+    }
+
+    getSpecialTasks() {
+        return this.data.specialTasks ? this.data.specialTasks : []
+    }
+
+    getSpecialTask(id) {
+        for (var task of this.getSpecialTasks()) {
+            if (task.id == id)
+                return task
+        }
+    }
+
+    getMuscleImpact(type, week, year) {
+        var totalImpact = 0
+
+        for (var i = 0; i <= 6; i++) {
+
+            for (var event of this.getEventsForDay(i, week, year)) {
+
+                if (event.eventType == "workout" && event.workoutData[type]) {
+                    totalImpact += event.workoutData[type]
+                }
+            }
+        }
+
+        return Math.round(totalImpact / 7)
     }
 
     getTasks() {

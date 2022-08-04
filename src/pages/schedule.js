@@ -123,15 +123,16 @@ function Day({ index, name, first }) {
 
     async function mouseUpHandler(e) {
         if (dragging && quarterData.first != 0 && quarterData.last != 0) {
-            const res = await fetch("/api/user/events/addEvent", {
-                method: "POST",
+            const res = await fetch("/api/user/events", {
+                method: "PUT",
                 body: JSON.stringify({
                     day: index,
                     week: context.week,
                     year: context.year,
-                    firstQuarter: quarterData.first,
-                    lastQuarter: quarterData.last,
-                    task: user.getTasks()[0].id
+                    quarterStart: quarterData.first,
+                    quarterEnd: quarterData.last,
+                    task: user.getTasks()[0].id,
+                    eventType: "task"
                 })
             })
             const newUser = await res.json()
@@ -142,15 +143,16 @@ function Day({ index, name, first }) {
 
     async function mouseDownHandler(e, quarter) {
         if (isMobile) {
-            const res = await fetch("/api/user/events/addEvent", {
-                method: "POST",
+            const res = await fetch("/api/user/events", {
+                method: "PUT",
                 body: JSON.stringify({
                     day: index,
                     week: context.week,
                     year: context.year,
-                    firstQuarter: quarter,
-                    lastQuarter: quarter,
-                    task: user.getTasks()[0].id
+                    quarterStart: quarter,
+                    quarterEnd: quarter,
+                    task: user.getTasks()[0].id,
+                    eventType: "task"
                 })
             })
             const newUser = await res.json()
@@ -213,7 +215,7 @@ function Day({ index, name, first }) {
 function Event({ event, quarterHeight, index }) {
     const [context] = useAppContext()
     const [user, setUser] = useUser({ userOnly: true })
-    const { quarterStart, quarterEnd, task, plan } = event
+    const { quarterStart, quarterEnd, task, plan, eventType, workoutData } = event
     const { name, color } = user.getTask(task) ? user.getTask(task) : { name: "ERROR", color: "#000000" }
     const [panel, setPanel] = useState(false)
     const [initial, setInitial] = useState(true)
@@ -225,7 +227,23 @@ function Event({ event, quarterHeight, index }) {
         task: task,
         from: quarterStart,
         to: quarterEnd,
-        plan: plan
+        plan: plan,
+        type: eventType,
+        workoutData: workoutData != undefined && workoutData != {} ? workoutData : {
+            shoulders: 0,
+            chest: 0,
+            biceps: 0,
+            abs: 0,
+            obliques: 0,
+            traps: 0,
+            triceps: 0,
+            lats: 0,
+            lowerBack: 0,
+            glutes: 0,
+            hamstrings: 0,
+            calves: 0,
+            quads: 0
+        }
     })
     const [tempTime, setTempTime] = useState({
         from: quarterToTime(quarterStart),
@@ -256,18 +274,21 @@ function Event({ event, quarterHeight, index }) {
         if (initial)
             return setInitial(false)
 
-        fetch("/api/user/events/updateEvent", {
+        console.log("saving workout data")
+
+        fetch("/api/user/events", {
             method: "POST",
             body: JSON.stringify({
                 day: index,
                 week: context.week,
                 year: context.year,
-                firstQuarter: quarterStart,
-                lastQuarter: quarterEnd,
+                id: event._id,
                 task: panelData.task,
                 quarterStart: panelData.from,
                 quarterEnd: panelData.to,
-                plan: panelData.plan
+                plan: panelData.plan,
+                eventType: panelData.type,
+                workoutData: panelData.workoutData
             })
         }).then(res => res.json().then(newUser => setUser({ ...newUser })))
 
@@ -289,14 +310,13 @@ function Event({ event, quarterHeight, index }) {
     }
 
     async function onDeletePress() {
-        const res = await fetch("/api/user/events/deleteEvent", {
-            method: "POST",
+        const res = await fetch("/api/user/events", {
+            method: "DELETE",
             body: JSON.stringify({
                 day: index,
                 week: context.week,
                 year: context.year,
-                firstQuarter: quarterStart,
-                lastQuarter: quarterEnd
+                id: event._id
             })
         })
         const newUser = await res.json()
@@ -374,6 +394,11 @@ function Event({ event, quarterHeight, index }) {
         return ((hours + (am ? 0 : hours == 12 ? 0 : 12)) * 4) + (minutes / 15)
     }
 
+    function setTaskType(newType) {
+        panelData.type = newType
+        setPanelData({ ...panelData })
+    }
+
     function onPlanPress() {
         panelData.plan = !panelData.plan
         setPanelData({ ...panelData })
@@ -383,17 +408,41 @@ function Event({ event, quarterHeight, index }) {
         setLastMouseUp(new Date().getTime())
     }
 
+    function onClickMuscle(type) {
+        panelData.workoutData[type]++
+
+        if (panelData.workoutData[type] > 3) {
+            panelData.workoutData[type] = 0
+        }
+
+        setPanelData({ ...panelData })
+    }
+
+    function getMuscleFill(type) {
+        switch (panelData.workoutData[type]) {
+            case 0:
+                return "#d2dbed"
+            case 1:
+                return "#f09e9e"
+            case 2:
+                return "#ed5a5a"
+            case 3:
+                return "#f52525"
+        }
+    }
+
     return (
         <div className={styles.eventWrapper} style={wrapperStyle} onMouseUp={onClick}>
-            <div className={(quarterEnd - quarterStart + 1 > 2 ? styles.event : styles.eventSmall) + (panelData.plan ? " " + styles.eventPlan : "")} style={{ backgroundColor: color }} onClick={() => { setPanel(!panel) }} onContextMenu={e => { onDeletePress(); e.preventDefault(); }}>
+            <div className={(quarterEnd - quarterStart + 1 > 2 ? styles.event : styles.eventSmall) + (panelData.plan ? " " + styles.eventPlan : "")} style={{ backgroundColor: eventType == "task" ? color : user.getSpecialTask("workout").color }} onClick={() => { setPanel(!panel) }} onContextMenu={e => { onDeletePress(); e.preventDefault(); }}>
                 <div className={styles.eventTime}>{formatMinutes((quarterEnd - quarterStart + 1) * 15)}</div>
-                <div className={styles.eventName}>{name}</div>
+                <div className={styles.eventName}>{eventType == "task" ? name : "Workout"}</div>
             </div>
             {panel ? (
                 <div className={isMobile ? styles.panelMobile : styles.panel + (index > 4 ? " " + styles.panelLeft : "")}>
                     <div className={styles.panelControl}>
-                        <select className={styles.panelType} defaultValue={"Task"}>
-                            <option value="Task">Task</option>
+                        <select className={styles.panelType} value={panelData.type} onChange={e => setTaskType(e.target.value)} >
+                            <option value="task">Task</option>
+                            <option value="workout">Workout</option>
                         </select>
                         <div className={styles.panelControlSide}>
                             <div className={panelData.plan ? styles.panelPlanActive : styles.panelPlan} type="button" onClick={onPlanPress}>
@@ -404,22 +453,67 @@ function Event({ event, quarterHeight, index }) {
                             </div>
                         </div>
                     </div>
+
+
                     <div className={styles.panelTime}>
                         <div className={styles.panelTimeFrom}>From <input className={styles.panelTimeInput} type="text" value={tempTime.from} onBlur={e => { onTimeChange(e, true) }} onChange={e => { onTempChange(e, true) }} /></div>
                         <div className={styles.panelTimeTo}>To <input className={styles.panelTimeInput} type="text" value={tempTime.to} onBlur={e => { onTimeChange(e, false) }} onChange={e => { onTempChange(e, false) }} /></div>
                     </div>
-                    <div className={styles.eventBody}>
-                        <div className={styles.entry}>
-                            <div className={styles.key}>
-                                task
-                            </div>
-                            <div className={styles.value}>
-                                <select className={styles.taskSelect} onChange={onSelect} defaultValue={task}>
-                                    {user.getTasks().map(task => <option key={task.id} value={task.id}>{task.name}</option>)}
-                                </select>
+
+                    {panelData.type == "task" ? (
+                        <div className={styles.eventBody}>
+                            <div className={styles.entry}>
+                                <div className={styles.key}>
+                                    task
+                                </div>
+                                <div className={styles.value}>
+                                    <select className={styles.taskSelect} onChange={onSelect} defaultValue={task}>
+                                        {user.getTasks().map(task => <option key={task.id} value={task.id}>{task.name}</option>)}
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    ) : (
+                        <div className={styles.eventBody}>
+                            <svg id="e1rWyE6pdS51" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 800 525" shapeRendering="geometricPrecision" textRendering="geometricPrecision">
+                                <g transform="matrix(1 0 0 1.020455-151.693085-251.94997)">
+                                    <rect onClick={e => onClickMuscle("biceps")} fill={getMuscleFill("biceps")} width="61.007434" height="168.182657" rx="0" ry="0" transform="matrix(.937262 0.348627-.348627 0.937262 210.326109 287.05409)" strokeWidth="0" />
+                                    <rect onClick={e => onClickMuscle("biceps")} fill={getMuscleFill("biceps")} width="61.007434" height="168.182657" rx="0" ry="0" transform="matrix(.937282-.348572 0.348572 0.937282 409.390963 308.319492)" strokeWidth="0" />
+                                    <rect onClick={e => onClickMuscle("shoulders")} fill={getMuscleFill("shoulders")} width="61.007434" height="168.182657" rx="0" ry="0" transform="matrix(1.756757 0 0 0.269724 225.747607 241.691107)" strokeWidth="0" />
+                                    <rect onClick={e => onClickMuscle("shoulders")} fill={getMuscleFill("shoulders")} width="61.007434" height="168.182657" rx="0" ry="0" transform="matrix(1.756757 0 0 0.269724 343.974155 241.691107)" strokeWidth="0" />
+                                    <rect onClick={e => onClickMuscle("chest")} fill={getMuscleFill("chest")} width="61.007434" height="168.182657" rx="0" ry="0" transform="matrix(1.072276 0 0 0.35709 267.506035 308.322833)" strokeWidth="0" />
+                                    <rect onClick={e => onClickMuscle("chest")} fill={getMuscleFill("chest")} width="61.007434" height="168.182657" rx="0" ry="0" transform="matrix(1.072276 0 0 0.35709 343.974155 308.322833)" strokeWidth="0" />
+                                    <rect onClick={e => onClickMuscle("abs")} fill={getMuscleFill("abs")} width="61.007434" height="168.182657" rx="0" ry="0" transform="matrix(1.323984 0 0 0.663883 295.909693 387.138408)" strokeWidth="0" />
+                                    <rect onClick={e => onClickMuscle("quads")} fill={getMuscleFill("quads")} width="61.007434" height="168.182657" rx="0" ry="0" transform="matrix(.931154 0 0 0.663883 267.506035 521.278876)" strokeWidth="0" />
+                                    <rect onClick={e => onClickMuscle("quads")} fill={getMuscleFill("quads")} width="61.007434" height="168.182657" rx="0" ry="0" transform="matrix(.931154 0 0 0.663883 348.278901 521.278876)" strokeWidth="0" />
+                                    <rect onClick={e => onClickMuscle("calves")} fill={getMuscleFill("calves")} width="61.007434" height="168.182657" rx="0" ry="0" transform="matrix(.931154 0 0 0.663883 348.278901 649.722329)" strokeWidth="0" />
+                                    <rect onClick={e => onClickMuscle("calves")} fill={getMuscleFill("calves")} width="61.007434" height="168.182657" rx="0" ry="0" transform="matrix(.931154 0 0 0.663883 267.506035 649.722329)" strokeWidth="0" />
+                                    <g transform="translate(151.693097-38.62571)">
+                                        <rect onClick={e => onClickMuscle("obliques")} fill={getMuscleFill("obliques")} width="20.486182" height="111.655236" rx="0" ry="0" transform="translate(115.81295 425.760761)" strokeWidth="0" />
+                                        <rect onClick={e => onClickMuscle("obliques")} fill={getMuscleFill("obliques")} width="20.486182" height="111.655236" rx="0" ry="0" transform="translate(232.90695 425.762474)" strokeWidth="0" />
+                                    </g>
+                                </g>
+                                <g transform="matrix(1 0 0 1.03 279.108887-259.893521)">
+                                    <rect onClick={e => onClickMuscle("triceps")} fill={getMuscleFill("triceps")} width="61.007434" height="168.182657" rx="0" ry="0" transform="matrix(.937262 0.348627-.348627 0.937262 210.326109 297.688463)" strokeWidth="0" />
+                                    <rect onClick={e => onClickMuscle("triceps")} fill={getMuscleFill("triceps")} width="61.007434" height="168.182657" rx="0" ry="0" transform="matrix(.937282-.348572 0.348572 0.937282 405.086217 318.952194)" strokeWidth="0" />
+                                    <rect onClick={e => onClickMuscle("shoulders")} fill={getMuscleFill("shoulders")} width="61.007434" height="168.182657" rx="0" ry="0" transform="matrix(1.015984 0 0 0.269724 236.514747 252.323809)" strokeWidth="0" />
+                                    <rect onClick={e => onClickMuscle("shoulders")} fill={getMuscleFill("shoulders")} width="61.007434" height="168.182657" rx="0" ry="0" transform="matrix(1.015984 0 0 0.269724 374.094929 252.323809)" strokeWidth="0" />
+                                    <rect onClick={e => onClickMuscle("lowerBack")} fill={getMuscleFill("lowerBack")} width="61.007434" height="168.182657" rx="0" ry="0" transform="matrix(2.255138 0 0 0.337897 267.506035 444.68854)" strokeWidth="0" />
+                                    <rect onClick={e => onClickMuscle("hamstrings")} fill={getMuscleFill("hamstrings")} width="61.007434" height="168.182657" rx="0" ry="0" transform="matrix(.931154 0 0 0.663883 267.506035 521.278876)" strokeWidth="0" />
+                                    <rect onClick={e => onClickMuscle("hamstrings")} fill={getMuscleFill("hamstrings")} width="61.007434" height="168.182657" rx="0" ry="0" transform="matrix(.931154 0 0 0.663883 348.278901 521.278876)" strokeWidth="0" />
+                                    <rect onClick={e => onClickMuscle("calves")} fill={getMuscleFill("calves")} width="61.007434" height="168.182657" rx="0" ry="0" transform="matrix(.931154 0 0 0.67169 348.278901 649.065828)" strokeWidth="0" />
+                                    <rect onClick={e => onClickMuscle("calves")} fill={getMuscleFill("calves")} width="61.007434" height="168.182657" rx="0" ry="0" transform="matrix(.931154 0 0 0.67169 267.506035 649.065828)" strokeWidth="0" />
+                                    <g transform="translate(-274.804085-32.440568)">
+                                        <rect onClick={e => onClickMuscle("obliques")} fill={getMuscleFill("obliques")} width="37.131351" height="63.090358" rx="0" ry="0" transform="matrix(1 0 0 1.099195 536.170057 393.741747)" strokeWidth="0" />
+                                        <rect onClick={e => onClickMuscle("obliques")} fill={getMuscleFill("obliques")} width="37.131351" height="63.090358" rx="0" ry="0" transform="matrix(2.175325 0 0 0.520432 570.713889 430.256116)" strokeWidth="0" />
+                                        <rect onClick={e => onClickMuscle("obliques")} fill={getMuscleFill("obliques")} width="37.131351" height="63.090358" rx="0" ry="0" transform="matrix(1 0 0 1.099195 648.899014 393.741747)" strokeWidth="0" />
+                                    </g>
+                                    <polygon onClick={e => onClickMuscle("traps")} fill={getMuscleFill("traps")} points="-4.284312,-85.257355 39.219686,-58.61571 58.29886,41.78042 -66.867298,41.777927 -47.696197,-58.61571 -4.284312,-85.257355" transform="matrix(-.603978 0 0-.704135 333.708552 327.105764)" strokeWidth="0" />
+                                </g>
+                            </svg>
+                        </div>
+                    )}
+
                 </div>
             ) : <div />}
 
