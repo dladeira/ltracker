@@ -31,16 +31,18 @@
 
     margin-left: auto;
 
-    border: 2px solid #CDCDCD;
-
     background-color: white;
     user-select: none;
     z-index: 52;
 
     &Close {
         @extend .button;
-        right: calc(100vw - 180px);
+        left: calc(180px - 40px);
         border-radius: 10px 0 0 10px;
+
+        @include phone-only {
+            left: calc(100vw - 40px);
+        }
     }
 
     &Open {
@@ -54,6 +56,12 @@
         cursor: pointer;
         background-color: darken(white, 1);
     }
+
+    @include phone-only {
+        top: 15px;
+
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1625);
+    }
 }
 
 .buttonText {
@@ -62,10 +70,4 @@
     font-size: 2rem;
     font-weight: 700;
     color: #CDCDCD;
-}
-
-@media screen and (max-width: 700px) {
-    .buttonClose {
-        right: 0;
-    }
 }

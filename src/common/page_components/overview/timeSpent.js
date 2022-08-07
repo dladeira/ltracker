@@ -35,7 +35,7 @@ export function TimeSpent() {
     }
 
     const options = {
-        maintainAspectRatio: isMobile ? true : false,
+        maintainAspectRatio: false,
         scales: {
             y:
             {
@@ -47,7 +47,7 @@ export function TimeSpent() {
     }
 
     return (
-        <GridItem colSpan="2" rowSpan="2" title="Time Spent">
+        <GridItem colSpan="2" rowSpan="2" mRowSpan="2" title="Time Spent">
             <div className={styles.chartContainer}>
                 <Line data={data} options={options} />
             </div>
