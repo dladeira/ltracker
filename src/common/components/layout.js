@@ -58,15 +58,15 @@ function Component({ children }) {
 
 function ToggleUserbar() {
     const [context, setContext] = useAppContext()
+    const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
 
     function toggleSidebar() {
         context.userbarOpen = !context.userbarOpen
         setContext({ ...context })
-        console.log("clicked")
     }
 
     return (
-        <div className={context.userbarOpen ? styles.buttonClose : styles.buttonOpen} onClick={toggleSidebar}>
+        <div className={context.userbarOpen ? styles.buttonClose : styles.buttonOpen} style={{ transition: context.userbarOpen && !isMobile ? "left 500ms cubic-bezier(.60,.03,.52,.96)" : "left 500ms cubic-bezier(.46,.03,.52,.96)" }} onClick={toggleSidebar}>
             <div className={styles.buttonText}>{context.userbarOpen ? "<" : ">"}</div>
         </div>
     )

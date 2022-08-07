@@ -27,7 +27,7 @@ export function MuscleImpact() {
     }
 
     return (
-        <GridItem rowSpan="2" title="Muscle Impact">
+        <GridItem rowSpan="2" mRowSpan="2" title="Muscle Impact">
             <div className={styles.sides}>
                 <div className={styles.front + (front ? " " + styles.active : "")} onClick={e => setFront(true)}>
                     Front

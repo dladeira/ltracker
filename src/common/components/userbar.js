@@ -15,15 +15,10 @@ function Component() {
 
     return (
         <div className={context.userbarOpen ? styles.containerOpen : styles.containerClosed}>
-            <div className={styles.pfp}>
-                <Image src={user.getProfilePicture()} layout="fill" />
+
+            <div className={styles.brand}>
+                Tracker
             </div>
-
-            <div className={styles.username}>{user.getUsername()}</div>
-
-            <div className={styles.email}>{user.getEmail()}</div>
-
-            <div className={styles.divider} />
 
             <PageLink text="Overview" url="/overview" icon="/overview-icon.svg" />
             <PageLink text="Schedule" url="/schedule" icon="/schedule-icon.svg" />
@@ -31,19 +26,32 @@ function Component() {
             <PageLink text="Statistics" url="/statistics" icon="/statistics-icon.svg" />
             <PageLink text="Friends" url="/friends" icon="/friends-icon.svg" />
             <PageLink text="Lists" url="/lists" icon="/lists-icon.svg" />
+            <PageLink text="Settings" url="/settings" icon="/settings-icon.svg" />
+            <PageLink text="Logout" url="/api/logout" icon="/logout-icon.svg" />
 
             {isMobile ? <DateControl /> : ""}
-            <div className={styles.bottomLinks}>
-                <PageLink text="Settings" url="/settings" icon="/settings-icon.svg" />
-                <PageLink text="Logout" url="/api/logout" icon="/logout-icon.svg" />
+
+            <div className={styles.userCard}>
+                <div className={styles.pfp}><Image src={user.getProfilePicture()} layout="fill" /></div>
+                <div className={styles.username}>{user.getUsername()}</div>
+                <div className={styles.email}>{user.getEmail()}</div>
             </div>
         </div>
     )
 }
 
 function PageLink({ text, url, icon = "/overview-icon.svg", height = 14, width = 14 }) {
+    const [context, setContext] = useAppContext()
+    const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
     const router = useRouter()
     const active = router.pathname == url
+
+    router.events.on('routeChangeComplete', () => {
+        if (isMobile) {
+            context.userbarOpen = false
+            setContext({ ...context })
+        }
+    })
 
     return (
         <a className={styles.link} style={{ color: active ? "#008BFF" : "#7D7D7D" }}>
