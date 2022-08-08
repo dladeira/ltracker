@@ -264,6 +264,8 @@ export default class User {
             for (var checkItem of this.data.checklist) {
                 if (day && day.checklist)
                     info[day.checklist.includes(checkItem.id) ? 0 : 1]++
+                else
+                    info[1]++
             }
         }
 
