@@ -28,7 +28,7 @@ export function Sleep() {
             <div className={styles.hours}>
 
                 <div className={styles.hoursThis}>
-                    {Math.round(user.getSleepForWeek(context.week, context.year) / 7 * 2) / 2}h
+                    {Math.round(user.getSleepForWeekSoFar(context.day, context.week, context.year) / (context.day + 1) * 2) / 2}h
                 </div>
 
                 <div className={styles.slash}>
