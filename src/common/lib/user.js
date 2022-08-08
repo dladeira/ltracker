@@ -239,6 +239,17 @@ export default class User {
         return totalHours
     }
 
+    getSleepForWeekSoFar(weekDay, week, year) {
+        var totalHours = 0
+
+        for (var i = 0; i <= 6; i++) {
+            if (i <= weekDay)
+                totalHours += this.getSleepForDay(i, week, year)
+        }
+
+        return totalHours
+    }
+
     getChecklists() {
         return this.data.checklist
     }
@@ -264,6 +275,8 @@ export default class User {
             for (var checkItem of this.data.checklist) {
                 if (day && day.checklist)
                     info[day.checklist.includes(checkItem.id) ? 0 : 1]++
+                else
+                    info[1]++
             }
         }
 
