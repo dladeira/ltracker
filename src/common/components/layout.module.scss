@@ -31,7 +31,6 @@
 
     margin-left: auto;
 
-    background-color: white;
     user-select: none;
     z-index: 52;
 
@@ -42,6 +41,7 @@
 
         @include phone-only {
             left: calc(100vw - 40px);
+            background-color: white;
         }
     }
 
@@ -50,6 +50,7 @@
         left: 0;
         border-left: 0;
         border-radius: 0 10px 10px 0;
+        background-color: white;
     }
 
     &:hover {

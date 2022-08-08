@@ -5,6 +5,7 @@ import { useMediaQuery } from "react-responsive"
 import { useAppContext } from "../lib/context"
 import { useUser } from '../lib/hooks'
 import DateControl from "./dateControl"
+import Tips from './tips'
 
 import styles from "./userbar.module.scss"
 
@@ -30,7 +31,7 @@ function Component() {
             <PageLink text="Logout" url="/api/logout" icon="/logout-icon.svg" />
 
             {isMobile ? <DateControl /> : ""}
-
+            <Tips />
             <div className={styles.userCard}>
                 <div className={styles.pfp}><Image src={user.getProfilePicture()} layout="fill" /></div>
                 <div className={styles.username}>{user.getUsername()}</div>

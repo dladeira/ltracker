@@ -10,6 +10,7 @@ function Page() {
 
     if (user) {
         router.push("/overview")
+        return ""
     }
 
     return (
