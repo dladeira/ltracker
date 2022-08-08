@@ -32,14 +32,14 @@ function Component() {
                 <div className={styles.buttonBall} />
                 <p className={styles.buttonText}>Random Tip</p>
             </button>
-            <Popup opacity={popup ? "1" : "0"} />
+            <Popup display={popup ? "flex" : "none"} />
         </div>
     )
 }
 
-function Popup({ opacity }) {
+function Popup({ display }) {
     return (
-        <div className={styles.popup} id="tips-popup" style={{ opacity: opacity }}>
+        <div className={styles.popup} id="tips-popup" style={{ display: display }}>
             Average sleep will show the average so far
         </div>
     )
