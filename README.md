@@ -1,5 +1,5 @@
-[![CodeFactor](https://www.codefactor.io/repository/github/dladeira/ladeira-tracker/badge)](https://www.codefactor.io/repository/github/dladeira/ladeira-tracker)
-# LadeiraTracker - A opensource time management web application
+[![CodeFactor](https://www.codefactor.io/repository/github/dladeira/ltracker/badge)](https://www.codefactor.io/repository/github/dladeira/ltracker)
+# LTracker - A opensource time management web application
 
 You can find our website at ~~tracker.ladeira.eu~~
 

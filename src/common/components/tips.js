@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useMediaQuery } from "react-responsive"
 import { useAppContext } from "../lib/context"
 import { useUser } from '../lib/hooks'
+import { getTip } from "../lib/util"
 
 import styles from "./tips.module.scss"
 
@@ -52,16 +53,6 @@ function Popup({ display, regen }) {
             {tip}
         </div>
     )
-}
-
-function getTip() {
-    const tips = [
-        "Average sleep will show the average so far into the week",
-        "Use the lists tab to make sure you never forget to pack something for a trip again",
-        "Checkout the github repository for this website on github.com/dladeira/ladeira-tracker"
-    ]
-    const index = Math.floor(Math.random() * tips.length)
-    return tips[index]
 }
 
 export default Component
