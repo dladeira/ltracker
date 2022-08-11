@@ -59,6 +59,6 @@ export function useUser({ userOnly, adminOnly } = {}) {
     }
 
     var user = context.user ? new User(context.user) : context.user
-
+    
     return error ? null : [user, e => { context.user = e; setContext({ ...context }) }, updateUser]
 }

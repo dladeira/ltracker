@@ -1,11 +1,10 @@
-import Layout from '../common/components/layout'
 import Head from 'next/head'
+import Layout from '../common/components/layout'
 import { AppWrapper } from '../common/lib/context'
 
 import '../styles/global.scss'
 
 export default function App({ Component, pageProps }) {
-
     return (
         <>
             <Head>

@@ -24,7 +24,6 @@ function Component() {
     useEffect(() => {
         const { top, left } = document.getElementById("tips-button").getBoundingClientRect()
         const height = document.getElementById("tips-popup").style.height.substring(0, document.getElementById("tips-popup").style.height.length - 2)
-        console.log(height)
 
         document.getElementById("tips-popup").style.top = top - 20 - height + "px"
         document.getElementById("tips-popup").style.left = left + "px"
@@ -32,7 +31,7 @@ function Component() {
 
     return (
         <div className={styles.container}>
-            <button id="tips-button" className={styles.button} onClick={e => { setPopup(true); setRegen(Math.random()) }}>
+            <button id="tips-button" className={styles.button} onClick={e => { setRegen(Math.random()); setPopup(true) }}>
                 <div className={styles.buttonBall} />
                 <p className={styles.buttonText}>Random Tip</p>
             </button>

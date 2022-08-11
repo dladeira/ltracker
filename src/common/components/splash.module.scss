@@ -11,12 +11,12 @@
 
     background-color: white;
 
-    transition: height 600ms cubic-bezier(.46,.03,.52,.96);
-
     &Hidden {
         @extend .container;
 
         height: 0%;
+
+        transition: height 600ms cubic-bezier(.46, .03, .52, .96);
     }
 
     z-index: 1000;
