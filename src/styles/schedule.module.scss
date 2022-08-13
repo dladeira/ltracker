@@ -85,7 +85,7 @@ $quarterHeight: 19.75px;
 
 .clickableArea {
     position: relative;
-    height: calc($quarterHeight * 24 * 4);
+    height: calc(($quarterHeight + 0.25px) * 24 * 4);
     width: 100%;
 
 
@@ -344,4 +344,32 @@ $quarterHeight: 19.75px;
     font-variant: small-caps;
     font-weight: 700;
     color: #7D7D7D;
+}
+
+$theRed: rgb(255, 0, 0);
+
+.currentLine {
+    position: absolute;
+    height: 3px;
+    width: 100%;
+    background-color: $theRed;
+
+    &Inner {
+        position: relative;
+        height: 100%;
+        width: 100%;
+    }
+}
+
+.currentLineDot {
+    $radius: 15px;
+    position: absolute;
+    top: calc(($radius / 2) - $radius + 1.5px);
+    left: calc(($radius / 2) - $radius);
+    height: $radius;
+    width: $radius;
+
+    border-radius: $radius;
+
+    background-color: $theRed;
 }
