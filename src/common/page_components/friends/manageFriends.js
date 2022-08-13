@@ -10,8 +10,8 @@ export function ManageFriends() {
     const [user, , updateUser] = useUser()
 
     useEffect(() => {
-        fetch("/api/getAllUsers", {
-            method: "POST"
+        fetch("/api/users", {
+            method: "GET"
         }).then(res => res.json().then(setUsers))
     }, [])
 
