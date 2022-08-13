@@ -226,7 +226,7 @@ function CurrentLine() {
     }
 
     useEffect(() => {
-        document.getElementById("schedule-currentLine").scrollIntoView({ behavior: "smooth", block: "center" })
+        document.getElementById("schedule-currentLine").scrollIntoView({ behavior: "smooth", block: "center", inline: "center" })
     }, [])
 
     function getQuarters() {
