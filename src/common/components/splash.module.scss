@@ -1,3 +1,9 @@
+@mixin phone-only {
+    @media (max-width: 599px) {
+        @content;
+    }
+}
+
 .container {
     position: absolute;
     top: 0;
@@ -40,6 +46,10 @@
     letter-spacing: 1px;
     text-align: center;
     color: #008BFF;
+
+    @include phone-only {
+        font-size: 4rem;
+    }
 }
 
 .subtitle {
@@ -48,6 +58,10 @@
     letter-spacing: 1px;
     text-align: center;
     color: #b3b3b3;
+
+    @include phone-only {
+        font-size: 1.5rem;
+    }
 }
 
 .tipHeader {
@@ -58,10 +72,20 @@
     font-weight: 300;
     font-style: italic;
     color: #CDCDCD;
+
+    @include phone-only {
+        font-size: 1rem;
+    }
 }
 
 .tip {
+    width: 80%;
+
     font-size: 1.5rem;
     text-align: center;
     color: #7D7D7D;
+
+    @include phone-only {
+        font-size: 1rem;
+    }
 }

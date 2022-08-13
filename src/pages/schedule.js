@@ -12,11 +12,12 @@ function Page() {
     useUser({ userOnly: true })
 
     const hours = ["12 AM", "1 AM", "2 AM", "3 AM", "4 AM", "5 AM", "6 AM", "7 AM", "8 AM", "9 AM", "10 AM", "11 AM", "12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM", "9 PM", "10 PM", "11 PM", "12 AM"]
+    const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     var i = 0
 
     return (
         <div className={styles.wrapper} onContextMenu={e => e.preventDefault()}>
-            <div className={styles.grid}>
+            <div className={styles.grid} id={"schedule-grid"}>
                 <div className={styles.displayHours}>
                     {hours.map(hour => {
                         if (i++ == 24)
@@ -24,17 +25,16 @@ function Page() {
                         return <div key={"displayHour-" + hour} className={styles.displayHour}>{hour}</div>
                     })}
                 </div>
-                <Day index={0} name={"Monday"} first={true} />
-                <Day index={1} name={"Tuesday"} />
-                <Day index={2} name={"Wednesday"} />
-                <Day index={3} name={"Thursday"} />
-                <Day index={4} name={"Friday"} />
-                <Day index={5} name={"Saturday"} />
-                <Day index={6} name={"Sunday"} />
+                {days.map(day => {
+                    var index = days.indexOf(day)
+                    return <Day index={index} name={day} first={index == 0} />
+                })}
             </div>
         </div>
     )
 }
+
+const quarterHeight = 20
 
 function Day({ index, name, first }) {
     const [context] = useAppContext()
@@ -46,6 +46,7 @@ function Day({ index, name, first }) {
     const [lastMouseUp, setLastMouseUp] = useState(0)
 
     const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
+    const date = new Date()
 
     const placeHolderEvent = useState({
         quarterStart: 0,
@@ -56,8 +57,6 @@ function Day({ index, name, first }) {
         first: 0,
         last: 0
     })
-
-    const quarterHeight = 20
     const hours = []
     var quarterIndex = 1
     for (var i = 1; i <= 24; i++) {
@@ -173,13 +172,14 @@ function Day({ index, name, first }) {
                 <div className={styles.dayDate}>
                     {getDateText(index, context.week, context.year)}
                 </div>
-                <div className={index == getWeekDay(new Date()) ? styles.dayNameToday : styles.dayName}>
+                <div className={index == getWeekDay(date) ? styles.dayNameToday : styles.dayName}>
                     {name}
                 </div>
             </div>
 
             <div className={first ? styles.clickableAreaFirstTop : styles.clickableAreaTop}>&zwnj;</div>
             <div id={`weekDay-${index}-clickable`} className={first ? styles.clickableAreaFirst : styles.clickableArea}>
+                {index == getWeekDay(date) ? <CurrentLine /> : ""}
                 {hours.map(hour => {
                     var i1 = quarterIndex++
                     var i2 = quarterIndex++
@@ -207,6 +207,41 @@ function Day({ index, name, first }) {
                         &zwnj;
                     </div>
                 </div>
+            </div>
+        </div>
+    )
+}
+
+function CurrentLine() {
+    useEffect(() => {
+        runUpdateInterval()
+    }, [])
+
+    function runUpdateInterval() {
+        if (document.getElementById("schedule-currentLine")) {
+            document.getElementById("schedule-currentLine").style.top = getQuarters() * quarterHeight + "px"
+            console.log("updated currentline")
+            setTimeout(runUpdateInterval, 10000)
+        }
+    }
+
+    useEffect(() => {
+        document.getElementById("schedule-currentLine").scrollIntoView({ behavior: "smooth", block: "center", inline: "center" })
+    }, [])
+
+    function getQuarters() {
+        const date = new Date()
+        var hours = date.getHours()
+        var minutes = date.getMinutes()
+
+
+        return (hours * 4) + (minutes / 15)
+    }
+
+    return (
+        <div className={styles.currentLine} id={"schedule-currentLine"} style={{ top: getQuarters() * quarterHeight + "px" }}>
+            <div className={styles.currentLineInner}>
+                <div className={styles.currentLineDot} />
             </div>
         </div>
     )
@@ -273,8 +308,6 @@ function Event({ event, quarterHeight, index }) {
     useEffect(() => {
         if (initial)
             return setInitial(false)
-
-        console.log("saving workout data")
 
         fetch("/api/user/events", {
             method: "POST",
