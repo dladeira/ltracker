@@ -1,16 +1,15 @@
-import Layout from '../common/components/layout'
 import Head from 'next/head'
+import Layout from '../common/components/layout'
 import { AppWrapper } from '../common/lib/context'
 
 import '../styles/global.scss'
 
 export default function App({ Component, pageProps }) {
-
     return (
         <>
             <Head>
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <title>Ladeira Tracker</title>
+                <title>LTracker</title>
             </Head>
             <AppWrapper>
                 <Layout>

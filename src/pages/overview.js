@@ -1,6 +1,4 @@
 import { useUser } from '../common/lib/hooks'
-
-
 import Grid from '../common/components/grid'
 import GridItem from '../common/components/gridItem'
 import { Tasks, Checklist, Sleep, TimeSpent, MuscleImpact, PhysicalActivity } from '../common/page_components/overview/index'

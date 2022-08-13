@@ -1,19 +1,34 @@
 import { useAppContext } from '../lib/context'
 import { useUser } from '../lib/hooks'
 import { useMediaQuery } from 'react-responsive'
+import Splash from './splash'
 
 import Userbar from './userbar'
 
 import styles from './layout.module.scss'
 import DateControl from './dateControl'
+import { useEffect, useState } from 'react'
 
 
 
 function Component({ children }) {
     const [user] = useUser()
     const [context, setContext] = useAppContext()
-
+    const [seen, setSeen] = useState(false)
     const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
+
+    useEffect(() => {
+        if (user != null & !seen) {
+            setTimeout(() => {
+                setSeen(true)
+            }, 1000)
+        }
+    }, [user])
+
+    var style = {}
+    if (!isMobile) {
+        style.paddingLeft = context.userbarOpen ? "210px" : "50px"
+    }
 
     if (user === undefined) {
         return (
@@ -26,14 +41,10 @@ function Component({ children }) {
         setContext({ ...context })
     }
 
-    var style = {}
-    if (!isMobile) {
-        style.paddingLeft = context.userbarOpen ? "210px" : "50px"
-    }
-
     return (user ?
         (
             <div className={styles.container} onMouseUp={mouseUpEvent} style={style}>
+                <Splash display={user != null & !seen} />
                 <ToggleUserbar />
                 <Userbar />
 

@@ -1,3 +1,15 @@
+// Tip
+
+export function getTip() {
+    const tips = [
+        "Average sleep will show the average so far into the week",
+        "Use the lists tab to make sure you never forget to pack something for a trip again",
+        "Checkout the github repository for this website on github.com/dladeira/ltracker"
+    ]
+    const index = Math.floor(Math.random() * tips.length)
+    return tips[index]
+}
+
 // Dates
 
 export function getWeekDay(date) {

@@ -1,0 +1,65 @@
+@mixin phone-only {
+    @media (max-width: 700px) {
+        @content;
+    }
+}
+
+.container {
+    width: 100%;
+
+    margin-top: auto;
+    margin-bottom: 20px;
+}
+
+.button {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 85%;
+
+    margin: 0 auto;
+    padding: 5px 20px;
+
+    border-radius: 100px;
+
+    background-color: #8AC52A;
+
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 20%);
+}
+
+.buttonBall {
+    height: 10px;
+    width: 10px;
+
+    border-radius: 100px;
+
+    background-color: white;
+    box-shadow: 0 0 10px 0 white;
+}
+
+.buttonText {
+    text-align: center;
+    font-weight: 700;
+    color: white;
+
+    @include phone-only {
+        width: 100%;
+    }
+}
+
+.popup {
+    position: fixed;
+
+    width: 350px;
+
+    padding: 10px 20px;
+
+    border-radius: 10px;
+
+    background-color: #FCFCFC;
+    box-shadow: 0 0 11px 0 rgba(0, 0, 0, 20%);
+
+    z-index: 150;
+}

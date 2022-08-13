@@ -10,6 +10,7 @@ function Page() {
 
     if (user) {
         router.push("/overview")
+        return ""
     }
 
     return (
@@ -19,7 +20,7 @@ function Page() {
                 <div className={`${styles.navbar} flex flex-row justify-between items-center`}>
 
                     <div className={styles.brand}>
-                        LadeiraTracker
+                        Tracker
                     </div>
 
                     <Link href="/api/login">

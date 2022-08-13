@@ -5,6 +5,7 @@ import { useMediaQuery } from "react-responsive"
 import { useAppContext } from "../lib/context"
 import { useUser } from '../lib/hooks'
 import DateControl from "./dateControl"
+import Tips from './tips'
 
 import styles from "./userbar.module.scss"
 
@@ -27,15 +28,14 @@ function Component() {
             <PageLink text="Friends" url="/friends" icon="/friends-icon.svg" />
             <PageLink text="Lists" url="/lists" icon="/lists-icon.svg" />
             <PageLink text="Settings" url="/settings" icon="/settings-icon.svg" />
-            <PageLink text="Logout" url="/api/logout" icon="/logout-icon.svg" />
-
             {isMobile ? <DateControl /> : ""}
-
+            <Tips />
             <div className={styles.userCard}>
                 <div className={styles.pfp}><Image src={user.getProfilePicture()} layout="fill" /></div>
                 <div className={styles.username}>{user.getUsername()}</div>
                 <div className={styles.email}>{user.getEmail()}</div>
             </div>
+            <PageLink text="Logout" url="/api/logout" icon="/logout-icon.svg" />
         </div>
     )
 }
