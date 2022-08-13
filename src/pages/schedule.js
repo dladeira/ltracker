@@ -46,7 +46,7 @@ function Day({ index, name, first }) {
     const [lastMouseUp, setLastMouseUp] = useState(0)
 
     const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
-    const date = new Date()
+    const today = getWeekDay(new Date()) == index && context.week == new Date().getCurrentWeek() && context.year == new Date().getFullYear()
 
     const placeHolderEvent = useState({
         quarterStart: 0,
@@ -172,14 +172,14 @@ function Day({ index, name, first }) {
                 <div className={styles.dayDate}>
                     {getDateText(index, context.week, context.year)}
                 </div>
-                <div className={index == getWeekDay(date) ? styles.dayNameToday : styles.dayName}>
+                <div className={today ? styles.dayNameToday : styles.dayName}>
                     {name}
                 </div>
             </div>
 
             <div className={first ? styles.clickableAreaFirstTop : styles.clickableAreaTop}>&zwnj;</div>
             <div id={`weekDay-${index}-clickable`} className={first ? styles.clickableAreaFirst : styles.clickableArea}>
-                {index == getWeekDay(date) ? <CurrentLine /> : ""}
+                {today ? <CurrentLine /> : ""}
                 {hours.map(hour => {
                     var i1 = quarterIndex++
                     var i2 = quarterIndex++
@@ -220,7 +220,6 @@ function CurrentLine() {
     function runUpdateInterval() {
         if (document.getElementById("schedule-currentLine")) {
             document.getElementById("schedule-currentLine").style.top = getQuarters() * quarterHeight + "px"
-            console.log("updated currentline")
             setTimeout(runUpdateInterval, 10000)
         }
     }
@@ -428,6 +427,7 @@ function Event({ event, quarterHeight, index }) {
     }
 
     function setTaskType(newType) {
+        panelData.task = newType == "workout" ? "workout" : user.getTasks()[0].id
         panelData.type = newType
         setPanelData({ ...panelData })
     }

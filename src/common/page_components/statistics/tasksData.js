@@ -8,7 +8,7 @@ export function TasksData() {
     const [user] = useUser({ userOnly: true })
 
     function getSortedTasks() {
-        var tasks = user.getTasks().sort((a, b) => user.getTaskHoursTotal(a.id) < user.getTaskHoursTotal(b.id))
+        var tasks = user.getAllTasks().sort((a, b) => user.getTaskHoursTotal(a.id) < user.getTaskHoursTotal(b.id))
         return tasks
     }
 
@@ -32,7 +32,6 @@ export function TasksData() {
 function Task({ task }) {
     const [user] = useUser({ userOnly: true })
     const [context] = useAppContext()
-
 
     function getHoursOverDays(days, daysToSkip = 0) {
         var hours = 0

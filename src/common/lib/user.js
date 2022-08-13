@@ -33,7 +33,7 @@ export default class User {
 
     getAllTaskPairs() {
         const tasks = []
-        for (var task of this.getTasks()) {
+        for (var task of this.getAllTasks()) {
             const pairs = this.getTaskPairs(task.id)
             if (pairs.length > 0)
                 tasks.push({
@@ -47,7 +47,7 @@ export default class User {
 
     getAllPairs() {
         const tasks = []
-        for (var task of this.getTasks()) {
+        for (var task of this.getAllTasks()) {
             const pairs = this.getTaskPairs(task.id)
             for (var pair of pairs) {
                 tasks.push(pair)
@@ -186,8 +186,9 @@ export default class User {
 
         for (var day of this.data.days) {
             for (var event of day.events) {
-                if (event.task == task)
+                if (event.task == task) {
                     totalHours += (event.quarterEnd - event.quarterStart + 1) * 0.25
+                }
             }
         }
 
@@ -314,8 +315,12 @@ export default class User {
         return this.data.tasks
     }
 
+    getAllTasks() {
+        return this.data.tasks.concat(this.data.specialTasks)
+    }
+
     getTask(id) {
-        for (var task of this.getTasks()) {
+        for (var task of this.getAllTasks()) {
             if (task.id == id)
                 return task
         }
@@ -341,7 +346,7 @@ export default class User {
             }
 
             // Check for duplicates
-            for (var task of this.getTasks()) {
+            for (var task of this.getAllTasks()) {
                 if (task.id == result)
                     continue mainLoop
             }

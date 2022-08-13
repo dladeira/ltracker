@@ -65,7 +65,7 @@ function Panel({ togglePanel, friends }) {
     return (
         <div className={styles.panelContainer} onClick={togglePanel}>
             <div className={styles.panel} onClick={e => e.stopPropagation()}>
-                {user.getTasks().map(task => {
+                {user.getAllTasks().map(task => {
                     return <Task task={task} friends={friends} />
                 })}
             </div>
