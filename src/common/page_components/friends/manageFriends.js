@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { useAppContext } from '../../lib/context'
 import { useUser } from '../../lib/hooks'
@@ -14,6 +15,10 @@ export function ManageFriends() {
             method: "GET"
         }).then(res => res.json().then(setUsers))
     }, [])
+
+    useEffect(() => {
+        console.log("user changed")
+    }, [user])
 
     async function togglePanel() {
         // Update user
@@ -54,8 +59,8 @@ function Friend({ targetUser }) {
     }, [context])
 
     async function removeFriend() {
-        const res = await fetch('/api/user/friends/removeFriend', {
-            method: 'POST',
+        const res = await fetch('/api/user/friends', {
+            method: 'DELETE',
             body: JSON.stringify({
                 id: targetUser.id
             })
@@ -81,6 +86,9 @@ function Friend({ targetUser }) {
 
     return (
         <div id={`friend-${targetUser.id}`} className={styles.friend}>
+            <div className={styles.friendImageWrapper}>
+                <Image layout="fill" src={targetUser.profilePicture ? targetUser.profilePicture : "/ladeira.jpg"} />
+            </div>
             <div className={styles.name}>{targetUser.username}</div>
             <div className={styles.dots} onClick={onTipClick}>
                 <div className={styles.dot} />
@@ -98,8 +106,8 @@ function AddFriends({ users, togglePanel }) {
     const [user, setUser] = useUser({ userOnly: true })
 
     async function removeRequest(target) {
-        const res = await fetch("/api/user/friends/removeRequest", {
-            method: "POST",
+        const res = await fetch("/api/user/requests", {
+            method: "DELETE",
             body: JSON.stringify({
                 id: target
             })
@@ -114,7 +122,19 @@ function AddFriends({ users, togglePanel }) {
                 <div className={styles.panel} onClick={e => e.stopPropagation()}>
                     <div className={styles.panelHeader}>Sent requests:</div>
                     {user.getSentRequests().map(friend => {
-                        return <div key={friend} className={styles.listItem}>{users.find(loopUser => loopUser.id == friend).username} <div onClick={removeRequest.bind(null, friend)} className={styles.rejectRequest}><span className={styles.rejectRequestText}>+</span></div></div>
+                        const user = users.find(loopUser => loopUser.id == friend)
+                        return (
+                            <div key={friend} className={styles.listItem}>
+                                <div className={styles.friendImageWrapper}>
+                                    <Image layout="fill" src={user.profilePicture ? user.profilePicture : "/ladeira.jpg"} />
+                                </div>
+                                <div className={styles.name}>{user.username}</div>
+                                
+                                <div onClick={removeRequest.bind(null, friend)} className={styles.rejectRequest}>
+                                    <span className={styles.rejectRequestText}>+</span>
+                                </div>
+                            </div>
+                        )
                     })}
                     <div className={styles.panelHeader}>Received requests:</div>
                     {user.getReceivedRequests().map(friend => {
@@ -140,7 +160,7 @@ function IncomingRequest({ targetUser }) {
     const [, setUser] = useUser({ userOnly: true })
 
     async function addHandle() {
-        const res = await fetch("/api/user/friends/acceptRequest", {
+        const res = await fetch("/api/user/requests", {
             method: "POST",
             body: JSON.stringify({
                 id: targetUser.id
@@ -151,8 +171,8 @@ function IncomingRequest({ targetUser }) {
     }
 
     async function removeRequest() {
-        const res = await fetch("/api/user/friends/removeRequest", {
-            method: "POST",
+        const res = await fetch("/api/user/requests", {
+            method: "DELETE",
             body: JSON.stringify({
                 id: targetUser.id
             })
@@ -163,7 +183,10 @@ function IncomingRequest({ targetUser }) {
 
     return (
         <div className={styles.listItem}>
-            {targetUser.username}
+            <div className={styles.friendImageWrapper}>
+                <Image layout="fill" src={targetUser.profilePicture ? targetUser.profilePicture : "/ladeira.jpg"} />
+            </div>
+            <div className={styles.name}>{targetUser.username}</div>
             <div className={styles.requests}>
                 <div onClick={addHandle} className={styles.acceptRequest}>+</div>
                 <div onClick={removeRequest} className={styles.rejectRequest}><span className={styles.rejectRequestText}>+</span></div>
@@ -177,8 +200,8 @@ function FriendAdd({ targetUser }) {
     const [, setUser] = useUser({ userOnly: true })
 
     async function addHandle() {
-        const res = await fetch("/api/user/friends/sendRequest", {
-            method: "POST",
+        const res = await fetch("/api/user/requests", {
+            method: "PUT",
             body: JSON.stringify({
                 id: targetUser.id
             })
@@ -189,7 +212,10 @@ function FriendAdd({ targetUser }) {
 
     return (
         <div className={styles.listItem}>
-            {targetUser.username}
+            <div className={styles.friendImageWrapper}>
+                <Image layout="fill" src={targetUser.profilePicture ? targetUser.profilePicture : "/ladeira.jpg"} />
+            </div>
+            <div className={styles.name}>{targetUser.username}</div>
             <div onClick={addHandle} className={styles.sendRequest}>+</div>
         </div>
     )

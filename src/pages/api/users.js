@@ -3,14 +3,16 @@ import { getUser } from './user/index'
 
 async function Route(req, res) {
     await getUser(req, {
-        onFound: async () => {
+        onFound: async user => {
             const rawUsers = await User.find({})
             const users = []
             for (var rawUser of rawUsers) {
-                users.push({
-                    username: rawUser.lastName,
-                    id: rawUser._id
-                })
+                if (rawUser.public || user.friends.findIndex(loopFriend => loopFriend.id == rawUser._id) != -1)
+                    users.push({
+                        username: rawUser.username,
+                        id: rawUser._id,
+                        profilePicture: rawUser.profilePicture
+                    })
             }
 
             res.status(200).json(users)
@@ -21,8 +23,9 @@ async function Route(req, res) {
             for (var rawUser of rawUsers) {
                 if (rawUser.public)
                     users.push({
-                        username: rawUser.lastName,
-                        id: rawUser._id
+                        username: rawUser.username,
+                        id: rawUser._id,
+                        profilePicture: rawUser.profilePicture
                     })
             }
 
