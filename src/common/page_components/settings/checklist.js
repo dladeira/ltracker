@@ -3,6 +3,8 @@ import Image from 'next/image'
 import { useUser } from '../../lib/hooks'
 
 import styles from './checklist.module.scss'
+import FormInput from '../../components/formInput'
+import { useAppContext } from '../../lib/context'
 
 export function Checklists() {
     const [user, setUser] = useUser({ userOnly: true })
@@ -15,15 +17,9 @@ export function Checklists() {
     async function submitNewChecklist(e) {
         e.preventDefault()
 
-        var checklist = user.getChecklists()
-        checklist.push({
-            name: "---",
-            id: user.generateId()
-        })
-
-        const res = await fetch(window.origin + "/api/user/setChecklist", {
+        const res = await fetch("/api/user/checklist", {
             body: JSON.stringify({
-                checklist: checklist
+                name: "---"
             }),
             method: "POST"
         })
@@ -58,33 +54,24 @@ export function Checklists() {
 }
 
 function Checklist({ checklist }) {
+    const [context, setContext] = useAppContext()
     const [user, setUser] = useUser({ userOnly: true })
-    const [name, setName] = useState(checklist.name)
-    const [initial, setInitial] = useState(true)
-
-    useEffect(() => {
-        if (!initial)
-            save()
-        else
-            setInitial(false)
-    }, [name])
 
     useEffect(() => {
         var newChecklist = user.getChecklist(checklist.id)
-        setName(newChecklist.name)
+        if (newChecklist && newChecklist.name != checklist.name) {
+            context[`settings.checklist.${checklist.id}.name`] = newChecklist.name
+            setContext({ ...context })
+        }
     }, [user])
 
-    async function save() {
-        var checklists = [...user.getChecklists()]
-        var index = checklists.findIndex(loopChecklist => loopChecklist.id == checklist.id)
-
-        checklists[index].name = name
-
-        const res = await fetch(window.origin + "/api/user/setChecklist", {
+    async function save(name) {
+        const res = await fetch("/api/user/checklist", {
             body: JSON.stringify({
-                checklist: checklists
+                id: checklist.id,
+                name: name
             }),
-            method: "POST"
+            method: "PATCH"
         })
         const newUser = await res.json()
         setUser({ ...newUser })
@@ -94,11 +81,11 @@ function Checklist({ checklist }) {
         var checklists = [...user.getChecklists()]
         checklists = checklists.filter(loopChecklist => checklist.id != loopChecklist.id)
 
-        const res = await fetch(window.origin + "/api/user/setChecklist", {
+        const res = await fetch("/api/user/checklist", {
             body: JSON.stringify({
-                checklist: checklists
+                id: checklist.id
             }),
-            method: "POST"
+            method: "DELETE"
         })
         const newUser = await res.json()
         setUser({ ...newUser })
@@ -106,7 +93,7 @@ function Checklist({ checklist }) {
 
     return (
         <div className={styles.checklist}>
-            <input className={styles.checklistName} type="text" name="title" value={name} onChange={e => { setName(e.target.value) }} />
+            <FormInput width={"60%"} type="text" defaultValue={checklist.name} onSave={value => { save(value) }} contextKey={`settings.checklist.${checklist.id}.name`} />
             <div className={styles.checklistDelete} type="button" onClick={onDeletePress}>
                 <Image src={"/trash-icon.svg"} height={20} width={20} />
             </div>

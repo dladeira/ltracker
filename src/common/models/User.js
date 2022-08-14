@@ -24,15 +24,28 @@ const userSchema = new mongoose.Schema({
 
     // User data
     tasks: {
-        type: Array,
+        type: [{
+            id: String,
+            name: String,
+            color: String,
+            public: Boolean
+        }],
         default: []
     },
     specialTasks: {
-        type: Array,
+        type: [{
+            id: String,
+            name: String,
+            color: String,
+            public: Boolean
+        }],
         default: []
     },
     checklist: {
-        type: Array,
+        type: [{
+            id: String,
+            name: String
+        }],
         default: []
     },
     days: {

@@ -47,11 +47,27 @@
     height: 100%;
     width: 100%;
 
+    margin: 5px 0;
+
     overflow: visible;
 }
 
+.friendImageWrapper {
+    position: relative;
+
+    height: 30px;
+    width: 30px;
+
+    border-radius: 100px;
+
+    overflow: hidden;
+}
+
 .name {
-    font-size: 1.25rem;
+    margin-left: 20px;
+    margin-right: auto;
+
+    font-size: 1.125rem;
 }
 
 .dots {

@@ -61,8 +61,8 @@ export function Compare() {
     })
 
     useEffect(() => {
-        fetch("/api/user/friends/getFriends", {
-            method: "POST"
+        fetch("/api/user/friends", {
+            method: "GET"
         }).then(res => res.json().then(friends => {
             setFriends(friends)
 

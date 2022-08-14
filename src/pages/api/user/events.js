@@ -23,7 +23,7 @@ async function Route(req, res) {
             var day = user.days[dayIndex]
 
             switch (req.method) {
-                case "PUT":
+                case "POST":
                     if (!isQuarterValid(day.events, req.body.quarterStart, req.body.quarterEnd))
                         return res.status(400).json(user)
 
@@ -35,7 +35,7 @@ async function Route(req, res) {
                         eventType: req.body.eventType,
                     })
                     break;
-                case "POST":
+                case "PATCH":
                     var event = day.events.find(event => event._id == req.body.id)
 
                     if (!event)

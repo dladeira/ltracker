@@ -123,7 +123,7 @@ function Day({ index, name, first }) {
     async function mouseUpHandler(e) {
         if (dragging && quarterData.first != 0 && quarterData.last != 0) {
             const res = await fetch("/api/user/events", {
-                method: "PUT",
+                method: "POST",
                 body: JSON.stringify({
                     day: index,
                     week: context.week,
@@ -143,7 +143,7 @@ function Day({ index, name, first }) {
     async function mouseDownHandler(e, quarter) {
         if (isMobile) {
             const res = await fetch("/api/user/events", {
-                method: "PUT",
+                method: "POST",
                 body: JSON.stringify({
                     day: index,
                     week: context.week,
@@ -250,7 +250,7 @@ function Event({ event, quarterHeight, index }) {
     const [context] = useAppContext()
     const [user, setUser] = useUser({ userOnly: true })
     const { quarterStart, quarterEnd, task, plan, eventType, workoutData } = event
-    const { name, color } = user.getTask(task) ? user.getTask(task) : { name: "ERROR", color: "#000000" }
+    const { name, color } = user.getTask(task) ? user.getTask(task) : { name: "DELETED", color: "#000000" }
     const [panel, setPanel] = useState(false)
     const [initial, setInitial] = useState(true)
     const [lastMouseUp, setLastMouseUp] = useState(0)
@@ -309,13 +309,13 @@ function Event({ event, quarterHeight, index }) {
             return setInitial(false)
 
         fetch("/api/user/events", {
-            method: "POST",
+            method: "PATCH",
             body: JSON.stringify({
                 day: index,
                 week: context.week,
                 year: context.year,
                 id: event._id,
-                task: panelData.task,
+                task: panelData.type == "workout" ? "workout" : panelData.task,
                 quarterStart: panelData.from,
                 quarterEnd: panelData.to,
                 plan: panelData.plan,
