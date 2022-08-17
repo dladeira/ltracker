@@ -22,53 +22,56 @@
 
 .button {
     position: fixed;
-    top: 50%;
-    height: 60px;
-    width: 40px;
+    top: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
 
+    height: 40px;
+    width: 40px;
+
     margin-left: auto;
+
+    border-radius: 1000px;
+
+    font-size: 0rem;
+    background-color: #A3A3A3;
+    color: white;
 
     user-select: none;
     z-index: 52;
+    transition: left 500ms cubic-bezier(.46, .03, .52, .96);
 
     &Close {
         @extend .button;
-        left: calc(180px - 40px);
-        border-radius: 10px 0 0 10px;
+        left: calc(200px - 20px);
 
         @include phone-only {
-            left: calc(100vw - 40px);
-            background-color: white;
+            left: calc(100vw - 30px);
         }
     }
 
     &Open {
         @extend .button;
-        left: 0;
+        left: -10px;
         border-left: 0;
-        border-radius: 0 10px 10px 0;
-        background-color: white;
     }
 
     &:hover {
         cursor: pointer;
-        background-color: darken(white, 1);
-    }
-
-    @include phone-only {
-        top: 15px;
-
-        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1625);
     }
 }
 
 .buttonText {
-    padding-bottom: 4px;
+    transition: transform 500ms cubic-bezier(.46, .03, .52, .96);
+    
 
-    font-size: 2rem;
-    font-weight: 700;
-    color: #CDCDCD;
+    &Close {
+        @extend .buttonText;
+    }
+
+    &Open {
+        @extend .buttonText;
+        transform: scaleX(-1);
+    }
 }

@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { useAppContext } from '../lib/context'
 import { useUser } from '../lib/hooks'
 import { useMediaQuery } from 'react-responsive'
@@ -8,8 +9,6 @@ import Userbar from './userbar'
 import styles from './layout.module.scss'
 import DateControl from './dateControl'
 import { useEffect, useState } from 'react'
-
-
 
 function Component({ children }) {
     const [user] = useUser()
@@ -27,7 +26,7 @@ function Component({ children }) {
 
     var style = {}
     if (!isMobile) {
-        style.paddingLeft = context.userbarOpen ? "210px" : "50px"
+        style.paddingLeft = context.userbarOpen ? "230px" : "50px"
     }
 
     if (user === undefined) {
@@ -69,7 +68,6 @@ function Component({ children }) {
 
 function ToggleUserbar() {
     const [context, setContext] = useAppContext()
-    const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
 
     function toggleSidebar() {
         context.userbarOpen = !context.userbarOpen
@@ -77,8 +75,10 @@ function ToggleUserbar() {
     }
 
     return (
-        <div className={context.userbarOpen ? styles.buttonClose : styles.buttonOpen} style={{ transition: context.userbarOpen && !isMobile ? "left 500ms cubic-bezier(.60,.03,.52,.96)" : "left 500ms cubic-bezier(.46,.03,.52,.96)" }} onClick={toggleSidebar}>
-            <div className={styles.buttonText}>{context.userbarOpen ? "<" : ">"}</div>
+        <div className={context.userbarOpen ? styles.buttonClose : styles.buttonOpen} onClick={toggleSidebar}>
+            <div className={context.userbarOpen ? styles.buttonTextClose : styles.buttonTextOpen}>
+                <Image src="/arrow-2.svg" height="20" width="20" />
+            </div>
         </div>
     )
 }

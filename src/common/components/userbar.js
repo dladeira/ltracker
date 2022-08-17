@@ -1,11 +1,11 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import { useState } from "react"
 import { useMediaQuery } from "react-responsive"
 import { useAppContext } from "../lib/context"
 import { useUser } from '../lib/hooks'
 import DateControl from "./dateControl"
-import Tips from './tips'
 
 import styles from "./userbar.module.scss"
 
@@ -29,13 +29,39 @@ function Component() {
             <PageLink text="Lists" url="/lists" icon="/lists-icon.svg" />
             <PageLink text="Settings" url="/settings" icon="/settings-icon.svg" />
             {isMobile ? <DateControl /> : ""}
-            <Tips />
+            <Patch />
+            <div className={styles.divider} />
+
             <div className={styles.userCard}>
                 <div className={styles.pfp}><Image src={user.getProfilePicture()} layout="fill" /></div>
                 <div className={styles.username}>{user.getUsername()}</div>
                 <div className={styles.email}>{user.getEmail()}</div>
+                <a className={styles.logout} href="/api/logout">
+                    <Image height="20px" width="20px" src="/logout-icon.svg" />
+                </a>
             </div>
-            <PageLink text="Logout" url="/api/logout" icon="/logout-icon.svg" />
+        </div>
+    )
+}
+
+function Patch() {
+    const [visible, setVisible] = useState(true)
+
+    return (
+        <div className={visible ? styles.patch : styles.patchHidden}>
+            <h1 className={styles.patchTitle}>
+                Release 1.0
+            </h1>
+            <ul className={styles.patchList}>
+                <li className={styles.patchItem}>-- Navbar UI change</li>
+                <li className={styles.patchItem}>-- 7 bug fixes</li>
+                <li className={styles.patchItem}>-- Speed improvements</li>
+            </ul>
+
+            <div className={styles.patchControl}>
+                <button onClick={() => setVisible(false)}>Dismiss</button>
+                <a href="https://github.com/dladeira/ltracker">github.com</a>
+            </div>
         </div>
     )
 }
@@ -54,7 +80,7 @@ function PageLink({ text, url, icon = "/overview-icon.svg", height = 14, width =
     })
 
     return (
-        <a className={styles.link} style={{ color: active ? "#008BFF" : "#7D7D7D" }}>
+        <a className={active ? styles.linkActive : styles.link}>
             <Link href={url}>
                 <div className={styles.linkInside}>
                     <div className={active ? styles.imageActive : styles.image}>
