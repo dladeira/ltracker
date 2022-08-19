@@ -8,6 +8,7 @@ import { useUser } from '../common/lib/hooks'
 import { useMediaQuery } from 'react-responsive'
 
 function Page() {
+    const [context] = useAppContext()
     const isMobile = useMediaQuery({ query: '(max-width: 700px)' })
     useUser({ userOnly: true })
 
@@ -18,6 +19,7 @@ function Page() {
     return (
         <div className={styles.wrapper} onContextMenu={e => e.preventDefault()}>
             <div className={styles.grid} id={"schedule-grid"}>
+                <div className={styles.displayHoursHide} />
                 <div className={styles.displayHours}>
                     {hours.map(hour => {
                         if (i++ == 24)
@@ -25,10 +27,12 @@ function Page() {
                         return <div key={"displayHour-" + hour} className={styles.displayHour}>{hour}</div>
                     })}
                 </div>
-                {days.map(day => {
-                    var index = days.indexOf(day)
-                    return <Day index={index} name={day} first={index == 0} />
-                })}
+                {isMobile ? <Day index={context.day} name={days[context.day]} first={true} /> :
+                    days.map(day => {
+                        var index = days.indexOf(day)
+                        return <Day index={index} name={day} first={index == 0} />
+                    })
+                }
             </div>
         </div>
     )
@@ -79,6 +83,14 @@ function Day({ index, name, first }) {
             document.getElementById(`${index}-placeholder`).style.display = "none"
         }
     })
+
+    useEffect(() => {
+        window.addEventListener('resize', () => {
+            document.getElementById('header-' + index).style.width = document.getElementById(`weekDay-${index}-clickable`).getBoundingClientRect().width + "px"
+        })
+        console.log(document.getElementById(`weekDay-${index}-clickable`).getBoundingClientRect().width)
+        document.getElementById('header-' + index).style.width = document.getElementById(`weekDay-${index}-clickable`).getBoundingClientRect().width + "px"
+    }, [])
 
     function getEvents() {
         return user.getEventsForDay(index, context.week, context.year)
@@ -167,17 +179,16 @@ function Day({ index, name, first }) {
     }
 
     return (
-        <div className={styles.weekDay} onMouseMove={moveHandler}>
-            <div className={styles.dayHeader}>
+        <div className={isMobile ? styles.weekDaySolo : styles.weekDay} onMouseMove={moveHandler}>
+            <div id={"header-" + index} className={styles.dayHeader}>
                 <div className={styles.dayDate}>
                     {getDateText(index, context.week, context.year)}
                 </div>
                 <div className={today ? styles.dayNameToday : styles.dayName}>
                     {name}
                 </div>
+                <div className={first ? styles.clickableAreaFirstTop : styles.clickableAreaTop}>&zwnj;</div>
             </div>
-
-            <div className={first ? styles.clickableAreaFirstTop : styles.clickableAreaTop}>&zwnj;</div>
             <div id={`weekDay-${index}-clickable`} className={first ? styles.clickableAreaFirst : styles.clickableArea}>
                 {today ? <CurrentLine /> : ""}
                 {hours.map(hour => {
