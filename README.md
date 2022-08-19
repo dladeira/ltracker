@@ -1,7 +1,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/dladeira/ltracker/badge)](https://www.codefactor.io/repository/github/dladeira/ltracker)
 # LTracker - A opensource time management web application
 
-You can find our website at ~~tracker.ladeira.eu~~
+You can find our website at [tracker.ladeira.eu](https://tracker.ladeira.eu)
 
 ## App information
 The stack we are using consists of
