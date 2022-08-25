@@ -16,7 +16,7 @@ function Component() {
 function Canvas() {
     useEffect(() => {
         var energyBox = document.getElementById("energy-container").getBoundingClientRect()
-        var width = (energyBox.width - 20) / 19
+        var width = (energyBox.width - 30) / 19
         document.getElementById("energy-graphic-canvas").style.gridTemplateColumns = "repeat(19, " + width + "px)"
     })
 
@@ -38,6 +38,7 @@ function Canvas() {
     }
 
     async function savePoints(points) {
+        console.log(points)
         const res = await fetch("/api/user/setPoints", {
             method: "POST",
             body: JSON.stringify({
@@ -64,6 +65,14 @@ function Canvas() {
     }, [user])
 
     useEffect(() => {
+        if (context.lastMouseUp != lastMouseUp) {
+            setLastMouseUp(context.lastMouseUp)
+            if (dragging !== undefined)
+                mouseUpHandler()
+        } else {
+            clearCanvas()
+        }
+
         var i = 0
         for (var point of points) {
             const nextPoint = points[i + 1]
@@ -78,18 +87,10 @@ function Canvas() {
     })
 
     useEffect(() => {
-        if (context.lastMouseUp != lastMouseUp) {
-            setLastMouseUp(context.lastMouseUp)
-            if (dragging !== undefined)
-                mouseUpHandler()
-        } else {
-            clearCanvas()
-        }
-    }, [context])
-
-    useEffect(() => {
         return clearCanvas
     }, [])
+
+    var tempPoints
 
     function moveHandler(e) {
         if (dragging !== undefined && !htmlUp) {
@@ -113,7 +114,8 @@ function Canvas() {
             }
 
             points.sort((a, b) => a.hour - b.hour)
-            setPoints([...points])
+            tempPoints = points
+            setHardPoints([...points])
         }
     }
 
@@ -128,8 +130,6 @@ function Canvas() {
         var offset = isX ? 35 : 5
         var size = isX ? newWidth : 36.75
         var range = isX ? [6, 24] : [0, 10]
-
-        console.log(newWidth)
 
         return [offset, size, range]
     }
@@ -168,8 +168,12 @@ function Canvas() {
     }
 
     function mouseUpHandler() {
-        setDragging(undefined)
         htmlUp = true
+        if (dragging) {
+            setDragging(undefined)
+            savePoints(points)
+        }
+
     }
 
     function contextMenuHandler(e, id) {

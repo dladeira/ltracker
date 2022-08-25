@@ -77,7 +77,7 @@ function Page() {
 
 
                     <article className={styles.card}>
-                        <h3 className={styles.cardTitle}>See what you spend your time on</h3>
+                        <h3 className={styles.cardTitleRight}>See what you spend your time on</h3>
                     </article>
 
 
@@ -87,7 +87,7 @@ function Page() {
 
 
                     <article className={styles.card}>
-                        <h3 className={styles.cardTitle}>Check off daily TODO items</h3>
+                        <h3 className={styles.cardTitleRight}>Check off daily TODO items</h3>
                     </article>
 
 
@@ -97,7 +97,7 @@ function Page() {
 
 
                     <article className={styles.card}>
-                        <h3 className={styles.cardTitle}>Compare against friends</h3>
+                        <h3 className={styles.cardTitleRight}>Compare against friends</h3>
                     </article>
 
 
@@ -107,7 +107,7 @@ function Page() {
 
 
                     <article className={styles.card}>
-                        <h3 className={styles.cardTitle}>And a bulit-in packing list</h3>
+                        <h3 className={styles.cardTitleRight}>And a bulit-in packing list</h3>
                     </article>
 
 
@@ -117,7 +117,7 @@ function Page() {
 
 
                     <article className={styles.card}>
-                        <h3 className={styles.cardTitle}>Set goals and push yourself</h3>
+                        <h3 className={styles.cardTitleRight}>Set goals and push yourself</h3>
                     </article>
 
                 </section>

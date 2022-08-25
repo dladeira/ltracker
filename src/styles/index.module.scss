@@ -1,6 +1,18 @@
 $navHeight: 70px;
 $pageWidth: 1000px;
 
+@mixin tablet-only {
+    @media (max-width: 1000px) {
+        @content;
+    }
+}
+
+@mixin phone-only {
+    @media (max-width: 700px) {
+        @content;
+    }
+}
+
 .container {
     display: flex;
     flex-direction: column;
@@ -239,7 +251,7 @@ $pageWidth: 1000px;
     .page1 {
         right: 50px;
     }
-    
+
     .page3 {
         left: 50px;
     }
@@ -285,6 +297,10 @@ $pageWidth: 1000px;
     flex-wrap: wrap;
 
     width: 100%;
+
+    @include tablet-only {
+        width: 90%;
+    }
 }
 
 .cardsTitle {
@@ -296,86 +312,28 @@ $pageWidth: 1000px;
 }
 
 .card {
-    height: 400px;
+    height: fit-content;
     width: 46%;
 
-    margin-bottom: 80px;
-    padding: 15px;
-    padding-top: 20px;
+    padding: 20px;
 
     border-radius: 10px;
 
-    box-shadow: 4px 4px 25px 0 rgba(0, 0, 0, 0.105);
-}
-
-.cardTitle {
-    margin: 0 auto;
-
-    font-size: 1.5rem;
-    font-weight: 600;
-    text-align: center;
-}
-
-@media screen and (max-width: 1000px) {
-    .sectionCards {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        flex-wrap: wrap;
-    
-        width: 90%;
-    }
-
-    .card {
-        height: 300px;
-        width: 46%;
-    
-        margin-bottom: 80px;
-        padding: 15px;
-        padding-top: 20px;
-    
-        border-radius: 10px;
-    
-        box-shadow: 4px 4px 25px 0 rgba(0, 0, 0, 0.105);
-    }
-
-    .cardTitle {
+    &Title {
         margin: 0 auto;
-    
-        font-size: 1rem;
-        font-weight: 600;
-        text-align: center;
-    }
-}
 
-@media screen and (max-width: 700px) {
-    .sectionCards {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        flex-wrap: wrap;
-    
-        width: 90%;
-    }
-
-    .card {
-        height: 400px;
-        width: 100%;
-    
-        margin-bottom: 80px;
-        padding: 15px;
-        padding-top: 20px;
-    
-        border-radius: 10px;
-    
-        box-shadow: 4px 4px 25px 0 rgba(0, 0, 0, 0.105);
-    }
-
-    .cardTitle {
-        margin: 0 auto;
-    
         font-size: 1.5rem;
-        font-weight: 600;
-        text-align: center;
+        font-weight: 300;
+        text-align: left;
+
+        &Right {
+            @extend .cardTitle;
+
+            text-align: right;
+        }
+    }
+
+    @include phone-only {
+        width: 100%;
     }
 }
