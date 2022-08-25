@@ -86,7 +86,11 @@ function Day({ index, name, first }) {
 
     useEffect(() => {
         window.addEventListener('resize', () => {
-            document.getElementById('header-' + index).style.width = document.getElementById(`weekDay-${index}-clickable`).getBoundingClientRect().width + "px"
+            var header = document.getElementById('header-' + index)
+            var clickable = document.getElementById(`weekDay-${index}-clickable`)
+            if (header && clickable) {
+                header.style.width = clickable.getBoundingClientRect().width + "px"
+            }
         })
         console.log(document.getElementById(`weekDay-${index}-clickable`).getBoundingClientRect().width)
         document.getElementById('header-' + index).style.width = document.getElementById(`weekDay-${index}-clickable`).getBoundingClientRect().width + "px"

@@ -9,7 +9,7 @@ function Component({ children }) {
         gridTemplateRows: "repeat(3, 1fr)",
         gridTemplateColumns: "repeat(4, 1fr)",
         width: "100%",
-        height: "88%"
+        height: "calc(100% - 110px)"
     }
 
     if (isMobile) {

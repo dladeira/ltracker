@@ -6,7 +6,7 @@ import styles from './energy.module.scss'
 
 function Component() {
     return (
-        <div className="flex flex-col relative h-full w-full bg-white rounded-lg p-3.5 pt-1 col-span-3 row-span-2">
+        <div className="flex flex-col relative h-full w-full bg-white rounded-lg p-3.5 pt-1 col-span-3 row-span-2" id={"energy-container"}>
             <h3 className="text-lg font-medium">Energy Levels</h3>
             <Canvas />
         </div>
@@ -14,6 +14,12 @@ function Component() {
 }
 
 function Canvas() {
+    useEffect(() => {
+        var energyBox = document.getElementById("energy-container").getBoundingClientRect()
+        var width = (energyBox.width - 20) / 19
+        document.getElementById("energy-graphic-canvas").style.gridTemplateColumns = "repeat(19, " + width + "px)"
+    })
+
     const [context] = useAppContext()
     const [user, setUser] = useUser({ userOnly: true })
 
@@ -48,9 +54,13 @@ function Canvas() {
     const hours = ["6 AM", "7 AM", "8 AM", "9 AM", "10 AM", "11 AM", "12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM", "9 PM", "10 PM", "11 PM", "12 AM"]
     const percents = ["100%", "", "80%", "", "60%", "", "40%", "", "20%", "", "0%"]
     const pointSize = 15
+    const [lastVersion, setLastVersion] = useState(user.getVersion())
 
     useEffect(() => {
-        setHardPoints(user.getPointsForDay(context.day, context.week, context.year))
+        if (lastVersion != user.getVersion()) {
+            setHardPoints(user.getPointsForDay(context.day, context.week, context.year))
+            setLastVersion(user.getVersion())
+        }
     }, [user])
 
     useEffect(() => {
@@ -108,9 +118,18 @@ function Canvas() {
     }
 
     function getPosInfo(isX) {
+        var newWidth = 0
+
+        if (document.getElementById("energy-graphic-canvas")) {
+            var string = document.getElementById("energy-graphic-canvas").style.gridTemplateColumns
+            newWidth = string.substring(10, string.length - 3)
+        }
+
         var offset = isX ? 35 : 5
-        var size = isX ? 59 : 36.75
+        var size = isX ? newWidth : 36.75
         var range = isX ? [6, 24] : [0, 10]
+
+        console.log(newWidth)
 
         return [offset, size, range]
     }
@@ -158,7 +177,7 @@ function Canvas() {
 
         e.preventDefault()
         points.splice(points.findIndex(point => point.id == id), 1)
-        setPoints([...points])
+        setPoints(points)
         setDragging(undefined)
     }
 
@@ -181,7 +200,7 @@ function Canvas() {
 
             points.push(data)
             points.sort((a, b) => a.hour - b.hour)
-            setPoints([...points])
+            setPoints(points)
             setDragging(data.id)
         }
     }
@@ -221,7 +240,7 @@ function Canvas() {
                     </div>
                 )}
             </div>
-            <div className={styles.graphicCanvas}>
+            <div className={styles.graphicCanvas} id="energy-graphic-canvas">
                 {hours.map(hour => <div key={`energyLine-${hour}`} className={styles.line} />)}
                 {hours.map(hour => <div key={`energyHour-${hour}`} className={styles.hour} >{hour}</div>)}
             </div>

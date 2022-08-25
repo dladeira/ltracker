@@ -12,15 +12,7 @@ function Page() {
 
     return (
         <Grid>
-            <Productivity />
-
             <Energy />
-
-            <Sleep />
-
-            <TextEntry />
-
-            <Checklist />
         </Grid >
     )
 }

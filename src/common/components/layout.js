@@ -49,12 +49,12 @@ function Component({ children }) {
 
                 {isMobile ?
                     context.userbarOpen ? "" : children
-                    : (
-                        <>
-                            <DateControl />
-                            {children}
-                        </>
-                    )
+                    : <DateControl />
+                }
+
+                {isMobile ?
+                    context.userbarOpen ? "" : children
+                    : children
                 }
 
             </div>

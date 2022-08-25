@@ -5,6 +5,10 @@ export default class User {
         this.data = user
     }
 
+    getVersion() {
+        return this.data.__v
+    }
+
     getAccountPublic() {
         return this.data.public == true
     }
