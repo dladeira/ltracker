@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAppContext } from '../../lib/context'
 import { useUser } from '../../lib/hooks'
-import { getDay } from '../../lib/util'
+import GridItem from '../../components/gridItem'
 
 import styles from './checklist.module.scss'
 
@@ -18,12 +18,11 @@ function Component() {
     }, [context])
 
     return (
-        <div className={styles.gridItem}>
-            <h3 className={styles.gridTitle}>Checklist</h3>
+        <GridItem title="Checklist">
             <div className={styles.checklists}>
                 {user.getChecklists().map(checklist => <Checklist key={`checklistItem-${lastDate}-${checklist.id}`} checklist={checklist} />)}
             </div>
-        </div>
+        </GridItem>
     )
 }
 

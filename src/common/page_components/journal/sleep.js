@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAppContext } from '../../lib/context'
 import { useUser } from '../../lib/hooks'
+import GridItem from '../../components/gridItem'
 
 import styles from './sleep.module.scss'
 
@@ -48,9 +49,7 @@ function Component() {
     }
 
     return (
-        <div className="flex flex-col relative h-full w-full bg-white rounded-lg p-3.5 pt-1">
-            <h3 className="text-lg font-medium">Sleep</h3>
-
+        <GridItem title="Sleep">
             <div className={styles.container}>
 
                 <div className={styles.levelsContainer}>
@@ -67,7 +66,7 @@ function Component() {
                     </div>
                 </div>
             </div>
-        </div>
+        </GridItem>
     )
 }
 

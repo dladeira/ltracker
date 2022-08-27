@@ -1,24 +1,38 @@
 import { useEffect, useState } from 'react'
 import { useAppContext } from '../../lib/context'
 import { useUser } from '../../lib/hooks'
+import GridItem from '../../components/gridItem'
 
 import styles from './energy.module.scss'
 
 function Component() {
     return (
-        <div className="flex flex-col relative h-full w-full bg-white rounded-lg p-3.5 pt-1 col-span-3 row-span-2" id={"energy-container"}>
-            <h3 className="text-lg font-medium">Energy Levels</h3>
+        <GridItem title="Energy Levels" rowSpan="2" colSpan="3" mRowSpan="2">
             <Canvas />
-        </div>
+        </GridItem>
     )
 }
 
 function Canvas() {
     useEffect(() => {
-        var energyBox = document.getElementById("energy-container").getBoundingClientRect()
-        var width = (energyBox.width - 30) / 19
+        var energyBox = document.getElementById("energy-graphic-canvas").getBoundingClientRect()
+        var height = (energyBox.height) / 12
+        var width = (energyBox.width) / 19
+        document.getElementById("energy-horizontal-graphic-canvas").style.gridTemplateRows = "repeat(12, " + height + "px)"
         document.getElementById("energy-graphic-canvas").style.gridTemplateColumns = "repeat(19, " + width + "px)"
-    })
+
+        window.addEventListener('resize', () => {
+            var energyBox = document.getElementById("energy-container")
+
+            if (energyBox) {
+                energyBox = energyBox.getBoundingClientRect()
+                var height = (energyBox.height) / 12
+                var width = (energyBox.width) / 19
+                document.getElementById("energy-horizontal-graphic-canvas").style.gridTemplateRows = "repeat(12, " + height + "px)"
+                document.getElementById("energy-graphic-canvas").style.gridTemplateColumns = "repeat(19, " + width + "px)"
+            }
+        })
+    }, [])
 
     const [context] = useAppContext()
     const [user, setUser] = useUser({ userOnly: true })
@@ -90,8 +104,6 @@ function Canvas() {
         return clearCanvas
     }, [])
 
-    var tempPoints
-
     function moveHandler(e) {
         if (dragging !== undefined && !htmlUp) {
             const data = { hour: posToValue(e.clientX, true), energyLevel: posToValue(e.clientY, false), id: dragging }
@@ -114,28 +126,30 @@ function Canvas() {
             }
 
             points.sort((a, b) => a.hour - b.hour)
-            tempPoints = points
             setHardPoints([...points])
         }
     }
 
     function getPosInfo(isX) {
+        var newHeight = 0
         var newWidth = 0
 
         if (document.getElementById("energy-graphic-canvas")) {
             var string = document.getElementById("energy-graphic-canvas").style.gridTemplateColumns
             newWidth = string.substring(10, string.length - 3)
+
+            var heightString = document.getElementById("energy-horizontal-graphic-canvas").style.gridTemplateRows
+            newHeight = heightString.substring(10, 13)
         }
 
         var offset = isX ? 35 : 5
-        var size = isX ? newWidth : 36.75
+        var size = isX ? newWidth : newHeight
         var range = isX ? [6, 24] : [0, 10]
 
         return [offset, size, range]
     }
 
     function posToValue(pos, isHours) {
-
         var [offset, size, range] = getPosInfo(isHours)
 
         const canvasRect = document.getElementById("energyCanvas").getBoundingClientRect()
@@ -173,7 +187,6 @@ function Canvas() {
             setDragging(undefined)
             savePoints(points)
         }
-
     }
 
     function contextMenuHandler(e, id) {
@@ -235,7 +248,7 @@ function Canvas() {
     return (
         <div id="energyCanvas" className={styles.wrapper}>
             <div className={styles.targetCanvas} onMouseMove={moveHandler} onMouseDown={canvasDownHandler} onContextMenu={canvasContextMenuHandler} />
-            <div className={styles.graphicHorizontalCanvas}>
+            <div className={styles.graphicHorizontalCanvas} id="energy-horizontal-graphic-canvas">
                 {percents.map(percent =>
                     <div className={styles.horizontalContainer} key={`energyHorizontalContainer-${Math.random()}`}>
                         <div key={`energyHorizontalPercent-${percent}`} className={styles.percent} >{percent}</div>
@@ -263,8 +276,8 @@ function Canvas() {
 
 function getPointData(point) {
     return {
-        x: point.getBoundingClientRect().x + (point.getBoundingClientRect().width / 2),
-        y: point.getBoundingClientRect().y + (point.getBoundingClientRect().height / 2)
+        x: (point.getBoundingClientRect().x + window.scrollX) + (point.getBoundingClientRect().width / 2),
+        y: (point.getBoundingClientRect().y + window.scrollY) + (point.getBoundingClientRect().height / 2)
     }
 }
 
@@ -272,7 +285,7 @@ function getPointData(point) {
 function drawLineXY(fromXY, toXY, canvasNum) {
     var lineElem = document.getElementById("energyLineCanvas-" + canvasNum)
     if (!lineElem) {
-        lineElem = document.createElement('canvas');
+        lineElem = document.createElement('canvas')
         lineElem.style.position = "absolute";
         lineElem.classList.add(styles.drawnCanvas)
         lineElem.id = "energyLineCanvas-" + canvasNum

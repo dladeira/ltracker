@@ -2,7 +2,8 @@ import Image from 'next/image'
 
 import { useAppContext } from '../../lib/context'
 import { useUser } from '../../lib/hooks'
-import { getIncrementInfo, getWeeklyHours } from '../../lib/util'
+import { getIncrementInfo } from '../../lib/util'
+import GridItem from '../../components/gridItem'
 
 import styles from './productivity.module.scss'
 
@@ -16,8 +17,7 @@ function Component() {
     const batteryNumber = 210 - (batteryRatio / 100 * 210)
 
     return (
-        <div className={styles.gridItem}>
-            <h3 className={styles.gridTitle}>Productivity</h3>
+        <GridItem title="Productivity" rowSpan="2" mRowSpan="2">
 
             <div className={styles.header}>
 
@@ -61,7 +61,7 @@ function Component() {
                     <p className={styles.goalSubText}>( {user.getHoursForWeek(context.week, context.year)} / {user.getWeeklyHourGoal()} )</p>
                 </article>
             </section>
-        </div>
+        </GridItem>
     )
 }
 

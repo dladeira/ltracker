@@ -48,7 +48,7 @@ function Component({ children }) {
                 <Userbar />
 
                 {isMobile ?
-                    context.userbarOpen ? "" : children
+                    context.userbarOpen ? "" : ""
                     : <DateControl />
                 }
 
