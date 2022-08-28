@@ -116,10 +116,10 @@ function Task({ task }) {
             <FormInput width={"50%"} type="text" defaultValue={task.name} onSave={saveTask('name')} contextKey={`settings.task-${task.id}.name`} />
 
 
-            <FormInput width={"20px"} type="color" defaultValue={task.color ? task.color : "#E9807F"} onSave={saveTask} contextKey={`settings.task-${task.id}.color`} />
+            <FormInput width={"20px"} type="color" defaultValue={task.color ? task.color : "#E9807F"} onSave={saveTask('color')} contextKey={`settings.task-${task.id}.color`} />
 
 
-            <FormInput width={"20px"} type="public" defaultValue={task.public} onSave={saveTask} contextKey={`settings.task-${task.id}.public`} />
+            <FormInput width={"20px"} type="public" defaultValue={task.public} onSave={saveTask('public')} contextKey={`settings.task-${task.id}.public`} />
 
 
             <div className={styles.taskDelete} type="button" onClick={onDeletePress}>
