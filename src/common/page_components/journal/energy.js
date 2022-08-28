@@ -17,7 +17,7 @@ function Canvas() {
     useEffect(() => {
         var energyBox = document.getElementById("energy-graphic-canvas").getBoundingClientRect()
         var height = (energyBox.height) / 12
-        var width = (energyBox.width) / 19
+        var width = (energyBox.width - 30) / 19
         document.getElementById("energy-horizontal-graphic-canvas").style.gridTemplateRows = "repeat(12, " + height + "px)"
         document.getElementById("energy-graphic-canvas").style.gridTemplateColumns = "repeat(19, " + width + "px)"
 
@@ -27,7 +27,7 @@ function Canvas() {
             if (energyBox) {
                 energyBox = energyBox.getBoundingClientRect()
                 var height = (energyBox.height) / 12
-                var width = (energyBox.width) / 19
+                var width = (energyBox.width - 30) / 19
                 document.getElementById("energy-horizontal-graphic-canvas").style.gridTemplateRows = "repeat(12, " + height + "px)"
                 document.getElementById("energy-graphic-canvas").style.gridTemplateColumns = "repeat(19, " + width + "px)"
             }
@@ -52,7 +52,6 @@ function Canvas() {
     }
 
     async function savePoints(points) {
-        console.log(points)
         const res = await fetch("/api/user/setPoints", {
             method: "POST",
             body: JSON.stringify({
@@ -69,14 +68,14 @@ function Canvas() {
     const hours = ["6 AM", "7 AM", "8 AM", "9 AM", "10 AM", "11 AM", "12 PM", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM", "9 PM", "10 PM", "11 PM", "12 AM"]
     const percents = ["100%", "", "80%", "", "60%", "", "40%", "", "20%", "", "0%"]
     const pointSize = 15
-    const [lastVersion, setLastVersion] = useState(user.getVersion())
+    const [lastDay, setLastDay] = useState(context.day)
 
     useEffect(() => {
-        if (lastVersion != user.getVersion()) {
+        if (context.day != lastDay) {
             setHardPoints(user.getPointsForDay(context.day, context.week, context.year))
-            setLastVersion(user.getVersion())
+            setLastDay(context.day)
         }
-    }, [user])
+    }, [context])
 
     useEffect(() => {
         if (context.lastMouseUp != lastMouseUp) {
@@ -142,7 +141,7 @@ function Canvas() {
             newHeight = heightString.substring(10, 13)
         }
 
-        var offset = isX ? 35 : 5
+        var offset = isX ? 45 : 5
         var size = isX ? newWidth : newHeight
         var range = isX ? [6, 24] : [0, 10]
 
@@ -199,11 +198,17 @@ function Canvas() {
     }
 
     function clearCanvas() {
-        var oldLength = points.length
-        for (var i = 0; i < oldLength - 1; i++) {
+        var i = 0
+        while (true) {
             const el = document.getElementById("energyLineCanvas-" + i)
-            if (el)
+
+            if (el) {
                 el.remove()
+            } else {
+                break;
+            }
+
+            i++
         }
     }
 
