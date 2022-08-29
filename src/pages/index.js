@@ -68,60 +68,106 @@ function Page() {
 
             </section>
 
-            <section className={styles.sectionSecondary}>
-                <h3 className={styles.cardsTitle}>Features list</h3>
-                <section className={styles.sectionCards}>
-                    <article className={styles.card}>
-                        <h3 className={styles.cardTitle}>Keep track of weekly productivity</h3>
-                    </article>
+            <div className={styles.postMain}>
+                <section className={styles.sectionObjectives}>
+                    <h3 className={styles.objectivesTitle}>A calendar designed with productivity in mind</h3>
 
+                    <div className={styles.objectives}>
+                        <article className={styles.objective}>
+                            <h4 className={styles.objectiveTitle}>The hour count in question</h4>
+                            <div className={styles.objectiveImage}>
 
-                    <article className={styles.card}>
-                        <h3 className={styles.cardTitleRight}>See what you spend your time on</h3>
-                    </article>
+                            </div>
+                        </article>
 
+                        <article className={styles.objective}>
+                            <h4 className={styles.objectiveTitle}>Record sleep and get ahold of your sleep schedule</h4>
+                            <div className={styles.objectiveImage}>
 
-                    <article className={styles.card}>
-                        <h3 className={styles.cardTitle}>Organize yourself with a schedule</h3>
-                    </article>
+                            </div>
+                        </article>
 
+                        <article className={styles.objective}>
+                            <h4 className={styles.objectiveTitle}>Keep track of your workouts and plan ahead</h4>
+                            <div className={styles.objectiveImage}>
 
-                    <article className={styles.card}>
-                        <h3 className={styles.cardTitleRight}>Check off daily TODO items</h3>
-                    </article>
-
-
-                    <article className={styles.card}>
-                        <h3 className={styles.cardTitle}>Record your energy and sleep</h3>
-                    </article>
-
-
-                    <article className={styles.card}>
-                        <h3 className={styles.cardTitleRight}>Compare against friends</h3>
-                    </article>
-
-
-                    <article className={styles.card}>
-                        <h3 className={styles.cardTitle}>A built-in diary</h3>
-                    </article>
-
-
-                    <article className={styles.card}>
-                        <h3 className={styles.cardTitleRight}>And a bulit-in packing list</h3>
-                    </article>
-
-
-                    <article className={styles.card}>
-                        <h3 className={styles.cardTitle}>Track your workouts and muscle impact</h3>
-                    </article>
-
-
-                    <article className={styles.card}>
-                        <h3 className={styles.cardTitleRight}>Set goals and push yourself</h3>
-                    </article>
-
+                            </div>
+                        </article>
+                    </div>
                 </section>
-            </section>
+
+                <section className={styles.sectionGithub}>
+                    <div className={styles.githubLogo} />
+
+                    <div className={styles.githubHeader}>
+                        <h3 className={styles.githubTitle}>A calendar designed with productivity in mind</h3>
+                        <h3 className={styles.githubSubtitle}>Suggest new features, report bugs, and directly talk with developers on the github repository</h3>
+                        <h3 className={styles.githubRepo}>Repo</h3>
+                    </div>
+
+                    <div className={styles.githubChanges}>
+                    &zwnj;
+                    </div>
+                    <div className={styles.githubSidebar}>
+                    &zwnj;
+                    </div>
+                </section>
+
+                <section className={styles.sectionFeatures}>
+                    <h3 className={styles.cardsTitle}>Features list</h3>
+                    <section className={styles.sectionCards}>
+                        <article className={styles.card}>
+                            <h3 className={styles.cardTitle}>Keep track of weekly productivity</h3>
+                        </article>
+
+
+                        <article className={styles.card}>
+                            <h3 className={styles.cardTitleRight}>See what you spend your time on</h3>
+                        </article>
+
+
+                        <article className={styles.card}>
+                            <h3 className={styles.cardTitle}>Organize yourself with a schedule</h3>
+                        </article>
+
+
+                        <article className={styles.card}>
+                            <h3 className={styles.cardTitleRight}>Check off daily TODO items</h3>
+                        </article>
+
+
+                        <article className={styles.card}>
+                            <h3 className={styles.cardTitle}>Record your energy and sleep</h3>
+                        </article>
+
+
+                        <article className={styles.card}>
+                            <h3 className={styles.cardTitleRight}>Compare against friends</h3>
+                        </article>
+
+
+                        <article className={styles.card}>
+                            <h3 className={styles.cardTitle}>A built-in diary</h3>
+                        </article>
+
+
+                        <article className={styles.card}>
+                            <h3 className={styles.cardTitleRight}>And a bulit-in packing list</h3>
+                        </article>
+
+
+                        <article className={styles.card}>
+                            <h3 className={styles.cardTitle}>Track your workouts and muscle impact</h3>
+                        </article>
+
+
+                        <article className={styles.card}>
+                            <h3 className={styles.cardTitleRight}>Set goals and push yourself</h3>
+                        </article>
+
+                    </section>
+                </section>
+            </div>
         </div>
     )
 }
